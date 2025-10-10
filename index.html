@@ -10,8 +10,7 @@
   *{box-sizing:border-box}
   body{font-family:Inter, system-ui, Arial, sans-serif; background:var(--bg); margin:0; color:#1b1f23;}
   header{background:linear-gradient(135deg,var(--blue),var(--blue2)); color:#fff; padding:28px 18px; text-align:center;}
-  header h1{margin:0 0 6px; font-weight:800; letter-spacing:.3px}
-  header p{margin:0; opacity:.95}
+  header h1{margin:0; font-weight:800; letter-spacing:.3px}
   main{max-width:1000px; margin:28px auto; padding:0 16px 40px}
   .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px 20px; box-shadow:0 2px 10px rgba(0,0,0,.04); margin-bottom:18px;}
   h2{margin:8px 0 12px; color:var(--blue); font-size:20px}
@@ -28,7 +27,6 @@
   th{background:#eef2ff; text-align:left}
   .gate{max-width:440px; margin:60px auto}
   .muted{color:#64748b; font-size:13px}
-  .pill{display:inline-block; background:#eef2ff; color:#1e3a8a; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid #c7d2fe}
   .err{color:#b00020; font-size:13px; margin-left:10px; display:none}
   .footer{color:#6b7280; font-size:13px; margin-top:8px}
 </style>
@@ -36,21 +34,19 @@
 <body>
 <header>
   <h1>Exam Builder – Instructor Portal</h1>
-  <p>Create a downloadable exam (single <code>index.html</code>) with timer, anti-cheat, and email reporting.</p>
 </header>
 
 <main>
   <!-- Password Gate (visible on load) -->
   <section class="card gate" id="gate">
     <h2>Instructor Access</h2>
-    <p class="muted">Enter the access password to open the builder.</p>
     <label>Password
       <input type="password" id="gatePwd" placeholder="Enter password…" />
     </label>
     <div style="margin-top:12px">
       <button class="btn" id="gateBtn">Unlock</button>
-      <span class="muted" style="margin-left:8px">Tip: change the password in this file’s code.</span>
       <span id="gateErr" class="err">Incorrect password.</span>
+      <div class="muted" style="margin-top:8px">You can change the password in this file.</div>
     </div>
   </section>
 
@@ -70,11 +66,10 @@
         <label>Time Limit (minutes)
           <input type="number" id="timeLimit" min="5" max="180" step="5" value="40" />
         </label>
-        <label>Email Subject Format <span class="pill">uses (NAME)</span>
+        <label>Email Subject Format <span class="small">(use <b>(NAME)</b> placeholder)</span>
           <input type="text" id="emailSubject" value="(NAME) – English Exam – Business Resources (MDO2G3)" />
         </label>
       </div>
-      <p class="small">The class code is required to start. The time limit controls the countdown and auto-submit.</p>
     </div>
 
     <div class="card">
@@ -95,12 +90,12 @@
           <input type="text" id="instructorEmail" placeholder="Destination is configured in your EmailJS template" />
         </label>
       </div>
-      <p class="small">Your EmailJS template should use <code>{{subject}}</code> and <code>{{message_html}}</code>.</p>
+      <p class="small">Your EmailJS template should include variables <code>{{subject}}</code> and <code>{{message_html}}</code>.</p>
     </div>
 
     <div class="card">
       <h2>Step 3 — Vocabulary (10 items)</h2>
-      <p class="small">Enter the <b>Word</b> and its <b>Correct Definition</b>. Students will match via dropdowns (randomized; “-- Choose --” always first).</p>
+      <p class="small">Enter the <b>Word</b> and its <b>Correct Definition</b>. Students will match via dropdowns (randomized; “-- Choose --” is always first).</p>
       <table>
         <thead><tr><th>#</th><th>Word</th><th>Correct Definition</th></tr></thead>
         <tbody id="vocabBody"></tbody>
@@ -118,7 +113,7 @@
     <div class="card">
       <h2>Step 5 — Generate Exam</h2>
       <button class="btn" id="generateBtn">Generate & Download index.html</button>
-      <p class="small">You’ll get a self-contained HTML file with your content, timer, anti-cheat, and formatted email reporting.</p>
+      <p class="small">This downloads a self-contained student exam (timer, fullscreen guard, anti-copy, EmailJS reporting).</p>
     </div>
   </section>
 </main>
@@ -155,7 +150,7 @@ for (let i=0;i<10;i++){
   tbody.appendChild(tr);
 }
 
-/* ======= Build Student Exam HTML (kept as a string only) ======= */
+/* ======= Build Student Exam HTML (string only; not rendered here) ======= */
 function buildExamHTML(cfg){
   const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   const defs = cfg.vocab.map(v=>v.definition);
