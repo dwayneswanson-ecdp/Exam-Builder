@@ -18,7 +18,6 @@
   input[type=text], input[type=number], textarea{width:100%; border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:15px; background:#fff;}
   textarea{min-height:110px; resize:vertical}
   .row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
-  .row-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px}
   .small{font-size:12px; color:#6b7280}
   .btn{background:var(--blue); color:#fff; border:none; padding:12px 18px; border-radius:10px; font-size:16px; cursor:pointer}
   .btn:hover{background:#003166}
@@ -26,9 +25,7 @@
   th, td{border:1px solid var(--border); padding:8px; font-size:14px}
   th{background:#eef2ff; text-align:left}
   .gate{max-width:440px; margin:60px auto}
-  .muted{color:#64748b; font-size:13px}
   .err{color:#b00020; font-size:13px; margin-left:10px; display:none}
-  .footer{color:#6b7280; font-size:13px; margin-top:8px}
 </style>
 </head>
 <body>
@@ -37,7 +34,7 @@
 </header>
 
 <main>
-  <!-- Password Gate (visible on load) -->
+  <!-- Password Gate -->
   <section class="card gate" id="gate">
     <h2>Instructor Access</h2>
     <label>Password
@@ -46,11 +43,10 @@
     <div style="margin-top:12px">
       <button class="btn" id="gateBtn">Unlock</button>
       <span id="gateErr" class="err">Incorrect password.</span>
-      <div class="muted" style="margin-top:8px">You can change the password in this file.</div>
     </div>
   </section>
 
-  <!-- Builder UI (hidden until unlock) -->
+  <!-- Builder (hidden until unlock) -->
   <section id="builder" style="display:none">
     <div class="card">
       <h2>Step 1 — Exam Info</h2>
@@ -87,20 +83,19 @@
           <input type="text" id="emailjsTemplate" placeholder="e.g., template_r0u784p" />
         </label>
         <label>Instructor Email (note)
-          <input type="text" id="instructorEmail" placeholder="Destination is configured in your EmailJS template" />
+          <input type="text" id="instructorEmail" placeholder="Configured in your EmailJS template" />
         </label>
       </div>
-      <p class="small">Your EmailJS template should include variables <code>{{subject}}</code> and <code>{{message_html}}</code>.</p>
+      <p class="small">Your EmailJS template must include variables <code>{{subject}}</code> and <code>{{message_html}}</code>.</p>
     </div>
 
     <div class="card">
       <h2>Step 3 — Vocabulary (10 items)</h2>
-      <p class="small">Enter the <b>Word</b> and its <b>Correct Definition</b>. Students will match via dropdowns (randomized; “-- Choose --” is always first).</p>
+      <p class="small">Enter the <b>Word</b> and its <b>Correct Definition</b>. Students will match via dropdowns (randomized; “-- Choose --” always first).</p>
       <table>
         <thead><tr><th>#</th><th>Word</th><th>Correct Definition</th></tr></thead>
         <tbody id="vocabBody"></tbody>
       </table>
-      <div class="footer">Defaults are prefilled; edit freely.</div>
     </div>
 
     <div class="card">
@@ -119,7 +114,7 @@
 </main>
 
 <script>
-/* ======= Password Gate ======= */
+/* ========== Gate ========== */
 const BUILDER_PASSWORD = "teacher2025";
 document.getElementById("gateBtn").addEventListener("click", () => {
   const ok = document.getElementById("gatePwd").value === BUILDER_PASSWORD;
@@ -127,7 +122,7 @@ document.getElementById("gateBtn").addEventListener("click", () => {
   if (ok) { document.getElementById("gate").style.display="none"; document.getElementById("builder").style.display="block"; }
 });
 
-/* ======= Prefill Vocab Rows ======= */
+/* ========== Prefill Vocab ========== */
 const defaults = [
   ["Budget","A plan for how money will be spent during a specific period."],
   ["Forecast","A prediction of future sales, costs, or results."],
@@ -143,225 +138,154 @@ const defaults = [
 const tbody = document.getElementById("vocabBody");
 for (let i=0;i<10;i++){
   const tr = document.createElement("tr");
-  tr.innerHTML = `
-    <td>${i+1}</td>
-    <td><input type="text" id="w${i}" value="${defaults[i][0]}"></td>
-    <td><input type="text" id="d${i}" value="${defaults[i][1]}"></td>`;
+  tr.innerHTML = '<td>'+(i+1)+'</td>'
+    + '<td><input type="text" id="w'+i+'" value="'+defaults[i][0]+'"></td>'
+    + '<td><input type="text" id="d'+i+'" value="'+defaults[i][1]+'"></td>';
   tbody.appendChild(tr);
 }
 
-/* ======= Build Student Exam HTML (string only; not rendered here) ======= */
+/* ========== Build Student Exam HTML safely (no nested backticks) ========== */
+function htmlEscape(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
 function buildExamHTML(cfg){
-  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-  const defs = cfg.vocab.map(v=>v.definition);
-  const selectFor = (n) => `
-    <select name="q${n+1}">
-      <option value="">-- Choose --</option>
-      ${defs.map(d=>`<option>${esc(d)}</option>`).join("")}
-    </select>`;
-  const corrPairs = cfg.vocab.map((v,i)=>`q${i+1}: "${esc(v.definition)}"`).join(",\n    ");
-  const wordNames = cfg.vocab.map(v=>`"${esc(v.word)}"`).join(",");
-  const olItems = cfg.vocab.map((v,i)=>`<li>${esc(v.word)} ${selectFor(i)}</li>`).join("");
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="google" content="notranslate" />
-<title>${esc(cfg.title)}</title>
-<style>
-  body{font-family:Arial,Helvetica,sans-serif;background:#f8f9fb;margin:0;color:#222;font-size:16px;line-height:1.6;}
-  header{background:linear-gradient(135deg,#004080,#0066cc);color:#ffffff;padding:25px 20px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
-  header h1{color:#ffffff;font-size:1.9em;margin:0;letter-spacing:.4px;}
-  #timer{text-align:right;font-weight:bold;color:#ffffff;margin-top:10px;}
-  main{max-width:860px;margin:40px auto;background:#fff;padding:40px;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.1);}
-  section{margin-bottom:40px;border-bottom:1px solid #ddd;padding-bottom:30px;}
-  #login{background:#ffffff;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08);padding:30px;max-width:520px;margin:30px auto;}
-  select,textarea,input{width:100%;padding:10px;margin-top:6px;margin-bottom:14px;border:1px solid #ccc;border-radius:6px;}
-  button{background:#004080;color:#fff;border:none;padding:12px 28px;border-radius:6px;cursor:pointer;font-size:16px;}
-  button:hover{background:#003366;}
-  ol li{margin-bottom:16px;}
-  .tbl{border-collapse:collapse;width:100%;font-size:15px;margin-top:10px}
-  .tbl th,.tbl td{border:1px solid #ccc;padding:8px}
-  .tbl thead th{background:#004080;color:#fff;text-align:left}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  emailjs.init("${esc(cfg.emailjsKey||"")}");
-  const login = document.getElementById("login");
-  const exam  = document.getElementById("exam");
-  const timerDisplay = document.getElementById("timer");
-  const form  = document.getElementById("examForm");
-  let timeLeft = ${Number(cfg.timeLimit)} * 60, timerInt;
-
-  const correctAnswers = { ${corrPairs} };
-
-  // Randomize dropdowns; keep "-- Choose --" first
-  document.querySelectorAll("select").forEach(sel=>{
-    const first = sel.options[0];
-    const rest  = Array.from(sel.options).slice(1);
-    for(let i=rest.length-1;i>0;i--){
-      const j=Math.floor(Math.random()*(i+1));
-      [rest[i].text,rest[j].text] = [rest[j].text,rest[i].text];
-    }
-    sel.innerHTML = ""; sel.appendChild(first); rest.forEach(o=>sel.appendChild(o)); sel.selectedIndex = 0;
-  });
-
-  function startTimer(){
-    timerInt = setInterval(()=>{
-      timeLeft--;
-      const m=Math.floor(timeLeft/60), s=timeLeft%60;
-      timerDisplay.textContent = \`Time Remaining: \${m}:\${s.toString().padStart(2,"0")}\`;
-      if(timeLeft<=0){ clearInterval(timerInt); submitExam(); }
-    },1000);
+  // Build options list for each question (same definitions, randomized client-side)
+  var defs = cfg.vocab.map(function(v){return v.definition;});
+  function selectFor(n){
+    var s = '<select name="q'+(n+1)+'">';
+    s += '<option value="">-- Choose --</option>';
+    for(var i=0;i<defs.length;i++){ s += '<option>'+htmlEscape(defs[i])+'</option>'; }
+    s += '</select>';
+    return s;
   }
 
-  function terminateExam(){
-    const f = document.getElementById("examForm");
-    f.reset(); Array.from(f.elements).forEach(el=>el.disabled=true);
-    const overlay=document.createElement("div");
-    overlay.innerHTML=\`<div style="position:fixed;inset:0;background:rgba(0,0,0,.9);color:#fff;display:flex;align-items:center;justify-content:center;z-index:9999;text-align:center;padding:20px;"><div><h2>⚠️ Exam Terminated</h2><p>You exited full screen. Inputs erased for security.</p></div></div>\`;
-    document.body.appendChild(overlay); setTimeout(()=>location.reload(),8000);
+  // Correct answers object string
+  var corrPairs = '';
+  for(var i=0;i<cfg.vocab.length;i++){
+    corrPairs += 'q'+(i+1)+': "'+htmlEscape(cfg.vocab[i].definition)+'"';
+    if(i<cfg.vocab.length-1) corrPairs += ',\n    ';
   }
 
-  function enableFullScreen(){
-    document.documentElement.requestFullscreen?.().catch(()=>{});
-    document.addEventListener("fullscreenchange", ()=>{ if(!document.fullscreenElement){ terminateExam(); } });
+  // Word names array string for reporting
+  var wordNames = '';
+  for(var j=0;j<cfg.vocab.length;j++){
+    wordNames += '"'+htmlEscape(cfg.vocab[j].word)+'"';
+    if(j<cfg.vocab.length-1) wordNames += ',';
   }
 
-  // Anti copy/paste & shortcuts
-  ["copy","cut","paste","contextmenu"].forEach(evt=>document.addEventListener(evt, e=>e.preventDefault()));
-  document.addEventListener("keydown", e=>{
-    if((e.ctrlKey||e.metaKey)&&["c","v","x","u","a"].includes(e.key.toLowerCase())) e.preventDefault();
-    if(e.key==="F12"||e.key==="Escape") e.preventDefault();
-  });
-
-  document.getElementById("startBtn").onclick = () => {
-    const name=document.getElementById("studentName").value.trim();
-    const email=document.getElementById("studentEmail").value.trim();
-    const code=document.getElementById("classCode").value.trim();
-    if(!name||!email){ alert("Please enter your name and email."); return; }
-    if(code !== "${esc(cfg.classCode)}"){ alert("Invalid class code."); return; }
-    document.getElementById("studentNameField").value = name;
-    document.getElementById("studentEmailField").value = email;
-    document.getElementById("classCodeField").value = code;
-    login.style.display="none"; exam.style.display="block"; enableFullScreen(); startTimer();
-  };
-
-  form.addEventListener("submit", e=>{ e.preventDefault(); submitExam(); });
-
-  function submitExam(){
-    clearInterval(timerInt);
-    const fd=new FormData(form);
-    const name = fd.get("studentName") || document.getElementById("studentNameField").value;
-    const email= fd.get("studentEmail") || document.getElementById("studentEmailField").value;
-    const minutesUsed = ${Number(cfg.timeLimit)} - Math.floor(timeLeft/60);
-
-    const answers=[]; let score=0;
-    for(let i=1;i<=10;i++){
-      const sel = fd.get("q"+i) || "No answer";
-      const corr= correctAnswers["q"+i];
-      const ok  = (sel===corr);
-      if(ok) score++;
-      answers.push({ sel, corr, ok });
-    }
-    const wordNames=[${wordNames}];
-    const partARows = answers.map((a,idx)=>\`
-      <tr>
-        <td style="padding:8px;border:1px solid #ccc;">\${wordNames[idx]}</td>
-        <td style="padding:8px;border:1px solid #ccc;">\${a.sel}</td>
-        <td style="padding:8px;border:1px solid #ccc;color:\${a.ok?'green':'#b00'};">
-          \${a.ok ? '✅ Correct' : '❌ Incorrect → Correct answer: '+a.corr}
-        </td>
-      </tr>\`).join("");
-
-    const htmlReport = \`
-      <h2 style="color:#004080;">${esc(cfg.title)} – \${name} (${esc(cfg.classCode)})</h2>
-      <p><b>Student Name:</b> \${name}<br><b>Student Email:</b> \${email}<br><b>Class Code:</b> ${esc(cfg.classCode)}<br><b>Time Taken:</b> \${minutesUsed} min</p>
-      <hr>
-      <h3 style="color:#004080;">Part A – Vocabulary Matching</h3>
-      <table class="tbl">
-        <thead><tr><th>Word</th><th>Student Answer</th><th>Result</th></tr></thead>
-        <tbody>\${partARows}</tbody>
-      </table>
-      <p><b>Part A Score:</b> \${score}/10</p>
-      <hr>
-      <h3 style="color:#004080;">Part B – Email Writing & Instructor Feedback</h3>
-      <p><b>Student’s Response:</b></p>
-      <div style="border:1px solid #ccc;border-radius:6px;padding:10px;margin-bottom:15px;background:#f9f9f9;">
-        \${(fd.get("emailBody")||"").replace(/\\n/g,"<br>")}
-      </div>
-      <table class="tbl">
-        <thead><tr><th>Criterion</th><th>Maximum Score</th><th>Score Awarded</th></tr></thead>
-        <tbody>
-          <tr><td>Vocabulary Use</td><td>/3</td><td>___ / 3</td></tr>
-          <tr><td>Structure & Clarity</td><td>/3</td><td>___ / 3</td></tr>
-          <tr><td>Language Accuracy & Tone</td><td>/2</td><td>___ / 2</td></tr>
-          <tr><td>Professional Style</td><td>/2</td><td>___ / 2</td></tr>
-        </tbody>
-      </table>
-      <br>
-      <p><b>Instructor Comments:</b></p>
-      <p style="border:1px solid #ccc;padding:10px;border-radius:6px;min-height:50px;">[Type feedback here]</p>
-      <h4 style="color:#004080;">Score Summary</h4>
-      <table class="tbl" style="max-width:460px;">
-        <tr><td>Part A Score</td><td>\${score} / 10</td></tr>
-        <tr><td>Part B Score</td><td>___ / 10</td></tr>
-        <tr><td><b>Final Note</b></td><td><b>___ / 20</b></td></tr>
-      </table>
-      <div style="border-top:1px solid #ccc;margin-top:20px;padding-top:10px;font-size:13px;">
-        <em>This report was generated automatically for ${esc(cfg.title)}.</em>
-      </div>\`;
-
-    const subject = \`${cfg.subject}\`.replace("(NAME)", name);
-
-    emailjs.send("${esc(cfg.emailjsService||"")}", "${esc(cfg.emailjsTemplate||"")}", {
-      from_name: name,
-      from_email: email,
-      subject: subject,
-      message_html: htmlReport
-    })
-    .then(()=>{ alert("✅ Exam submitted successfully. You may close this window."); document.getElementById("exam").style.display="none"; })
-    .catch(err=>{ alert("❌ Error sending exam: " + (err?.text||"")); console.error("EmailJS Error:", err); });
+  // Ordered list of prompts
+  var olItems = '';
+  for(var k=0;k<cfg.vocab.length;k++){
+    olItems += '<li>'+htmlEscape(cfg.vocab[k].word)+' '+selectFor(k)+'</li>';
   }
-});
-</script>
-</head>
-<body>
-<header>
-  <h1>${esc(cfg.title)} (${esc(cfg.classCode)})</h1>
-  <div id="timer"></div>
-</header>
-<main>
-  <section id="login">
-    <h2>Start Exam</h2>
-    <p>Enter your details to begin. Once started, you will have <b>${Number(cfg.timeLimit)} minutes</b>.</p>
-    <label>Name:<input type="text" id="studentName" required></label>
-    <label>Email:<input type="email" id="studentEmail" required></label>
-    <label>Class Code:<input type="text" id="classCode" required></label>
-    <button id="startBtn">Start Exam</button>
-  </section>
-  <section id="exam" style="display:none;">
-    <form id="examForm">
-      <input type="hidden" name="studentName" id="studentNameField">
-      <input type="hidden" name="studentEmail" id="studentEmailField">
-      <input type="hidden" name="classCode" id="classCodeField">
-      <h2>Part A – Vocabulary Matching</h2>
-      <ol>${olItems}</ol>
-      <h2>Part B – Email Writing Task</h2>
-      <p>${esc(cfg.prompt)}</p>
-      <textarea name="emailBody" required></textarea>
-      <button type="submit">Submit Exam</button>
-    </form>
-  </section>
-</main>
-</body>
-</html>`;
+
+  // Build full exam HTML via concatenation (no backticks)
+  var out = '<!DOCTYPE html>\n'
+  + '<html lang="en">\n<head>\n<meta charset="UTF-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n'
+  + '<meta name="google" content="notranslate" />\n'
+  + '<title>'+htmlEscape(cfg.title)+'</title>\n'
+  + '<style>\n'
+  + 'body{font-family:Arial,Helvetica,sans-serif;background:#f8f9fb;margin:0;color:#222;font-size:16px;line-height:1.6;}\n'
+  + 'header{background:linear-gradient(135deg,#004080,#0066cc);color:#ffffff;padding:25px 20px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.15);} \n'
+  + 'header h1{color:#ffffff;font-size:1.9em;margin:0;letter-spacing:.4px;} \n'
+  + '#timer{text-align:right;font-weight:bold;color:#ffffff;margin-top:10px;} \n'
+  + 'main{max-width:860px;margin:40px auto;background:#fff;padding:40px;border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.1);} \n'
+  + 'section{margin-bottom:40px;border-bottom:1px solid #ddd;padding-bottom:30px;} \n'
+  + '#login{background:#ffffff;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08);padding:30px;max-width:520px;margin:30px auto;} \n'
+  + 'select,textarea,input{width:100%;padding:10px;margin-top:6px;margin-bottom:14px;border:1px solid #ccc;border-radius:6px;} \n'
+  + 'button{background:#004080;color:#fff;border:none;padding:12px 28px;border-radius:6px;cursor:pointer;font-size:16px;} \n'
+  + 'button:hover{background:#003366;} \n'
+  + 'ol li{margin-bottom:16px;} \n'
+  + '.tbl{border-collapse:collapse;width:100%;font-size:15px;margin-top:10px} \n'
+  + '.tbl th,.tbl td{border:1px solid #ccc;padding:8px} \n'
+  + '.tbl thead th{background:#004080;color:#fff;text-align:left} \n'
+  + '</style>\n'
+  + '<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"><\/script>\n'
+  + '<script>\n'
+  + 'document.addEventListener("DOMContentLoaded", function(){\n'
+  + '  emailjs.init("'+htmlEscape(cfg.emailjsKey||'')+'");\n'
+  + '  var login = document.getElementById("login");\n'
+  + '  var exam  = document.getElementById("exam");\n'
+  + '  var timerDisplay = document.getElementById("timer");\n'
+  + '  var form  = document.getElementById("examForm");\n'
+  + '  var timeLeft = '+Number(cfg.timeLimit)+' * 60, timerInt;\n'
+  + '  var correctAnswers = { '+corrPairs+' };\n'
+  + '  document.querySelectorAll("select").forEach(function(sel){\n'
+  + '    var first = sel.options[0];\n'
+  + '    var rest  = Array.prototype.slice.call(sel.options,1);\n'
+  + '    for(var i=rest.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=rest[i].text; rest[i].text=rest[j].text; rest[j].text=t; }\n'
+  + '    sel.innerHTML = ""; sel.appendChild(first); rest.forEach(function(o){ sel.appendChild(o); }); sel.selectedIndex = 0;\n'
+  + '  });\n'
+  + '  function startTimer(){ timerInt=setInterval(function(){ timeLeft--; var m=Math.floor(timeLeft/60), s=timeLeft%60; timerDisplay.textContent="Time Remaining: "+m+":"+(String(s).padStart(2,"0")); if(timeLeft<=0){clearInterval(timerInt); submitExam();}},1000); }\n'
+  + '  function terminateExam(){ var f=document.getElementById("examForm"); f.reset(); Array.prototype.forEach.call(f.elements,function(el){el.disabled=true}); var overlay=document.createElement("div"); overlay.innerHTML=\'<div style="position:fixed;inset:0;background:rgba(0,0,0,.9);color:#fff;display:flex;align-items:center;justify-content:center;z-index:9999;text-align:center;padding:20px;"><div><h2>⚠️ Exam Terminated</h2><p>You exited full screen. Inputs erased for security.</p></div></div>\'; document.body.appendChild(overlay); setTimeout(function(){location.reload()},8000); }\n'
+  + '  function enableFullScreen(){ document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(function(){}); document.addEventListener("fullscreenchange", function(){ if(!document.fullscreenElement){ terminateExam(); } }); }\n'
+  + '  ["copy","cut","paste","contextmenu"].forEach(function(evt){ document.addEventListener(evt,function(e){e.preventDefault()}); });\n'
+  + '  document.addEventListener("keydown", function(e){ if((e.ctrlKey||e.metaKey)&&["c","v","x","u","a"].indexOf(e.key.toLowerCase())>-1) e.preventDefault(); if(e.key==="F12"||e.key==="Escape") e.preventDefault(); });\n'
+  + '  document.getElementById("startBtn").onclick = function(){ var name=document.getElementById("studentName").value.trim(); var email=document.getElementById("studentEmail").value.trim(); var code=document.getElementById("classCode").value.trim(); if(!name||!email){ alert("Please enter your name and email."); return;} if(code !== "'+htmlEscape(cfg.classCode)+'"){ alert("Invalid class code."); return;} document.getElementById("studentNameField").value=name; document.getElementById("studentEmailField").value=email; document.getElementById("classCodeField").value=code; login.style.display="none"; exam.style.display="block"; enableFullScreen(); startTimer(); };\n'
+  + '  form.addEventListener("submit", function(e){ e.preventDefault(); submitExam(); });\n'
+  + '  function submitExam(){ clearInterval(timerInt); var fd=new FormData(form); var name=fd.get("studentName")||document.getElementById("studentNameField").value; var email=fd.get("studentEmail")||document.getElementById("studentEmailField").value; var minutesUsed = '+Number(cfg.timeLimit)+' - Math.floor(timeLeft/60);\n'
+  + '    var answers=[], score=0; for(var i=1;i<=10;i++){ var sel=fd.get("q"+i)||"No answer"; var corr=correctAnswers["q"+i]; var ok=(sel===corr); if(ok) score++; answers.push({ sel:sel, corr:corr, ok:ok }); }\n'
+  + '    var wordNames=['+wordNames+'];\n'
+  + '    var partARows=""; for(var r=0;r<answers.length;r++){ var a=answers[r]; partARows += "<tr><td style=\\"padding:8px;border:1px solid #ccc;\\">"+wordNames[r]+"</td><td style=\\"padding:8px;border:1px solid #ccc;\\">"+a.sel+"</td><td style=\\"padding:8px;border:1px solid #ccc;color:"+(a.ok?"green":"#b00")+";\\">"+(a.ok?"✅ Correct":"❌ Incorrect → Correct answer: "+a.corr)+"</td></tr>"; }\n'
+  + '    var htmlReport = ""\n'
+  + '      + "<h2 style=\\"color:#004080;\\">'+htmlEscape(cfg.title)+' – "+name+" ('+htmlEscape(cfg.classCode)+")</h2>"\n'
+  + '      + "<p><b>Student Name:</b> "+name+"<br><b>Student Email:</b> "+email+"<br><b>Class Code:</b> '+htmlEscape(cfg.classCode)+'<br><b>Time Taken:</b> "+minutesUsed+" min</p><hr>"\n'
+  + '      + "<h3 style=\\"color:#004080;\\">Part A – Vocabulary Matching</h3>"\n'
+  + '      + "<table class=\\"tbl\\"><thead><tr><th>Word</th><th>Student Answer</th><th>Result</th></tr></thead><tbody>"+partARows+"</tbody></table>"\n'
+  + '      + "<p><b>Part A Score:</b> "+score+"/10</p><hr>"\n'
+  + '      + "<h3 style=\\"color:#004080;\\">Part B – Email Writing & Instructor Feedback</h3>"\n'
+  + '      + "<p><b>Student’s Response:</b></p>"\n'
+  + '      + "<div style=\\"border:1px solid #ccc;border-radius:6px;padding:10px;margin-bottom:15px;background:#f9f9f9;\\">"+(fd.get("emailBody")||"").replace(/\\n/g,"<br>")+"</div>"\n'
+  + '      + "<table class=\\"tbl\\"><thead><tr><th>Criterion</th><th>Maximum Score</th><th>Score Awarded</th></tr></thead><tbody>"\n'
+  + '      + "<tr><td>Vocabulary Use</td><td>/3</td><td>___ / 3</td></tr>"\n'
+  + '      + "<tr><td>Structure & Clarity</td><td>/3</td><td>___ / 3</td></tr>"\n'
+  + '      + "<tr><td>Language Accuracy & Tone</td><td>/2</td><td>___ / 2</td></tr>"\n'
+  + '      + "<tr><td>Professional Style</td><td>/2</td><td>___ / 2</td></tr>"\n'
+  + '      + "</tbody></table><br>"\n'
+  + '      + "<h4 style=\\"color:#004080;\\">Score Summary</h4>"\n'
+  + '      + "<table class=\\"tbl\\" style=\\"max-width:460px;\\">"\n'
+  + '      + "<tr><td>Part A Score</td><td>"+score+" / 10</td></tr>"\n'
+  + '      + "<tr><td>Part B Score</td><td>___ / 10</td></tr>"\n'
+  + '      + "<tr><td><b>Final Note</b></td><td><b>___ / 20</b></td></tr>"\n'
+  + '      + "</table>"\n'
+  + '      + "<div style=\\"border-top:1px solid #ccc;margin-top:20px;padding-top:10px;font-size:13px;\\"><em>This report was generated automatically for '+htmlEscape(cfg.title)+'.</em></div>";\n'
+  + '    var subject = "'+htmlEscape(cfg.subject)+'".replace("(NAME)", name);\n'
+  + '    emailjs.send("'+htmlEscape(cfg.emailjsService||'')+'", "'+htmlEscape(cfg.emailjsTemplate||'')+'", { from_name:name, from_email:email, subject:subject, message_html: htmlReport })\n'
+  + '      .then(function(){ alert("✅ Exam submitted successfully. You may close this window."); document.getElementById("exam").style.display="none"; })\n'
+  + '      .catch(function(err){ alert("❌ Error sending exam: " + (err && err.text ? err.text : "")); console.error("EmailJS Error:", err); });\n'
+  + '  }\n'
+  + '});\n'
+  + '<\/script>\n'
+  + '</head>\n<body>\n'
+  + '<header>\n  <h1>'+htmlEscape(cfg.title)+' ('+htmlEscape(cfg.classCode)+')</h1>\n  <div id="timer"></div>\n</header>\n'
+  + '<main>\n'
+  + '  <section id="login">\n'
+  + '    <h2>Start Exam</h2>\n'
+  + '    <p>Enter your details to begin. Once started, you will have <b>'+Number(cfg.timeLimit)+' minutes</b>.</p>\n'
+  + '    <label>Name:<input type="text" id="studentName" required></label>\n'
+  + '    <label>Email:<input type="email" id="studentEmail" required></label>\n'
+  + '    <label>Class Code:<input type="text" id="classCode" required></label>\n'
+  + '    <button id="startBtn">Start Exam</button>\n'
+  + '  </section>\n'
+  + '  <section id="exam" style="display:none;">\n'
+  + '    <form id="examForm">\n'
+  + '      <input type="hidden" name="studentName" id="studentNameField">\n'
+  + '      <input type="hidden" name="studentEmail" id="studentEmailField">\n'
+  + '      <input type="hidden" name="classCode" id="classCodeField">\n'
+  + '      <h2>Part A – Vocabulary Matching</h2>\n'
+  + '      <ol>'+olItems+'</ol>\n'
+  + '      <h2>Part B – Email Writing Task</h2>\n'
+  + '      <p>'+htmlEscape(cfg.prompt)+'</p>\n'
+  + '      <textarea name="emailBody" required></textarea>\n'
+  + '      <button type="submit">Submit Exam</button>\n'
+  + '    </form>\n'
+  + '  </section>\n'
+  + '</main>\n'
+  + '</body>\n</html>\n';
+
+  return out;
 }
 
-/* ======= Generate & Auto-Download ======= */
+/* ========== Generate & Auto-Download ========== */
 document.getElementById("generateBtn").addEventListener("click", () => {
   const title      = (document.getElementById("examTitle").value || "English Exam").trim();
   const classCode  = (document.getElementById("classCode").value || "CLASS").trim();
@@ -391,7 +315,7 @@ document.getElementById("generateBtn").addEventListener("click", () => {
   const blob = new Blob([html], {type:"text/html;charset=utf-8"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `English_Exam_${classCode}.html`;
+  a.download = 'English_Exam_' + classCode + '.html';
   document.body.appendChild(a);
   a.click();
   URL.revokeObjectURL(a.href);
