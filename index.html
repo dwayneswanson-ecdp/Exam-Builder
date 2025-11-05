@@ -6,7 +6,7 @@
 <meta name="google" content="notranslate" />
 <title>Exam Builder – Instructor Portal</title>
 <style>
-  :root { --blue:#004080; --blue2:#0066cc; --bg:#f6f8fb; --card:#ffffff; --border:#d8dee9; }
+  :root { --blue:#004080; --blue2:#0a6bdc; --bg:#f6f8fb; --card:#ffffff; --border:#d8dee9; }
   *{box-sizing:border-box}
   body{font-family:Inter, system-ui, Arial, sans-serif; background:var(--bg); margin:0; color:#1b1f23;}
   header{background:linear-gradient(135deg,var(--blue),var(--blue2)); color:#fff; padding:28px 18px; text-align:center;}
@@ -15,7 +15,7 @@
   .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px 20px; box-shadow:0 2px 10px rgba(0,0,0,.04); margin-bottom:18px;}
   h2{margin:8px 0 12px; color:var(--blue); font-size:20px}
   label{display:block; font-size:14px; margin-top:10px; color:#0f172a}
-  input[type=text], input[type=number], textarea{width:100%; border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:15px; background:#fff;}
+  input[type=text], input[type=number], input[type=password], textarea{width:100%; border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:15px; background:#fff;}
   textarea{min-height:110px; resize:vertical}
   .row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
   .small{font-size:12px; color:#6b7280}
@@ -113,9 +113,10 @@
   </section>
 </main>
 
+<!-- ======= Builder Script ======= -->
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  /* ========== Gate (Instructor Access) ========== */
+(() => {
+  // -------- Gate (Instructor Access) ----------
   const BUILDER_PASSWORD = "teacher2025";
   const gateSection   = document.getElementById("gate");
   const builderSection= document.getElementById("builder");
@@ -123,8 +124,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const gateErr       = document.getElementById("gateErr");
   const gatePwd       = document.getElementById("gatePwd");
 
-  gateBtn.addEventListener("click", function() {
-    const inputVal = gatePwd.value.trim();
+  const unlock = () => {
+    const inputVal = (gatePwd.value || "").trim();
     if (inputVal === BUILDER_PASSWORD) {
       gateErr.style.display = "none";
       gateSection.style.display = "none";
@@ -132,30 +133,33 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
       gateErr.style.display = "inline";
     }
-  });
-  gatePwd.addEventListener("keydown", function(e) { if (e.key === "Enter") gateBtn.click(); });
+  };
+  gateBtn.addEventListener("click", unlock);
+  gatePwd.addEventListener("keydown", (e) => { if (e.key === "Enter") unlock(); });
 
-  /* ========== Vocab rows (BLANK) ========== */
+  // -------- Build vocab rows ----------
   const tbody = document.getElementById("vocabBody");
   for (let i = 0; i < 10; i++) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${i + 1}</td>
-      <td><input type="text" id="w${i}" value="" placeholder="Word ${i+1}"></td>
-      <td><input type="text" id="d${i}" value="" placeholder="Correct definition ${i+1}"></td>`;
+      <td><input type="text" id="w${i}" placeholder="Word ${i+1}"></td>
+      <td><input type="text" id="d${i}" placeholder="Correct definition ${i+1}"></td>
+    `;
     tbody.appendChild(tr);
   }
 
-  /* ========== Helpers ========== */
-  function htmlEscape(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
+  // -------- Utilities ----------
+  const htmlEscape = (s) => String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 
-  /* ========== Build Exam HTML (STUDENT FILE) ========== */
+  // IMPORTANT: Never let literal </script> appear inside the string we return
+  const safeScript = (src) => `<script src="${src}"><\\/script>`;
+
+  // -------- Student Exam HTML Generator ----------
   function buildExamHTML(cfg) {
     const title      = cfg.title || "English Exam";
     const classCode  = cfg.classCode || "CLASS";
@@ -165,29 +169,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const ejService  = cfg.emailjsService || "";
     const ejTemplate = cfg.emailjsTemplate || "";
     const vocab      = Array.isArray(cfg.vocab) ? cfg.vocab : [];
+    const allDefs    = vocab.map(v => v.definition);
 
-    const allDefs = vocab.map(v => v.definition);
     const partAItems = vocab.map((v, idx) => {
       const num = idx + 1;
       const options = ['<option value="">-- Choose --</option>']
         .concat(allDefs.map(d => `<option>${htmlEscape(d)}</option>`))
-        .join("\n");
-      return `
-        <li>${htmlEscape(v.word)}
-          <select name="q${num}">
-            ${options}
-          </select>
-        </li>`;
-    }).join("\n");
+        .join("");
+      return `<li>${htmlEscape(v.word)} <select name="q${num}">${options}</select></li>`;
+    }).join("");
 
-    const correctMap = vocab.reduce((acc, v, idx) => {
-      acc[\`q\${idx+1}\`] = v.definition;
-      return acc;
-    }, {});
-    const wordNames = vocab.map(v => v.word);
-
-    // A backtick template string as a STRING to be evaluated inside the student page
-    const subjectExpr = `\\\`Results – \\\${(${JSON.stringify(subjTmpl)}).replace('(NAME)', name)}\\\``;
+    const correctMap = vocab.reduce((acc, v, idx) => { acc["q"+(idx+1)] = v.definition; return acc; }, {});
+    const wordNames  = vocab.map(v => v.word);
 
     return `<!DOCTYPE html>
 <html lang="en" translate="no">
@@ -196,15 +189,14 @@ document.addEventListener("DOMContentLoaded", function() {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google" content="notranslate">
   <meta http-equiv="Content-Language" content="en">
-  <meta name="robots" content="notranslate">
   <title>${htmlEscape(title)}</title>
   <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
   <style>
-    /* Global anti-copy; override inside Quill editor */
+    /* Global anti-copy; allow selection in Quill editor */
     html, body { translate: none !important; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
     * { translate: none !important; }
     body { font-family: Arial, Helvetica, sans-serif; background: #f8f9fb; margin: 0; color: #222; font-size: 16px; line-height: 1.6; }
-    header { background: linear-gradient(135deg, #004080, #0066cc); color: #ffffff; padding: 25px 20px; text-align: center; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); }
+    header { background: linear-gradient(135deg, #004080, #0a6bdc); color: #ffffff; padding: 25px 20px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
     header h1 { margin: 0; font-size: 1.9em; letter-spacing: 0.5px; }
     #timer { text-align: right; font-weight: bold; margin-top: 10px; }
     main { max-width: 900px; margin: 40px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.1); }
@@ -212,8 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .card h2 { color:#004080; margin-top:0; text-align:center; }
     label { display:block; margin:12px 0 8px; font-weight:bold; }
     input[type="text"], input[type="email"], select { width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; }
-    textarea { width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; }
-    select { white-space:normal; word-wrap:break-word; padding:8px; }
+    select { white-space:normal; padding:8px; }
     button { background:#004080; color:#fff; border:none; padding:12px 28px; border-radius:6px; cursor:pointer; font-size:16px; }
     button:hover { background:#003666; }
     .btn-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
@@ -279,11 +270,11 @@ document.addEventListener("DOMContentLoaded", function() {
   </section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"><\/script>
-<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"><\/script>
+${safeScript("https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js")}
+${safeScript("https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js")}
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  if (window.emailjs && ${JSON.stringify(!!ejKey)}) { emailjs.init(${JSON.stringify(ejKey)}); }
+(function(){
+  if (window.emailjs && ${JSON.stringify(!!ejKey)}) { try { emailjs.init(${JSON.stringify(ejKey)}); } catch(e){} }
 
   const login = document.getElementById("login");
   const confirmSec = document.getElementById("confirm");
@@ -300,16 +291,12 @@ document.addEventListener("DOMContentLoaded", function() {
   const timerDisplay = document.getElementById("timer");
   const form = document.getElementById("examForm");
 
-  if ([login, confirmSec, exam, startBtn, confirmBackBtn, confirmBeginBtn, confirmName, confirmEmail, partA, partB, toPartA, toPartB, timerDisplay, form].some(n => !n)) {
-    console.error("Missing required DOM nodes. Check IDs.");
-    return;
-  }
-
   let timeLeft = ${timeLimit} * 60;
   let timer;
 
   const correctAnswers = ${JSON.stringify(correctMap)};
   const wordNames = ${JSON.stringify(wordNames)};
+  const subjectTemplate = ${JSON.stringify(subjTmpl)};
 
   let quill = null;
   function ensureQuill() {
@@ -322,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function() {
     timer = setInterval(() => {
       timeLeft--;
       const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-      timerDisplay.textContent = \`Time Remaining: \${m}:\${String(s).padStart(2,"0")}\`;
+      timerDisplay.textContent = 'Time Remaining: ' + m + ':' + String(s).padStart(2,'0');
       if (timeLeft <= 0) { clearInterval(timer); submitExam(); }
     }, 1000);
   }
@@ -339,8 +326,6 @@ document.addEventListener("DOMContentLoaded", function() {
       document.addEventListener("fullscreenchange", onChange);
       document.addEventListener("webkitfullscreenchange", onChange);
       document.addEventListener("msfullscreenchange", onChange);
-    } else {
-      console.warn("Fullscreen API not supported; skipping enforcement.");
     }
   }
 
@@ -410,25 +395,26 @@ document.addEventListener("DOMContentLoaded", function() {
       const corr = correctAnswers["q" + i] || "";
       const ok   = sel === corr;
       if (ok) scoreA++;
-      const mark = ok ? "✅ Correct" : \`❌ Incorrect → Correct answer: \${corr}\`;
-      partARowsHTML += \`
+      const mark = ok ? "✅ Correct" : ("❌ Incorrect → Correct answer: " + corr);
+      partARowsHTML += `
         <tr>
-          <td style="padding:8px;border:1px solid #ccc;">\${wordNames[i-1] || ("Q"+i)}</td>
-          <td style="padding:8px;border:1px solid #ccc;">\${sel}</td>
-          <td style="padding:8px;border:1px solid #ccc;color:\${ok ? 'green' : '#b00'};">\${mark}</td>
-        </tr>\`;
+          <td style="padding:8px;border:1px solid #ccc;">${wordNames[i-1] || ("Q"+i)}</td>
+          <td style="padding:8px;border:1px solid #ccc;">${sel}</td>
+          <td style="padding:8px;border:1px solid #ccc;color:${ok ? 'green' : '#b00'};">${mark}</td>
+        </tr>`;
     }
 
     const partBScore = "___ / 10";
     const finalNote  = "___ / 20";
+    const subject    = "Results – " + subjectTemplate.replace("(NAME)", name);
 
-    const htmlReport = \`
-      <h2 style="color:#004080;margin:0 0 8px 0;">Results – ${htmlEscape(title)} – \${name} (${htmlEscape(classCode)})</h2>
+    const htmlReport = `
+      <h2 style="color:#004080;margin:0 0 8px 0;">Results – ${htmlEscape(title)} – ${name} (${htmlEscape(classCode)})</h2>
       <table style="border-collapse:collapse;width:100%;max-width:640px;font-size:14px;margin:0 0 12px 0;">
-        <tr><td style="padding:4px 0;"><b>Student Name:</b> \${name}</td></tr>
-        <tr><td style="padding:4px 0;"><b>Student Email:</b> \${email}</td></tr>
+        <tr><td style="padding:4px 0;"><b>Student Name:</b> ${name}</td></tr>
+        <tr><td style="padding:4px 0;"><b>Student Email:</b> ${email}</td></tr>
         <tr><td style="padding:4px 0;"><b>Class Code:</b> ${htmlEscape(classCode)}</td></tr>
-        <tr><td style="padding:4px 0;"><b>Time Taken:</b> \${minutesUsed} min</td></tr>
+        <tr><td style="padding:4px 0;"><b>Time Taken:</b> ${minutesUsed} min</td></tr>
       </table>
       <hr style="border:none;border-top:1px solid #ddd;margin:14px 0;">
 
@@ -441,14 +427,14 @@ document.addEventListener("DOMContentLoaded", function() {
             <th style="padding:8px;border:1px solid #ccc;">Result</th>
           </tr>
         </thead>
-        <tbody>\${partARowsHTML}</tbody>
+        <tbody>${partARowsHTML}</tbody>
       </table>
-      <p style="margin:10px 0 0 0;"><b>Part A Score:</b> \${scoreA} / \${totalQs}</p>
+      <p style="margin:10px 0 0 0;"><b>Part A Score:</b> ${scoreA} / ${totalQs}</p>
 
       <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
 
       <h3 style="color:#004080;margin:10px 0 8px 0;">Part B – Written Exercise</h3>
-      <div style="border:1px solid #ccc;border-radius:6px;padding:10px;background:#f9f9f9;">\${emailHtml}</div>
+      <div style="border:1px solid #ccc;border-radius:6px;padding:10px;background:#f9f9f9;">${emailHtml}</div>
 
       <table style="border-collapse:collapse;width:100%;font-size:15px;margin-top:6px;">
         <thead>
@@ -465,23 +451,20 @@ document.addEventListener("DOMContentLoaded", function() {
           <tr><td style="padding:8px;border:1px solid #ccc;">Professional Style</td><td style="padding:8px;border:1px solid #ccc;">/2</td><td style="padding:8px;border:1px solid #ccc;">___ / 2</td></tr>
         </tbody>
       </table>
-      <p style="margin:10px 0 0 0;"><b>Part B Score:</b> \${partBScore}</p>
+      <p style="margin:10px 0 0 0;"><b>Part B Score:</b> ${partBScore}</p>
 
       <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
 
       <h3 style="color:#004080;margin:10px 0 8px 0;">Part 3 – Final Score</h3>
       <table style="border-collapse:collapse;width:100%;max-width:460px;font-size:15px;">
-        <tr><td style="padding:8px;border:1px solid #ccc;">Part A Score</td><td style="padding:8px;border:1px solid #ccc;">\${scoreA} / \${totalQs}</td></tr>
-        <tr><td style="padding:8px;border:1px solid #ccc;">Part B Score</td><td style="padding:8px;border:1px solid #ccc;">\${partBScore}</td></tr>
-        <tr><td style="padding:8px;border:1px solid #ccc;"><b>Final Note</b></td><td style="padding:8px;border:1px solid #ccc;"><b>\${finalNote}</b></td></tr>
+        <tr><td style="padding:8px;border:1px solid #ccc;">Part A Score</td><td style="padding:8px;border:1px solid #ccc;">${scoreA} / ${totalQs}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ccc;">Part B Score</td><td style="padding:8px;border:1px solid #ccc;">${partBScore}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ccc;"><b>Final Note</b></td><td style="padding:8px;border:1px solid #ccc;"><b>${finalNote}</b></td></tr>
       </table>
-
       <div style="border-top:1px solid #ccc;margin-top:16px;padding-top:8px;font-size:12px;color:#555;">
         <em>This report was generated automatically for ${htmlEscape(title)}.</em>
       </div>
-    \`;
-
-    const subject = ${subjectExpr};
+    `;
 
     if (window.emailjs && ${JSON.stringify(!!ejService)} && ${JSON.stringify(!!ejTemplate)}) {
       emailjs.send(${JSON.stringify(ejService)}, ${JSON.stringify(ejTemplate)}, {
@@ -497,13 +480,13 @@ document.addEventListener("DOMContentLoaded", function() {
       console.warn("Missing EmailJS config in generated file.");
     }
   }
-});
+})();
 <\/script>
 </body>
 </html>`;
   }
 
-  /* ========== Generate & Download ========== */
+  // -------- Generate & Download ----------
   document.getElementById("generateBtn").addEventListener("click", () => {
     const title        = (document.getElementById("examTitle").value || "English Exam").trim();
     const classCode    = (document.getElementById("classCode").value || "CLASS").trim();
@@ -548,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function() {
     URL.revokeObjectURL(a.href);
     a.remove();
   });
-});
+})();
 </script>
 </body>
 </html>
