@@ -186,6 +186,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }, {});
     const wordNames = vocab.map(v => v.word);
 
+    // Subject: build a template string evaluated in the student page
     const subjectExpr = `\`Results – \${(${JSON.stringify(subjTmpl)}).replace('(NAME)', name)}\``;
 
     return `<!DOCTYPE html>
@@ -195,10 +196,12 @@ document.addEventListener("DOMContentLoaded", function() {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google" content="notranslate">
   <meta http-equiv="Content-Language" content="en">
-  <meta name="robots" content="no-translate">
+  <meta name="robots" content="notranslate">
   <title>${htmlEscape(title)}</title>
-  <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet>
+  <!-- FIXED: closing quote on rel -->
+  <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
   <style>
+    /* Global anti-copy; we'll override inside the Quill editor */
     html, body { translate: none !important; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
     * { translate: none !important; }
     body { font-family: Arial, Helvetica, sans-serif; background: #f8f9fb; margin: 0; color: #222; font-size: 16px; line-height: 1.6; }
@@ -217,14 +220,19 @@ document.addEventListener("DOMContentLoaded", function() {
     .btn-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
     .btn-row.center { justify-content:center; }
     .btn-row.right { justify-content:flex-end; }
-    .btn-light { background:#e9eef7; color:#004080; }
-    .btn-light:hover { background:#dbe6f7; }
     ol { padding-left:20px; }
     ol li { margin-bottom:14px; }
     #exam, #confirm, #partA, #partB { display:none; }
     #partA.active, #partB.active { display:block; }
     .editor-card { border:1px solid #e3e6ee; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.06); }
     .muted { color:#666; font-size:14px; }
+
+    /* FIX: allow selection/typing inside Quill editor and give it a sensible height */
+    .ql-editor {
+      -webkit-user-select: text !important;
+      user-select: text !important;
+      min-height: 160px;
+    }
   </style>
 </head>
 <body>
@@ -326,12 +334,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 1000);
   }
 
+  // FIX: fullscreen compatibility + enforcement fallback
   function enableFullScreen() {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen().catch(()=>{});
-      document.addEventListener("fullscreenchange", () => {
-        if (!document.fullscreenElement) { alert("Exam terminated. Fullscreen required."); location.reload(); }
-      });
+    const el = document.documentElement;
+    const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (req) {
+      Promise.resolve().then(() => req.call(el)).catch(()=>{});
+      const onChange = () => {
+        const inFs = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+        if (!inFs) { alert("Exam terminated. Fullscreen required."); location.reload(); }
+      };
+      document.addEventListener("fullscreenchange", onChange);
+      document.addEventListener("webkitfullscreenchange", onChange);
+      document.addEventListener("msfullscreenchange", onChange);
+    } else {
+      console.warn("Fullscreen API not supported; skipping enforcement.");
     }
   }
 
