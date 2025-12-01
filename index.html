@@ -1,716 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Exam Instructor – Master Generator</title>
-<meta name="google" content="notranslate" />
-<style>
-  :root { --blue:#004080; --blue2:#0a6bdc; --bg:#f6f8fb; --card:#fff; --border:#d8dee9; }
-  *{box-sizing:border-box}
-  body{font-family:Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif; background:var(--bg); margin:0; color:#0f172a}
-  header{background:linear-gradient(135deg,var(--blue),var(--blue2)); color:#fff; padding:28px 18px; text-align:center}
-  header h1{margin:0; font-weight:800; letter-spacing:.2px}
-  main{max-width:1100px; margin:24px auto 60px; padding:0 16px}
-  .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
-  .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 18px 20px; box-shadow:0 2px 10px rgba(0,0,0,.04)}
-  h2{margin:6px 0 12px; color:var(--blue); font-size:18px}
-  label{display:block; font-size:14px; margin-top:10px}
-  input[type=text], input[type=number], textarea{width:100%; border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:14px; background:#fff}
-  textarea{min-height:100px; resize:vertical}
-  table{width:100%; border-collapse:collapse; margin-top:8px}
-  th,td{border:1px solid var(--border); padding:8px; font-size:14px; vertical-align:top}
-  th{background:#eef2ff; text-align:left}
-  .small{font-size:12px; color:#6b7280}
-  .btn{background:var(--blue); color:#fff; border:none; padding:10px 14px; border-radius:10px; font-size:14px; cursor:pointer}
-  .btn:hover{background:#003366}
-  .btn-alt{background:#e9eef7;color:#0a2a5e}
-  .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-  .out{margin-top:18px}
-  #output{width:100%; min-height:360px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12.5px; white-space:pre; border:1px solid var(--border); border-radius:10px; padding:10px; background:#fff}
-</style>
-</head>
-<body>
-<header>
-  <h1>Instructor Master – Exam Page Generator</h1>
-  <p class="small" style="opacity:.9;margin:8px 0 0">Fill the form → Generate → Copy/Download a complete student <b>.html</b> page you can commit to GitHub.</p>
-</header>
-
-<main>
-  <div class="grid">
-    <section class="card">
-      <h2>Exam Info</h2>
-      <label>Title
-        <input type="text" id="title" value="English Exam – Business Resources" />
-      </label>
-      <div class="row">
-        <div style="flex:1 1 220px">
-          <label>Class Code
-            <input type="text" id="classCode" value="MDO2G3" />
-          </label>
-        </div>
-        <div style="flex:1 1 220px">
-          <label>Time Limit (minutes)
-            <input type="number" id="timeLimit" min="5" max="180" step="5" value="40" />
-          </label>
-        </div>
-      </div>
-      <label>Writing Prompt
-        <textarea id="prompt">You are a team leader. One of your suppliers has delayed an important delivery. Write a short email to your manager explaining the problem and suggesting a solution. Use at least 3 words from the vocabulary list.</textarea>
-      </label>
-    </section>
-
-    <section class="card">
-      <h2>EmailJS (optional)</h2>
-      <label>Public Key
-        <input type="text" id="ejPublic" placeholder="e.g., Bb0oPYBiZGQcyIz5r" value="Bb0oPYBiZGQcyIz5r" />
-      </label>
-      <div class="row">
-        <div style="flex:1 1 220px">
-          <label>Service ID
-            <input type="text" id="ejService" placeholder="e.g., service_xxx" value="service_opm4h6b" />
-          </label>
-        </div>
-        <div style="flex:1 1 220px">
-          <label>Template ID
-            <input type="text" id="ejTemplate" placeholder="e.g., template_xxx" value="template_r0u784p" />
-          </label>
-        </div>
-      </div>
-      <label>Subject Template <span class="small">(use <b>(NAME)</b>)</span>
-        <input type="text" id="subjectTmpl" value="(NAME) – English Exam – Business Resources (MDO2G3)" />
-      </label>
-      <p class="small">Leave EmailJS fields blank to simulate submission.</p>
-    </section>
-  </div>
-
-  <section class="card">
-    <h2>Vocabulary (add/edit rows)</h2>
-    <div class="row" style="justify-content:flex-end;margin-bottom:6px">
-      <button class="btn-alt btn" id="addRowBtn" type="button">+ Add row</button>
-      <button class="btn-alt btn" id="clearBtn" type="button">Clear all</button>
-    </div>
-    <table>
-      <thead><tr><th style="width:56px">#</th><th>Word</th><th>Correct Definition</th></tr></thead>
-      <tbody id="vocabBody"></tbody>
-    </table>
-    <p class="small">Each question’s dropdown will include <b>all</b> definitions; the correct one is marked by your “Correct Definition”.</p>
-  </section>
-
-  <section class="card">
-    <h2>Generate Student HTML</h2>
-    <div class="row">
-      <button class="btn" id="genBtn" type="button">Generate</button>
-      <button class="btn-alt btn" id="copyBtn" type="button">Copy</button>
-      <button class="btn-alt btn" id="downloadBtn" type="button">Download .html</button>
-      <span id="status" class="small"></span>
-    </div>
-    <div class="out">
-      <textarea id="output" placeholder="Generated student page HTML will appear here…" readonly></textarea>
-    </div>
-  </section>
-</main>
-
-<!-- ========= Student Page Template (inert) ========= -->
-<template id="studentTpl">
-<!DOCTYPE html>
-<html lang="en" translate="no">
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="google" content="notranslate">
-  <meta http-equiv="Content-Language" content="en">
-  <meta name="robots" content="no-translate">
-  <title>__TITLE__</title>
-
-  <!-- Quill CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
-
+  <title>Online Exam Platform</title>
   <style>
-    html, body { translate: none !important; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-    * { translate: none !important; }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f8f9fb;
-      margin: 0;
-      color: #222;
-      font-size: 16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
+      color: #1f2933;
+      background: #f5f7fb;
     }
-
     header {
-      background: linear-gradient(135deg, #004080, #0066cc);
-      color: #ffffff;
-      padding: 25px 20px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e1e4f0;
     }
-    header h1 { margin: 0; font-size: 1.9em; letter-spacing: 0.5px; }
-    #timer { text-align: right; font-weight: bold; margin-top: 10px; }
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+    }
+    .nav-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #2643e9;
+    }
+    .nav-links a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
+    .nav-links a:hover {
+      color: #2643e9;
+    }
 
     main {
-      max-width: 900px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.8fr);
+      gap: 2rem;
+      align-items: center;
+    }
+    .hero-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.75rem;
+    }
+    .hero-subtitle {
+      font-size: 1.05rem;
+      margin-bottom: 1.25rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #2643e9;
+      background: #e0e7ff;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+    .hero-list {
+      margin-top: 0.5rem;
+      padding-left: 1.2rem;
+      font-size: 0.95rem;
+    }
+    .hero-visual {
+      text-align: center;
+    }
+    .hero-visual img {
+      max-width: 100%;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: #111827;
+    }
+    h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.4rem;
+      color: #111827;
+    }
+    p {
+      margin-bottom: 0.6rem;
+      font-size: 0.98rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+      font-size: 0.95rem;
+    }
+    ul li {
+      margin-bottom: 0.35rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.75rem;
+      margin-top: 1rem;
     }
 
     .card {
-      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      padding: 1.1rem 1.25rem;
+      background: #f9fafb;
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      gap: 1.5rem;
+      margin-top: 1.75rem;
+      align-items: center;
+    }
+    .step img {
+      max-width: 100%;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      padding: 40px;
-      max-width: 520px;
-      margin: 80px auto;
-      text-align: left;
+      border: 1px solid #e5e7eb;
     }
-    .card h2 { color: #004080; margin-top: 0; text-align: center; }
-
-    label { display:block; margin: 12px 0 8px; font-weight: bold; }
-    input[type="text"], input[type="email"], select {
-      width: 100%; padding: 10px; border:1px solid #ccc; border-radius:6px;
-    }
-    textarea { width: 100%; padding: 10px; border:1px solid #ccc; border-radius:6px; }
-
-    select {
-      white-space: normal;
-      word-wrap: break-word;
-      padding: 8px;
+    .step-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 0.3rem;
     }
 
-    button {
-      background:#004080; color:#fff; border:none; padding:12px 28px;
-      border-radius:6px; cursor:pointer; font-size:16px;
+    .cta {
+      margin-top: 2rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: 12px;
+      border: 1px dashed #c7d2fe;
+      background: #eef2ff;
+      font-size: 0.95rem;
     }
-    button:hover { background:#003666; }
-    .btn-row { display:flex; gap:12px; flex-wrap: wrap; margin-top: 16px; }
-    .btn-row.center { justify-content: center; }
-    .btn-row.right { justify-content: flex-end; }
-    .btn-light { background:#e9eef7; color:#004080; }
-    .btn-light:hover { background:#dbe6f7; }
 
-    ol { padding-left: 20px; }
-    ol li { margin-bottom: 14px; }
-
-    #exam, #confirm, #partA, #partB { display: none; }
-    #partA.active, #partB.active { display: block; }
-
-    .editor-card {
-      border:1px solid #e3e6ee; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.06);
+    @media (max-width: 800px) {
+      .hero, .step {
+        grid-template-columns: 1fr;
+      }
+      section {
+        padding: 1.5rem;
+      }
     }
-    .ql-toolbar.ql-snow { border:none; border-bottom:1px solid #e3e6ee; background:#f9fbff; }
-    .ql-container.ql-snow { border:none; min-height: 260px; }
-    .ql-editor { min-height: 240px; }
-    .muted { color:#666; font-size: 14px; }
   </style>
 </head>
-
 <body>
   <header>
-    <h1>__TITLE__ (__CLASS_CODE__)</h1>
-    <div id="timer"></div>
+    <div class="nav">
+      <div class="nav-title">Online Exam Platform</div>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#instructor">Instructor Area</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <!-- LOGIN -->
-    <section id="login" class="card">
-      <h2>Start Exam</h2>
-      <p>Enter your details to begin. Once started, you will have <b>__TIME_LIMIT__ minutes</b>.</p>
-      <label>Name:</label><input type="text" id="studentName" required>
-      <label>Email:</label><input type="email" id="studentEmail" required>
-      <label>Class Code:</label><input type="text" id="classCode" required>
-      <div class="btn-row center">
-        <button id="startBtn" type="button">Start</button>
+    <!-- ABOUT / LANDING -->
+    <section id="about">
+      <div class="hero">
+        <div>
+          <div class="hero-badge">For schools & program directors</div>
+          <h1 class="hero-title">Secure, flexible online exams for your students</h1>
+          <p class="hero-subtitle">
+            This platform was created to standardise exam practices, simplify the work of teachers,
+            and give the school a clear, auditable framework for online assessments.
+          </p>
+          <p><strong>Why this platform?</strong></p>
+          <ul class="hero-list">
+            <li>Harmonise exam formats across classes and teachers.</li>
+            <li>Improve exam security and traceability (time, settings, versions).</li>
+            <li>Offer multiple question types, including QCU/QCM and open-ended answers.</li>
+            <li>Make exam creation simple for instructors, with no technical skills required.</li>
+          </ul>
+        </div>
+        <div class="hero-visual">
+          <!-- Replace with a global screenshot if you have one -->
+          <img src="img/exam-settings-overview.png" alt="Exam settings overview screenshot" />
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:2rem;">
+        <div class="card">
+          <h3>Benefits for the school</h3>
+          <ul>
+            <li>Centralised exam creation and storage.</li>
+            <li>Consistent grading and easier moderation between instructors.</li>
+            <li>Clear audit trail (dates, versions, settings).</li>
+            <li>Possibility to reuse and adapt past exams from a question bank.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Benefits for teachers & students</h3>
+          <ul>
+            <li>Simple, guided interface to build exams step by step.</li>
+            <li>Different question formats, including multimedia content.</li>
+            <li>Fine control over time limits, difficulty and scoring.</li>
+            <li>Comfortable online exam experience for students.</li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <!-- CONFIRM -->
-    <section id="confirm" class="card">
-      <h2>Confirm Your Details</h2>
-      <p><b>Name:</b> <span id="confirmName"></span></p>
-      <p><b>Email:</b> <span id="confirmEmail"></span></p>
-      <p class="muted">Please confirm your details. If anything is wrong, go back and correct it.</p>
-      <div class="btn-row">
-        <button type="button" class="btn-light" id="confirmBackBtn">← Back</button>
-        <button type="button" id="confirmBeginBtn">Begin Exam →</button>
+    <!-- INSTRUCTOR AREA -->
+    <section id="instructor">
+      <h2>Instructor Area – How exams are created</h2>
+      <p>
+        This section explains the instructor workflow. It is also where we can later add
+        forms so teachers can submit exam information directly.
+      </p>
+
+      <!-- STEP 1 -->
+      <div class="step">
+        <div>
+          <div class="step-label">Step 1</div>
+          <h3>Set up the exam</h3>
+          <p>Teachers start by defining the global parameters of the exam:</p>
+          <ul>
+            <li>School year, class and subject.</li>
+            <li>Exam category (mid-term, final, continuous assessment, etc.).</li>
+            <li>Type of application (desktop or web) and platform.</li>
+            <li>Exam date, start time, duration and time zone.</li>
+            <li>Advanced options such as custom time limits, incompressible duration, anonymous correction or copy/paste policy.</li>
+          </ul>
+        </div>
+        <div>
+          <!-- Exam settings screenshot -->
+          <img src="img/exam-settings.png" alt="Exam settings screen" />
+        </div>
       </div>
-    </section>
 
-    <!-- EXAM -->
-    <section id="exam">
-      <form id="examForm">
-        <input type="hidden" name="studentName" id="studentNameField">
-        <input type="hidden" name="studentEmail" id="studentEmailField">
-        <input type="hidden" name="classCode" id="classCodeField">
-
-        <!-- PART A -->
-        <div id="partA" class="active">
-          <h2>Part A – Vocabulary Matching</h2>
-          <ol>
-            __PART_A__
-          </ol>
-          <div class="btn-row right">
-            <button type="button" id="toPartB">Next → Part B</button>
-          </div>
+      <!-- STEP 2 -->
+      <div class="step">
+        <div>
+          <!-- QCU / QCM screenshot -->
+          <img src="img/qcm-editor.png" alt="QCU and QCM editor screenshot" />
         </div>
-
-        <!-- PART B -->
-        <div id="partB">
-          <h2>Part B – Writing Task</h2>
-          <p class="muted">__PROMPT__</p>
-
-          <div class="editor-card">
-            <div id="editor"></div>
-          </div>
-
-          <div class="btn-row">
-            <button type="button" class="btn-light" id="toPartA">← Back to Part A</button>
-            <button type="submit">Submit Exam</button>
-          </div>
+        <div>
+          <div class="step-label">Step 2</div>
+          <h3>Choose question types – QCU & QCM</h3>
+          <p>The platform supports both single-choice and multiple-choice questions:</p>
+          <ul>
+            <li>Create copy assessments or build MCQs question by question.</li>
+            <li>Integrate multimedia content (images, videos, graphs).</li>
+            <li>Adjust difficulty levels and time allocated per question.</li>
+            <li>Decide whether to show or hide the scoring scale and barème.</li>
+          </ul>
         </div>
-      </form>
+      </div>
+
+      <!-- STEP 2B -->
+      <div class="step">
+        <div>
+          <div class="step-label">Step 2 (continued)</div>
+          <h3>Open-ended answer evaluations</h3>
+          <p>
+            In addition to MCQs, teachers can use open-response questions that let students
+            express themselves freely in writing. This is ideal for:
+          </p>
+          <ul>
+            <li>Dissertations and essays.</li>
+            <li>Case studies and business scenarios.</li>
+            <li>Situational judgement questions.</li>
+          </ul>
+        </div>
+        <div>
+          <!-- Open-ended answers screenshot -->
+          <img src="img/open-response.png" alt="Open-ended answer interface" />
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step">
+        <div>
+          <!-- Question builder screenshot -->
+          <img src="img/question-builder.png" alt="Exam question builder screenshot" />
+        </div>
+        <div>
+          <div class="step-label">Step 3</div>
+          <h3>Build the exam content</h3>
+          <p>
+            Once the structure and question types are chosen, instructors build the exam itself:
+          </p>
+          <ul>
+            <li>Write general instructions for each part of the exam.</li>
+            <li>Add questions one by one or import them from existing documents.</li>
+            <li>Mix QCU, QCM and open-ended questions in a single exam.</li>
+            <li>Optionally tag questions by topic or learning outcome.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step">
+        <div>
+          <div class="step-label">Step 4</div>
+          <h3>Publish, run and correct</h3>
+          <p>
+            Before publishing, teachers can preview the exam and check all settings. Once the
+            exam is live:
+          </p>
+          <ul>
+            <li>Students access the exam at the defined time from the chosen platform.</li>
+            <li>Answers are stored securely and can be corrected online.</li>
+            <li>Anonymous marking is possible when required.</li>
+            <li>Grades and feedback can be exported for the school’s systems.</li>
+          </ul>
+        </div>
+        <div>
+          <!-- You can reuse any screenshot here or add a new one -->
+          <img src="img/recap-or-results.png" alt="Exam recap or results screen" />
+        </div>
+      </div>
+
+      <div class="cta">
+        <strong>Next step:</strong> we can add a simple form here for instructors to submit their exam requests
+        (course name, class, exam date, duration, type of questions, etc.), which I then convert into an online exam
+        inside the platform.
+      </div>
     </section>
   </main>
-
-  <!-- JS at the end (load once) -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
-
-  <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    if (window.emailjs) { try { emailjs.init("__EJ_PUBLIC__"); } catch(e){} }
-
-    // Elements
-    const login  = document.getElementById("login");
-    const confirmSec = document.getElementById("confirm");
-    const exam   = document.getElementById("exam");
-
-    const startBtn = document.getElementById("startBtn");
-    const confirmBackBtn  = document.getElementById("confirmBackBtn");
-    const confirmBeginBtn = document.getElementById("confirmBeginBtn");
-
-    const confirmName  = document.getElementById("confirmName");
-    const confirmEmail = document.getElementById("confirmEmail");
-
-    const partA = document.getElementById("partA");
-    const partB = document.getElementById("partB");
-    const toPartA = document.getElementById("toPartA");
-    const toPartB = document.getElementById("toPartB");
-
-    const timerDisplay = document.getElementById("timer");
-    const form = document.getElementById("examForm");
-
-    // Guard: if any required node missing, stop and log
-    const required = [login, confirmSec, exam, startBtn, confirmBackBtn, confirmBeginBtn, confirmName, confirmEmail, partA, partB, toPartA, toPartB, timerDisplay, form];
-    if (required.some(n => !n)) {
-      console.error("Missing required DOM nodes. Check IDs.", {login, confirmSec, exam, startBtn, confirmBackBtn, confirmBeginBtn, confirmName, confirmEmail, partA, partB, toPartA, toPartB, timerDisplay, form});
-      return;
-    }
-
-    // Timer
-    let timeLeft = __TIME_LIMIT__ * 60;
-    let timer;
-
-    // Correct answers + word list (auto-filled)
-    const correctAnswers = __CORRECT_MAP__;
-    const wordNames = __WORD_NAMES__;
-
-    // Lazy Quill
-    let quill = null;
-    function ensureQuill() {
-      if (!quill) {
-        quill = new Quill('#editor', {
-          theme: 'snow',
-          modules: {
-            toolbar: [
-              ['bold','italic','underline'],
-              [{ list: 'ordered' }, { list: 'bullet' }],
-              ['clean']
-            ]
-          }
-        });
-      }
-    }
-
-    function startTimer() {
-      timer = setInterval(() => {
-        timeLeft--;
-        const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-        timerDisplay.textContent = `Time Remaining: ${m}:${s.toString().padStart(2,"0")}`;
-        if (timeLeft <= 0) { clearInterval(timer); submitExam(); }
-      }, 1000);
-    }
-
-    function enableFullScreen() {
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(()=>{});
-        document.addEventListener("fullscreenchange", () => {
-          if (!document.fullscreenElement) {
-            alert("Exam terminated. Fullscreen required.");
-            location.reload();
-          }
-        });
-      }
-    }
-
-    function randomizeSelectsKeepFirst() {
-      document.querySelectorAll("#partA select").forEach(sel => {
-        const opts = Array.from(sel.options);
-        const first = opts.shift(); // remove first
-        for (let i = opts.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [opts[i].text, opts[j].text] = [opts[j].text, opts[i].text];
-        }
-        sel.innerHTML = "";
-        sel.appendChild(first);
-        opts.forEach(o => sel.appendChild(o));
-        sel.selectedIndex = 0;
-      });
-    }
-
-    // ----- Start → Confirm -----
-    startBtn.addEventListener("click", () => {
-      const name  = (document.getElementById("studentName").value || "").trim();
-      const email = (document.getElementById("studentEmail").value || "").trim();
-      const code  = (document.getElementById("classCode").value || "").trim();
-
-      if (!name || !email) { alert("Please fill in your details."); return; }
-      if (code !== "__CLASS_CODE__") { alert("Invalid class code."); return; }
-
-      confirmName.textContent  = name;
-      confirmEmail.textContent = email;
-
-      // Move to Confirm page
-      login.style.display = "none";
-      confirmSec.style.display = "block";
-    });
-
-    // ----- Confirm page buttons -----
-    function beginExam() {
-      // Copy confirmed inputs into hidden fields
-      const name  = (document.getElementById("studentName").value || "").trim();
-      const email = (document.getElementById("studentEmail").value || "").trim();
-      const code  = (document.getElementById("classCode").value || "").trim();
-
-      document.getElementById("studentNameField").value  = name;
-      document.getElementById("studentEmailField").value = email;
-      document.getElementById("classCodeField").value    = code;
-
-      // Show Part A
-      confirmSec.style.display = "none";
-      exam.style.display  = "block";
-      partA.classList.add("active");
-      partB.classList.remove("active");
-
-      // Anti-cheat & timer & shuffle
-      enableFullScreen();
-      startTimer();
-      randomizeSelectsKeepFirst();
-    }
-
-    confirmBackBtn.addEventListener("click", () => {
-      confirmSec.style.display = "none";
-      login.style.display = "block";
-    });
-
-    confirmBeginBtn.addEventListener("click", () => {
-      beginExam();
-    });
-
-    // ----- Navigation Part A <-> Part B -----
-    toPartB.addEventListener("click", () => {
-      partA.classList.remove("active");
-      partB.classList.add("active");
-      ensureQuill();
-    });
-    toPartA.addEventListener("click", () => {
-      partB.classList.remove("active");
-      partA.classList.add("active");
-    });
-
-    // ----- Submit -----
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      submitExam();
-    });
-
-    function submitExam() {
-      clearInterval(timer);
-
-      const fd = new FormData(form);
-      const name  = fd.get("studentName")  || document.getElementById("studentNameField").value;
-      const email = fd.get("studentEmail") || document.getElementById("studentEmailField").value;
-      const minutesUsed = __TIME_LIMIT__ - Math.floor(timeLeft / 60);
-
-      const emailHtml = quill ? quill.root.innerHTML.trim() : "<em>(No response)</em>";
-      const totalQs = document.querySelectorAll('#partA select[name^="q"]').length || __QCOUNT__;
-
-      let scoreA = 0;
-      let partARowsHTML = "";
-      for (let i = 1; i <= totalQs; i++) {
-        const sel  = fd.get("q" + i) || "No answer";
-        const corr = correctAnswers["q" + i] || "";
-        const ok   = sel === corr;
-        if (ok) scoreA++;
-        const mark = ok ? "✅ Correct" : `❌ Incorrect → Correct answer: ${corr}`;
-        partARowsHTML += `
-          <tr>
-            <td style="padding:8px;border:1px solid #ccc;">${wordNames[i-1] || ("Q"+i)}</td>
-            <td style="padding:8px;border:1px solid #ccc;">${sel}</td>
-            <td style="padding:8px;border:1px solid #ccc;color:${ok ? 'green' : '#b00'};">${mark}</td>
-          </tr>`;
-      }
-
-      const partBScore = "___ / 10";
-      const finalNote  = "___ / 20";
-
-      const htmlReport = `
-        <h2 style="color:#004080;margin:0 0 8px 0;">Results – __TITLE__ – ${name} (__CLASS_CODE__)</h2>
-        <table style="border-collapse:collapse;width:100%;max-width:640px;font-size:14px;margin:0 0 12px 0;">
-          <tr><td style="padding:4px 0;"><b>Student Name:</b> ${name}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Student Email:</b> ${email}</td></tr>
-          <tr><td style="padding:4px 0;"><b>Class Code:</b> __CLASS_CODE__</td></tr>
-          <tr><td style="padding:4px 0;"><b>Time Taken:</b> ${minutesUsed} min</td></tr>
-        </table>
-        <hr style="border:none;border-top:1px solid #ddd;margin:14px 0;">
-
-        <h3 style="color:#004080;margin:10px 0 8px 0;">Part A – Vocabulary Matching</h3>
-        <table style="border-collapse:collapse;width:100%;font-size:15px;margin-top:8px;">
-          <thead>
-            <tr style="background:#004080;color:#fff;text-align:left;">
-              <th style="padding:8px;border:1px solid #ccc;">Word</th>
-              <th style="padding:8px;border:1px solid #ccc;">Student Answer</th>
-              <th style="padding:8px;border:1px solid #ccc;">Result</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${partARowsHTML}
-          </tbody>
-        </table>
-        <p style="margin:10px 0 0 0;"><b>Part A Score:</b> ${scoreA} / ${totalQs}</p>
-
-        <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-
-        <h3 style="color:#004080;margin:10px 0 8px 0;">Part B – Written Exercise</h3>
-        <div style="border:1px solid #ccc;border-radius:6px;padding:10px;background:#f9f9f9;">
-          ${emailHtml}
-        </div>
-
-        <table style="border-collapse:collapse;width:100%;font-size:15px;margin-top:6px;">
-          <thead>
-            <tr style="background:#004080;color:#fff;text-align:left;">
-              <th style="padding:8px;border:1px solid #ccc;">Criterion</th>
-              <th style="padding:8px;border:1px solid #ccc;">Maximum</th>
-              <th style="padding:8px;border:1px solid #ccc;">Awarded</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style="padding:8px;border:1px solid #ccc;">Vocabulary Use</td><td style="padding:8px;border:1px solid #ccc;">/3</td><td style="padding:8px;border:1px solid #ccc;">___ / 3</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ccc;">Structure & Clarity</td><td style="padding:8px;border:1px solid #ccc;">/3</td><td style="padding:8px;border:1px solid #ccc;">___ / 3</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ccc;">Language Accuracy & Tone</td><td style="padding:8px;border:1px solid #ccc;">/2</td><td style="padding:8px;border:1px solid #ccc;">___ / 2</td></tr>
-            <tr><td style="padding:8px;border:1px solid #ccc;">Professional Style</td><td style="padding:8px;border:1px solid #ccc;">/2</td><td style="padding:8px;border:1px solid #ccc;">___ / 2</td></tr>
-          </tbody>
-        </table>
-           <p style="margin:12px 0 6px 0;"><b>Instructor Comments:</b></p>
-      <div style="border:1px solid #ccc;border-radius:6px;padding:10px;background:#fdfdfd;min-height:48px;">
-        [Type feedback here]
-      </div>
-  <p style="margin:10px 0 0 0;"><b>Part B Score:</b> ${partBScore}</p>
-
-      <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
-
-      <h4 style="color:#004080;margin:10px 0 8px 0;">Score Summary</h4>
- 
-      <table style="border-collapse:collapse;width:100%;max-width:460px;font-size:15px;">
-        <tr>
-          <td style="padding:8px;border:1px solid #ccc;">Part A Score</td>
-          <td style="padding:8px;border:1px solid #ccc;">${scoreA} / ${totalQs}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px;border:1px solid #ccc;">Part B Score</td>
-          <td style="padding:8px;border:1px solid #ccc;">${partBScore}</td>
-        </tr>
-        <tr>
-          <td style="padding:8px;border:1px solid #ccc;"><b>Final Note</b></td>
-          <td style="padding:8px;border:1px solid #ccc;"><b>${finalNote}</b></td>
-        </tr>
-      </table>
-
-      <div style="border-top:1px solid #ccc;margin-top:16px;padding-top:8px;font-size:12px;color:#555;">
-        <em>This report was generated automatically for the English Exam – Business Resources.</em>
-      </div>
-    `;
-
-      const subject = "__SUBJECT_TMPL__".replace("(NAME)", name);
-
-      if (window.emailjs) {
-        emailjs.send("__EJ_SERVICE__", "__EJ_TEMPLATE__", {
-          from_name: name,
-          from_email: email,
-          subject,
-          message_html: htmlReport
-        })
-        .then(() => {
-          alert("✅ Exam submitted successfully.");
-          exam.style.display = "none";
-        })
-        .catch(err => {
-          alert("❌ Error sending exam: " + (err && err.text ? err.text : err));
-          console.error("EmailJS Error:", err);
-        });
-      } else {
-        alert("EmailJS not loaded; submission simulated.");
-      }
-    }
-  });
-  </script>
-</body>
-</html>
-</template>
-<!-- ============================================== -->
-
-<script>
-(function(){
-  const byId = id => document.getElementById(id);
-  const tbody = byId("vocabBody");
-  const output = byId("output");
-  const status = byId("status");
-
-  function escHtml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-  function escapeScriptClosers(s){return s.replace(/<\/script>/gi,"<\\/script>");}
-  function makeRow(i, w="", d=""){
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i+1}</td>
-      <td><input type="text" class="w" value="${w.replaceAll('"','&quot;')}" placeholder="Word ${i+1}"></td>
-      <td><input type="text" class="d" value="${d.replaceAll('"','&quot;')}" placeholder="Correct definition ${i+1}"></td>`;
-    return tr;
-  }
-
-  // seed 10 rows
-  const seed = [
-    ["Budget","A plan for how money will be spent during a specific period."],
-    ["Forecast","A prediction of future sales, costs, or results."],
-    ["KPI","A measurable value showing how effectively goals are achieved."],
-    ["Supplier","A company providing goods or services to another."],
-    ["Lead Time","The time between ordering and receiving something."],
-    ["Inventory","The goods and materials a company holds."],
-    ["Overhead","Ongoing expenses not tied to one product or service."],
-    ["Sustainability","Managing resources for long-term balance."],
-    ["ROI","Financial gain or loss compared to cost of investment."],
-    ["Headcount","Number of employees in a company or department."]
-  ];
-  seed.forEach((r,i)=>tbody.appendChild(makeRow(i, r[0], r[1])));
-
-  byId("addRowBtn").addEventListener("click", ()=>{
-    const i = tbody.querySelectorAll("tr").length;
-    tbody.appendChild(makeRow(i));
-  });
-  byId("clearBtn").addEventListener("click", ()=>{
-    tbody.innerHTML = "";
-  });
-
-  function collect(){
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    const vocab = rows.map((tr,idx)=>{
-      const w = tr.querySelector(".w").value.trim();
-      const d = tr.querySelector(".d").value.trim();
-      return {idx, word:w, definition:d};
-    }).filter(v=>v.word && v.definition);
-    if (vocab.length === 0) { alert("Add at least one vocabulary row."); return null; }
-
-    const missing = vocab.find(v=>!v.word || !v.definition);
-    if (missing) { alert("Please fill all Word + Correct Definition fields."); return null; }
-
-    return {
-      title: byId("title").value.trim() || "English Exam",
-      classCode: byId("classCode").value.trim() || "CLASS",
-      timeLimit: Math.max(5, +byId("timeLimit").value || 40),
-      prompt: byId("prompt").value.trim(),
-      ejPublic: byId("ejPublic").value.trim(),
-      ejService: byId("ejService").value.trim(),
-      ejTemplate: byId("ejTemplate").value.trim(),
-      subjTmpl: byId("subjectTmpl").value.trim() || "(NAME) – English Exam",
-      vocab
-    };
-  }
-
-  function buildPartA(vocab){
-    const defs = vocab.map(v=>v.definition);
-    return vocab.map((v,i)=>{
-      const opts = ['<option value="">-- Choose --</option>']
-        .concat(defs.map(d=>`<option>${escHtml(d)}</option>`))
-        .join("");
-      return `<li>${escHtml(v.word)}
-        <select name="q${i+1}">
-          ${opts}
-        </select>
-      </li>`;
-    }).join("\n");
-  }
-
-  function buildStudentHTML(cfg){
-    const tpl = byId("studentTpl").innerHTML;
-
-    const partA = buildPartA(cfg.vocab);
-    const correct = {};
-    const wordNames = [];
-    cfg.vocab.forEach((v,i)=>{ correct["q"+(i+1)] = v.definition; wordNames.push(v.word); });
-
-    // JSON to inject into <script> safely
-    const correctJSON = escapeScriptClosers(JSON.stringify(correct));
-    const namesJSON   = escapeScriptClosers(JSON.stringify(wordNames));
-
-    let html = tpl
-      .replaceAll("__TITLE__", cfg.title)
-      .replaceAll("__CLASS_CODE__", cfg.classCode)
-      .replaceAll("__TIME_LIMIT__", String(cfg.timeLimit))
-      .replace("__PROMPT__", escHtml(cfg.prompt || "Write your response."))
-      .replace("__PART_A__", partA)
-      .replace("__CORRECT_MAP__", correctJSON)
-      .replace("__WORD_NAMES__", namesJSON)
-      .replaceAll("__EJ_PUBLIC__", cfg.ejPublic)
-      .replaceAll("__EJ_SERVICE__", cfg.ejService)
-      .replaceAll("__EJ_TEMPLATE__", cfg.ejTemplate)
-      .replaceAll("__SUBJECT_TMPL__", cfg.subjTmpl)
-      .replaceAll("__QCOUNT__", String(cfg.vocab.length));
-
-    return html;
-  }
-
-  byId("genBtn").addEventListener("click", ()=>{
-    const cfg = collect();
-    if (!cfg) return;
-    const html = buildStudentHTML(cfg);
-    output.value = html;
-    status.textContent = "";
-    output.scrollIntoView({behavior:"smooth"});
-  });
-
-  byId("copyBtn").addEventListener("click", async ()=>{
-    const v = output.value;
-    if (!v) return;
-    try { await navigator.clipboard.writeText(v); status.textContent = "Copied!"; }
-    catch { output.select(); document.execCommand("copy"); status.textContent = "Copied (fallback)!"; }
-    setTimeout(()=>status.textContent="",1500);
-  });
-
-  byId("downloadBtn").addEventListener("click", ()=>{
-    const v = output.value;
-    if (!v) { alert("Generate the HTML first."); return; }
-    const name = (byId("classCode").value || "CLASS").trim().replace(/\s+/g,"_");
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([v], {type:"text/html;charset=utf-8"}));
-    a.download = `exam_${name}.html`;
-    document.body.appendChild(a);
-    a.click();
-    URL.revokeObjectURL(a.href);
-    a.remove();
-  });
-})();
-</script>
 </body>
 </html>
