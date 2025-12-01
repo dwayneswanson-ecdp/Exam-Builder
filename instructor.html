@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create an Exam – Online Exam Platform</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: #1f2933;
+      background: #f5f7fb;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e1e4f0;
+    }
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+    }
+    .nav-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #2643e9;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #4b5563;
+    }
+    .nav-links a:hover {
+      color: #2643e9;
+    }
+
+    .btn-primary {
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: #2643e9;
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      filter: brightness(0.95);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: #111827;
+    }
+    h3 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.4rem;
+      color: #111827;
+    }
+    p {
+      margin-bottom: 0.6rem;
+      font-size: 0.96rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+      font-size: 0.94rem;
+    }
+    ul li {
+      margin-bottom: 0.35rem;
+    }
+
+    .step-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 0.3rem;
+    }
+
+    .card {
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      padding: 1.1rem 1.25rem;
+      background: #f9fafb;
+      margin-bottom: 1.5rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.94rem;
+    }
+    label {
+      font-size: 0.84rem;
+      color: #4b5563;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      gap: 1.5rem;
+      margin-top: 1.75rem;
+      align-items: center;
+    }
+    .step img {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .cta-note {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    @media (max-width: 800px) {
+      section {
+        padding: 1.5rem;
+      }
+      .step {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="nav-title">Create an exam</div>
+      <nav class="nav-links">
+        <a href="index.html">← Back to About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- INSTRUCTOR INFO + EMAIL GENERATION -->
+    <section>
+      <h2>Step 1 – Instructor information</h2>
+      <p>
+        Fill in your details below. When you generate the exam, this information will appear in
+        the exam header and in the email you receive. The beta does not store any data: the exam
+        is simply assembled in your browser and sent to your email address.
+      </p>
+
+      <div class="card">
+        <form id="instructor-form">
+          <div class="grid">
+            <div>
+              <label for="instName">Instructor name</label><br />
+              <input id="instName" name="instName" type="text" required />
+            </div>
+            <div>
+              <label for="instEmail">Instructor email</label><br />
+              <input id="instEmail" name="instEmail" type="email" required />
+            </div>
+            <div>
+              <label for="courseName">Course / Module</label><br />
+              <input id="courseName" name="courseName" type="text" />
+            </div>
+            <div>
+              <label for="classGroup">Class / Group</label><br />
+              <input id="classGroup" name="classGroup" type="text" />
+            </div>
+            <div>
+              <label for="examTitle">Exam title</label><br />
+              <input id="examTitle" name="examTitle" type="text" placeholder="Midterm – Online Assessment" />
+            </div>
+            <div>
+              <label for="examDate">Exam date</label><br />
+              <input id="examDate" name="examDate" type="date" />
+            </div>
+          </div>
+
+          <h3 style="margin-top:1.25rem;">Step 2 – Choose exam template (for now, hard-coded)</h3>
+          <p style="font-size:0.9rem;">
+            For the beta, the questions are baked into the code. Later, this can be replaced by
+            a dynamic editor. Choose the bloc you want to use:
+          </p>
+
+          <div class="grid">
+            <label>
+              <input type="radio" name="template" value="mcq" checked />
+              MCQ / QCU + short open questions
+            </label>
+            <label>
+              <input type="radio" name="template" value="open" />
+              Long-form open questions (essays / case study)
+            </label>
+            <label>
+              <input type="radio" name="template" value="mixed" />
+              Mixed exam (MCQ + longer open questions)
+            </label>
+          </div>
+
+          <button type="button" id="generate-exam" class="btn-primary" style="margin-top:1.2rem;">
+            Generate exam & prepare email (beta)
+          </button>
+
+          <div class="cta-note">
+            When you click the button, your email client will open with a draft email containing
+            the full exam text. You can then save it, edit it or print it as you like.
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- VISUAL STEP-BY-STEP WITH YOUR SCREENSHOTS -->
+    <section>
+      <h2>How the online exam will look</h2>
+
+      <!-- STEP SETTINGS -->
+      <div class="step">
+        <div>
+          <div class="step-label">Overview</div>
+          <h3>Exam settings</h3>
+          <p>
+            Exams are configured with a school year, class, subject, duration and time zone.
+            In a future version, these settings will be synchronised with the school’s systems.
+          </p>
+          <ul>
+            <li>Desktop or web application.</li>
+            <li>Time interval or specific exam time.</li>
+            <li>Options such as incompressible duration, anonymous correction and copy/paste rules.</li>
+          </ul>
+        </div>
+        <div>
+          <img src="img/exam-settings.png" alt="Exam settings screenshot" />
+        </div>
+      </div>
+
+      <!-- STEP QCM/QCU -->
+      <div class="step">
+        <div>
+          <img src="img/qcm-editor.png" alt="QCU and QCM editor screenshot" />
+        </div>
+        <div>
+          <div class="step-label">Question type</div>
+          <h3>QCU & QCM (single or multiple choice)</h3>
+          <p>
+            MCQ questions can include text, images, videos or graphs. Instructors can set points,
+            penalties and decide whether to show or hide the scoring scale.
+          </p>
+          <ul>
+            <li>Create questions one by one or copy existing ones.</li>
+            <li>Randomise choices and control penalties for wrong answers.</li>
+            <li>Define difficulty level and estimated time per question.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- STEP OPEN RESPONSES -->
+      <div class="step">
+        <div>
+          <div class="step-label">Question type</div>
+          <h3>Open-ended responses</h3>
+          <p>
+            Open questions are ideal for essays, case studies and situational exercises. Students
+            answer directly in the platform’s editor.
+          </p>
+          <ul>
+            <li>Free-text responses with rich formatting options.</li>
+            <li>Useful for evaluating reasoning, argumentation and writing.</li>
+          </ul>
+        </div>
+        <div>
+          <img src="img/open-response.png" alt="Open responses screenshot" />
+        </div>
+      </div>
+
+      <!-- STEP QUESTION BUILDER -->
+      <div class="step">
+        <div>
+          <img src="img/question-builder.png" alt="Exam question builder screenshot" />
+        </div>
+        <div>
+          <div class="step-label">Structure</div>
+          <h3>Exam question builder</h3>
+          <p>
+            The exam interface allows instructors to mix different question types and structure
+            the exam in parts. The beta page you are using simply produces the content; the platform
+            will eventually mirror this structure.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Hard-coded templates for the beta phase.
+    const templates = {
+      mcq: `
+PART 1 – Multiple choice (QCU/QCM)
+1. Online assessment allows:
+   a) Only paper-based exams
+   b) Exams to be taken on digital platforms
+   c) Exams without any time limit
+
+2. Which option improves exam security?
+   a) Anonymous correction
+   b) Sharing answers on social media
+   c) Allowing copy/paste of all questions
+
+PART 2 – Short open questions
+3. In a few lines, explain the main difference between online and traditional paper-based exams.
+4. Give one example of how multimedia (image, video, graph) can be used in an exam question.
+      `.trim(),
+
+      open: `
+PART 1 – Open questions
+
+1. Explain the advantages and limitations of online assessment for students.
+2. Describe how an online exam can be designed to remain fair for students with different levels of digital access.
+3. Propose a short case study (5–10 lines) that could be used in an online exam for your course.
+      `.trim(),
+
+      mixed: `
+PART 1 – Multiple choice (QCU/QCM)
+
+1. Online exams can:
+   a) Only be taken in person
+   b) Be taken remotely under controlled conditions
+   c) Never include multimedia content
+
+2. Which option best describes "incompressible duration"?
+   a) Minimum time the student must stay connected before submitting
+   b) Maximum time allowed for the exam
+   c) Time spent correcting exams
+
+PART 2 – Open questions
+
+3. Describe one situation where anonymous correction is particularly important.
+4. Suggest three rules you would include in the exam instructions to avoid cheating.
+      `.trim()
+    };
+
+    document.getElementById('generate-exam').addEventListener('click', function () {
+      const name = document.getElementById('instName').value.trim();
+      const email = document.getElementById('instEmail').value.trim();
+      const course = document.getElementById('courseName').value.trim();
+      const group = document.getElementById('classGroup').value.trim();
+      const examTitle = document.getElementById('examTitle').value.trim() || 'Online exam';
+      const examDate = document.getElementById('examDate').value;
+      const templateChoice = document.querySelector('input[name="template"]:checked').value;
+
+      if (!name || !email) {
+        alert('Please fill in at least your name and email.');
+        return;
+      }
+
+      const questions = templates[templateChoice] || templates.mcq;
+
+      let header = '';
+      header += `Instructor: ${name}\n`;
+      header += `Email: ${email}\n`;
+      if (course) header += `Course: ${course}\n`;
+      if (group) header += `Class/Group: ${group}\n`;
+      if (examDate) header += `Exam date: ${examDate}\n`;
+      header += `Exam title: ${examTitle}\n`;
+      header += '\n------------------------------\n\n';
+
+      const fullExamText = header + questions;
+
+      const subject = `[Exam] ${examTitle}` + (course ? ` – ${course}` : '');
+      const mailto = `mailto:${encodeURIComponent(email)}`
+        + `?subject=${encodeURIComponent(subject)}`
+        + `&body=${encodeURIComponent(fullExamText)}`;
+
+      // Open email draft
+      window.location.href = mailto;
+
+      // Optional: also open in a new window for copy/paste/print
+      const w = window.open('', '_blank');
+      if (w) {
+        w.document.write(
+          '<pre style="font-family:system-ui,monospace;white-space:pre-wrap;">' +
+          fullExamText.replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+          '</pre>'
+        );
+        w.document.close();
+      }
+    });
+  </script>
+</body>
+</html>
