@@ -33,14 +33,41 @@
       font-size: 1.1rem;
       color: #2643e9;
     }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
     .nav-links a {
-      margin-left: 1rem;
       text-decoration: none;
       color: #4b5563;
-      font-size: 0.95rem;
     }
     .nav-links a:hover {
       color: #2643e9;
+    }
+
+    /* Primary CTA button (circled in blue) */
+    .btn-outline {
+      text-decoration: none;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      border: 2px solid #2643e9;
+      color: #2643e9;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: #ffffff;
+    }
+    .btn-outline::after {
+      content: "→";
+      font-size: 0.85rem;
+    }
+    .btn-outline:hover {
+      background: #2643e9;
+      color: #ffffff;
     }
 
     main {
@@ -138,37 +165,8 @@
       margin-top: 0;
     }
 
-    .step {
-      display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
-      gap: 1.5rem;
-      margin-top: 1.75rem;
-      align-items: center;
-    }
-    .step img {
-      max-width: 100%;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-    }
-    .step-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #6b7280;
-      margin-bottom: 0.3rem;
-    }
-
-    .cta {
-      margin-top: 2rem;
-      padding: 1.25rem 1.5rem;
-      border-radius: 12px;
-      border: 1px dashed #c7d2fe;
-      background: #eef2ff;
-      font-size: 0.95rem;
-    }
-
     @media (max-width: 800px) {
-      .hero, .step {
+      .hero {
         grid-template-columns: 1fr;
       }
       section {
@@ -180,10 +178,12 @@
 <body>
   <header>
     <div class="nav">
-      <div class="nav-title">Online Exam Platform</div>
+      <div class="nav-title">Online Exam Platform – Beta</div>
       <nav class="nav-links">
         <a href="#about">About</a>
-        <a href="#instructor">Instructor Area</a>
+        <a href="#benefits">Benefits</a>
+        <!-- Top CTA button -->
+        <a href="instructor.html" class="btn-outline">Create an exam</a>
       </nav>
     </div>
   </header>
@@ -193,18 +193,26 @@
     <section id="about">
       <div class="hero">
         <div>
-          <div class="hero-badge">For schools & program directors</div>
-          <h1 class="hero-title">Secure, flexible online exams for your students</h1>
+          <div class="hero-badge">For schools & instructors</div>
+
+          <h1 class="hero-title">Secure, lightweight online exams – without central storage</h1>
+
           <p class="hero-subtitle">
-            This platform was created to standardise exam practices, simplify the work of teachers,
-            and give the school a clear, auditable framework for online assessments.
+            This beta version standardises exam formats and helps instructors build online exams
+            while keeping full control: exams are generated and sent directly by email, not stored on a server.
           </p>
+
+          <!-- Secondary CTA inside the hero -->
+          <p style="margin-bottom:1rem;">
+            <a href="instructor.html" class="btn-outline">Create an exam</a>
+          </p>
+
           <p><strong>Why this platform?</strong></p>
           <ul class="hero-list">
-            <li>Harmonise exam formats across classes and teachers.</li>
-            <li>Improve exam security and traceability (time, settings, versions).</li>
-            <li>Offer multiple question types, including QCU/QCM and open-ended answers.</li>
-            <li>Make exam creation simple for instructors, with no technical skills required.</li>
+            <li>Harmonise exam practices across classes and teachers.</li>
+            <li>No central storage: each exam is generated and emailed to the instructor.</li>
+            <li>Support for QCU/QCM and open-ended questions, with multimedia options.</li>
+            <li>Simple workflow so instructors can focus on pedagogy, not tools.</li>
           </ul>
         </div>
         <div class="hero-visual">
@@ -212,144 +220,31 @@
           <img src="img/exam-settings-overview.png" alt="Exam settings overview screenshot" />
         </div>
       </div>
-
-      <div class="two-col" style="margin-top:2rem;">
-        <div class="card">
-          <h3>Benefits for the school</h3>
-          <ul>
-            <li>Centralised exam creation and storage.</li>
-            <li>Consistent grading and easier moderation between instructors.</li>
-            <li>Clear audit trail (dates, versions, settings).</li>
-            <li>Possibility to reuse and adapt past exams from a question bank.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Benefits for teachers & students</h3>
-          <ul>
-            <li>Simple, guided interface to build exams step by step.</li>
-            <li>Different question formats, including multimedia content.</li>
-            <li>Fine control over time limits, difficulty and scoring.</li>
-            <li>Comfortable online exam experience for students.</li>
-          </ul>
-        </div>
-      </div>
     </section>
 
-    <!-- INSTRUCTOR AREA -->
-    <section id="instructor">
-      <h2>Instructor Area – How exams are created</h2>
-      <p>
-        This section explains the instructor workflow. It is also where we can later add
-        forms so teachers can submit exam information directly.
-      </p>
+    <!-- BENEFITS SECTION -->
+    <section id="benefits">
+      <h2>Benefits of the beta</h2>
 
-      <!-- STEP 1 -->
-      <div class="step">
-        <div>
-          <div class="step-label">Step 1</div>
-          <h3>Set up the exam</h3>
-          <p>Teachers start by defining the global parameters of the exam:</p>
+      <div class="two-col" style="margin-top:1rem;">
+        <div class="card">
+          <h3>For the school</h3>
           <ul>
-            <li>School year, class and subject.</li>
-            <li>Exam category (mid-term, final, continuous assessment, etc.).</li>
-            <li>Type of application (desktop or web) and platform.</li>
-            <li>Exam date, start time, duration and time zone.</li>
-            <li>Advanced options such as custom time limits, incompressible duration, anonymous correction or copy/paste policy.</li>
+            <li><strong>Lightweight, privacy-friendly beta:</strong> exams are not stored centrally.</li>
+            <li>Standardised exam format across different modules and classes.</li>
+            <li>Clear exam templates that can be reused and adapted.</li>
+            <li>Easy to extend later towards a more integrated solution.</li>
           </ul>
         </div>
-        <div>
-          <!-- Exam settings screenshot -->
-          <img src="img/exam-settings.png" alt="Exam settings screen" />
-        </div>
-      </div>
-
-      <!-- STEP 2 -->
-      <div class="step">
-        <div>
-          <!-- QCU / QCM screenshot -->
-          <img src="img/qcm-editor.png" alt="QCU and QCM editor screenshot" />
-        </div>
-        <div>
-          <div class="step-label">Step 2</div>
-          <h3>Choose question types – QCU & QCM</h3>
-          <p>The platform supports both single-choice and multiple-choice questions:</p>
+        <div class="card">
+          <h3>For instructors & students</h3>
           <ul>
-            <li>Create copy assessments or build MCQs question by question.</li>
-            <li>Integrate multimedia content (images, videos, graphs).</li>
-            <li>Adjust difficulty levels and time allocated per question.</li>
-            <li>Decide whether to show or hide the scoring scale and barème.</li>
+            <li>Guided “Create exam” flow with minimal technical steps.</li>
+            <li>Multiple question types: QCU, QCM, and open-ended responses.</li>
+            <li>Control over difficulty, timing and scoring rules.</li>
+            <li>Exams received by email so instructors can archive them however they prefer.</li>
           </ul>
         </div>
-      </div>
-
-      <!-- STEP 2B -->
-      <div class="step">
-        <div>
-          <div class="step-label">Step 2 (continued)</div>
-          <h3>Open-ended answer evaluations</h3>
-          <p>
-            In addition to MCQs, teachers can use open-response questions that let students
-            express themselves freely in writing. This is ideal for:
-          </p>
-          <ul>
-            <li>Dissertations and essays.</li>
-            <li>Case studies and business scenarios.</li>
-            <li>Situational judgement questions.</li>
-          </ul>
-        </div>
-        <div>
-          <!-- Open-ended answers screenshot -->
-          <img src="img/open-response.png" alt="Open-ended answer interface" />
-        </div>
-      </div>
-
-      <!-- STEP 3 -->
-      <div class="step">
-        <div>
-          <!-- Question builder screenshot -->
-          <img src="img/question-builder.png" alt="Exam question builder screenshot" />
-        </div>
-        <div>
-          <div class="step-label">Step 3</div>
-          <h3>Build the exam content</h3>
-          <p>
-            Once the structure and question types are chosen, instructors build the exam itself:
-          </p>
-          <ul>
-            <li>Write general instructions for each part of the exam.</li>
-            <li>Add questions one by one or import them from existing documents.</li>
-            <li>Mix QCU, QCM and open-ended questions in a single exam.</li>
-            <li>Optionally tag questions by topic or learning outcome.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- STEP 4 -->
-      <div class="step">
-        <div>
-          <div class="step-label">Step 4</div>
-          <h3>Publish, run and correct</h3>
-          <p>
-            Before publishing, teachers can preview the exam and check all settings. Once the
-            exam is live:
-          </p>
-          <ul>
-            <li>Students access the exam at the defined time from the chosen platform.</li>
-            <li>Answers are stored securely and can be corrected online.</li>
-            <li>Anonymous marking is possible when required.</li>
-            <li>Grades and feedback can be exported for the school’s systems.</li>
-          </ul>
-        </div>
-        <div>
-          <!-- You can reuse any screenshot here or add a new one -->
-          <img src="img/recap-or-results.png" alt="Exam recap or results screen" />
-        </div>
-      </div>
-
-      <div class="cta">
-        <strong>Next step:</strong> we can add a simple form here for instructors to submit their exam requests
-        (course name, class, exam date, duration, type of questions, etc.), which I then convert into an online exam
-        inside the platform.
       </div>
     </section>
   </main>
