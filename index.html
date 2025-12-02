@@ -368,22 +368,93 @@
   </figure>
 </div>
 
-  <section id="screenshots">
-  <h2>Exam at a glance</h2>
-  <p style="margin-bottom:1rem; font-size:0.95rem;">
-    A quick look at the current beta screens, as used in real in-person classes.
-  </p>
+<!-- EXAM AT A GLANCE (STUDENT VIEW) -->
+<section id="exam-glance" class="section">
+  <div class="section-header">
+    <p class="section-kicker">Inside the exam</p>
+    <h2>Exam at a glance</h2>
+    <p class="section-subtitle">
+      A simple, full-screen exam flow: students log in, confirm their details, and complete the exam
+      in a distraction-free interface.
+    </p>
+  </div>
 
-  <div class="screenshot-grid">
-    <figure>
-      <img src="exam-login.png" alt="Exam login page with passcode" />
-      <figcaption>Exam login page with passcode.</figcaption>
-    </figure>
+  <div class="exam-showcase">
+    <!-- Left arrow -->
+    <button class="exam-showcase-nav prev" type="button" aria-label="Previous screen">
+      ‹
+    </button>
 
-    <figure>
-      <img src="exam-confirmatio.png" alt="Exam confirmation page" />
-      <figcaption>Exam confirmation page.</figcaption>
-    </figure>
+    <!-- Main image -->
+    <div class="exam-showcase-main">
+      <img
+        id="examSlideImage"
+        src="img/exam-login.png"
+        alt="Exam login page with passcode"
+      />
+    </div>
+
+    <!-- Right arrow -->
+    <button class="exam-showcase-nav next" type="button" aria-label="Next screen">
+      ›
+    </button>
+  </div>
+
+  <!-- Captions -->
+  <div class="exam-showcase-caption">
+    <p id="examSlideStep" class="exam-showcase-step">Step 1 · Login</p>
+    <h3 id="examSlideTitle" class="exam-showcase-title">Exam login page with passcode</h3>
+    <p id="examSlideText" class="exam-showcase-text">
+      Students access the exam using a class code and passcode. Their name and email are collected
+      before they can continue.
+    </p>
+  </div>
+
+  <!-- Dots / steps buttons -->
+  <div class="exam-showcase-dots" aria-label="Exam steps">
+    <button type="button" class="dot active" data-index="0">Login</button>
+    <button type="button" class="dot" data-index="1">Confirmation</button>
+    <button type="button" class="dot" data-index="2">Exam – full screen 1</button>
+    <button type="button" class="dot" data-index="3">Exam – full screen 2</button>
+  </div>
+</section>
+
+<!-- INSTRUCTOR REPORT SECTION -->
+<section id="exam-report" class="section section-alt">
+  <div class="section-header">
+    <p class="section-kicker">For instructors</p>
+    <h2>What you receive after each exam</h2>
+    <p class="section-subtitle">
+      At the end of the exam, a detailed report is emailed to the instructor with the student’s
+      answers, automatic scoring for Part A, and a structured space for feedback.
+    </p>
+  </div>
+
+  <div class="report-layout">
+    <div class="report-text">
+      <h3>Automatic exam report by email</h3>
+      <p>
+        When a student submits, the platform generates an HTML report that is sent directly to the
+        instructor’s inbox. It includes:
+      </p>
+      <ul>
+        <li>Student identity (name, email, class code)</li>
+        <li>Score breakdown for the vocabulary section (Part A)</li>
+        <li>The full written answer (Part B) in a readable format</li>
+        <li>A simple grid for manual scoring and comments</li>
+      </ul>
+      <p class="muted">
+        In this beta version, no exam data is stored on a central server. Each report is delivered by
+        email so instructors can archive, annotate, or export it using their usual tools.
+      </p>
+    </div>
+
+    <div class="report-image-card">
+      <img
+        src="img/exam-report.png"
+        alt="Example of exam report emailed to the instructor"
+      />
+    </div>
   </div>
 </section>
   </main>
