@@ -47,7 +47,7 @@
       color: #2643e9;
     }
 
-    /* Primary CTA button (circled in blue) */
+    /* Primary CTA button */
     .btn-outline {
       text-decoration: none;
       padding: 0.4rem 1rem;
@@ -84,45 +84,11 @@
       box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.8fr);
-      gap: 2rem;
-      align-items: center;
-    }
     .hero-title {
       font-size: 2rem;
       font-weight: 700;
       color: #111827;
       margin-bottom: 0.75rem;
-    }
-    .hero-subtitle {
-      font-size: 1.05rem;
-      margin-bottom: 1.25rem;
-    }
-    .hero-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #2643e9;
-      background: #e0e7ff;
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      margin-bottom: 0.75rem;
-    }
-    .hero-list {
-      margin-top: 0.5rem;
-      padding-left: 1.2rem;
-      font-size: 0.95rem;
-    }
-    .hero-visual {
-      text-align: center;
-    }
-    .hero-visual img {
-      max-width: 100%;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
     }
 
     h2 {
@@ -164,296 +130,216 @@
     .card h3 {
       margin-top: 0;
     }
-.checklist {
-  margin-top: 0.75rem;
-  padding-left: 1.2rem;
-  font-size: 0.95rem;
-}
-.checklist li {
-  margin-bottom: 0.3rem;
-}
 
-/* Simple responsive grid for screenshots */
-.screenshot-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-.screenshot-grid img {
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  display: block;
-}
-.screenshot-grid figcaption {
-  margin-top: 0.4rem;
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-    /* Blue checklist panel + media layout */
-.beta-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
-  gap: 2rem;
-  margin-top: 1.5rem;
-  align-items: center;
-}
+    /* Beta layout (instructor tools) */
+    .beta-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
+      gap: 2rem;
+      margin-top: 1.5rem;
+      align-items: center;
+    }
+    .beta-checklist-panel {
+      background: #2643e9;
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 1.5rem 1.75rem;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
+    }
+    .beta-checklist-panel h3 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+      color: #ffffff;
+    }
+    .beta-checklist-panel p {
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      color: #e5e7ff;
+    }
+    .beta-checklist {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    .beta-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+      margin-bottom: 0.45rem;
+    }
+    .beta-checklist li::before {
+      content: "✔";
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .beta-media {
+      text-align: center;
+    }
+    .beta-media img {
+      max-width: 100%;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+    }
+    .beta-media figcaption {
+      margin-top: 0.4rem;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
 
-.beta-checklist-panel {
-  background: #2643e9;
-  color: #ffffff;
-  border-radius: 18px;
-  padding: 1.5rem 1.75rem;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
-}
+    /* Generic section styling for new blocks */
+    .section {
+      max-width: 960px;
+      margin: 2.5rem auto 3rem;
+      padding: 0;
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .section-header {
+      padding: 0 0 1rem;
+    }
+    .section-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 0.3rem;
+    }
+    .section-subtitle {
+      font-size: 0.95rem;
+      color: #4b5563;
+      max-width: 620px;
+    }
 
-.beta-checklist-panel h3 {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-  font-size: 1.1rem;
-  color: #ffffff;
-}
+    /* Exam carousel */
+    .exam-showcase {
+      position: relative;
+      margin: 1rem 0;
+      border-radius: 18px;
+      overflow: hidden;
+      background: radial-gradient(circle at top left, #eef2ff, #e5e7eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 420px;
+    }
+    .exam-showcase-main {
+      width: 100%;
+      max-width: 820px;
+      height: 100%;
+      padding: 1.25rem 2.5rem;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .exam-showcase-main img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+      background: #fff;
+    }
+    .exam-showcase-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: #ffffffdd;
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
+    }
+    .exam-showcase-nav.prev { left: 14px; }
+    .exam-showcase-nav.next { right: 14px; }
+    .exam-showcase-nav:hover { filter: brightness(0.96); }
 
-.beta-checklist-panel p {
-  margin-bottom: 0.75rem;
-  font-size: 0.9rem;
-  color: #e5e7ff;
-}
+    .exam-showcase-caption {
+      margin: 0.75rem 0 0.25rem;
+    }
+    .exam-showcase-step {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      margin-bottom: 0.1rem;
+    }
+    .exam-showcase-title {
+      font-size: 1.05rem;
+      margin-bottom: 0.1rem;
+    }
+    .exam-showcase-text {
+      font-size: 0.95rem;
+      color: #4b5563;
+    }
+    .exam-showcase-dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 0.5rem;
+    }
+    .exam-showcase-dots .dot {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #4b5563;
+    }
+    .exam-showcase-dots .dot.active {
+      border-color: #2643e9;
+      background: #2643e9;
+      color: #fff;
+    }
 
-.beta-checklist {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-  font-size: 0.95rem;
-}
+    /* Report layout */
+    .report-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+    }
+    .report-image-card {
+      border-radius: 18px;
+      background: #f3f4ff;
+      padding: 14px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    }
+    .report-image-card img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+      background: #fff;
+    }
 
-.beta-checklist li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
-  margin-bottom: 0.45rem;
-}
-
-.beta-checklist li::before {
-  content: "✔";
-  font-weight: 600;
-  flex-shrink: 0;
-  margin-top: 0.1rem;
-}
-
-.beta-media {
-  text-align: center;
-}
-
-.beta-media img {
-  max-width: 100%;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
-}
-
-.beta-media figcaption {
-  margin-top: 0.4rem;
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-    .screenshot-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.screenshot-grid img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-}
-
-.screenshot-grid figcaption {
-  margin-top: 0.4rem;
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-/* Generic section styling for new blocks */
-.section {
-  max-width: 960px;
-  margin: 2.5rem auto 3rem;
-  padding: 0;
-  background: none;
-  box-shadow: none;
-  border-radius: 0;
-}
-
-.section-header {
-  padding: 0 0 1rem;
-}
-
-.section-kicker {
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #6b7280;
-  margin-bottom: 0.3rem;
-}
-
-.section-subtitle {
-  font-size: 0.95rem;
-  color: #4b5563;
-  max-width: 620px;
-}
-
-/* Exam carousel */
-.exam-showcase {
-  position: relative;
-  margin: 1rem 0;
-  border-radius: 18px;
-  overflow: hidden;
-  background: radial-gradient(circle at top left, #eef2ff, #e5e7eb);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 420px;
-}
-
-.exam-showcase-main {
-  width: 100%;
-  max-width: 820px;
-  height: 100%;
-  padding: 1.25rem 2.5rem;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.exam-showcase-main img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: block;
-  border-radius: 12px;
-  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
-  background: #fff;
-}
-
-/* Arrows */
-.exam-showcase-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: #ffffffdd;
-  border-radius: 999px;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
-}
-
-.exam-showcase-nav.prev { left: 14px; }
-.exam-showcase-nav.next { right: 14px; }
-
-.exam-showcase-nav:hover { filter: brightness(0.96); }
-
-/* Caption + dots */
-.exam-showcase-caption {
-  margin: 0.75rem 0 0.25rem;
-}
-
-.exam-showcase-step {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #6b7280;
-  margin-bottom: 0.1rem;
-}
-
-.exam-showcase-title {
-  font-size: 1.05rem;
-  margin-bottom: 0.1rem;
-}
-
-.exam-showcase-text {
-  font-size: 0.95rem;
-  color: #4b5563;
-}
-
-.exam-showcase-dots {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 0.5rem;
-}
-
-.exam-showcase-dots .dot {
-  border-radius: 999px;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  color: #4b5563;
-}
-
-.exam-showcase-dots .dot.active {
-  border-color: #2643e9;
-  background: #2643e9;
-  color: #fff;
-}
-
-/* Report layout */
-.report-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 32px;
-  align-items: center;
-}
-
-.report-image-card {
-  border-radius: 18px;
-  background: #f3f4ff;
-  padding: 14px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
-}
-
-.report-image-card img {
-  width: 100%;
-  display: block;
-  border-radius: 12px;
-  background: #fff;
-}
-
-@media (max-width: 900px) {
-  .exam-showcase { height: 320px; }
-  .exam-showcase-main { padding: 0.75rem 1.25rem; }
-}
-
-@media (max-width: 768px) {
-  .exam-showcase { height: 260px; }
-  .report-layout { grid-template-columns: 1fr; }
-}
-/* Stack on mobile */
-@media (max-width: 800px) {
-  .beta-layout {
-    grid-template-columns: 1fr;
-  }
-}
+    @media (max-width: 900px) {
+      .exam-showcase { height: 320px; }
+      .exam-showcase-main { padding: 0.75rem 1.25rem; }
+    }
     @media (max-width: 800px) {
-      .hero {
+      .beta-layout {
         grid-template-columns: 1fr;
       }
       section {
         padding: 1.5rem;
       }
+    }
+    @media (max-width: 768px) {
+      .exam-showcase { height: 260px; }
+      .report-layout { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -461,101 +347,240 @@
   <header>
     <div class="nav">
       <div class="nav-title">Online Exam Platform – Beta</div>
-   <nav class="nav-links">
-  <a href="#about-beta">Why this exists</a>
-  <a href="#student-view">Student view</a>
-  <a href="#instructor-tools">Instructor tools</a>
-  <a href="instructor.html" class="btn-outline">Create an exam</a>
-</nav>
+      <nav class="nav-links">
+        <a href="#about-beta">Why this exists</a>
+        <a href="#student-view">Student view</a>
+        <a href="#instructor-tools">Instructor tools</a>
+        <a href="instructor.html" class="btn-outline">Create an exam</a>
+      </nav>
     </div>
   </header>
 
-<nav class="nav-links">
-  <a href="#about-beta">Why this exists</a>
-  <a href="#student-view">Student view</a>
-  <a href="#instructor-tools">Instructor tools</a>
-  <a href="instructor.html" class="btn-outline">Create an exam</a>
-</nav>
+  <main>
+
+    <!-- 1. WHY THIS EXISTS -->
+    <section id="about-beta">
+      <h1 class="hero-title" style="margin-bottom:0.75rem;">Why this exam space exists</h1>
+
+      <p style="margin-bottom:1rem; font-size:0.98rem;">
+        Paper exams had stopped working. Students passed around “scratch” notes, hid phones under the table,
+        and handed in copy–paste identical answers. The exam wasn’t really measuring knowledge anymore – it
+        was just a game of who could outsmart the rules.
+      </p>
+
+      <p style="margin-bottom:1.2rem; font-size:0.98rem;">
+        Instead of trying to fix that with more paper, more surveillance and more frustration, I started
+        building an online exam space that makes cheating harder and thinking the focus. The goal is not to
+        catch students cheating, but to design an environment where it’s simply more efficient to do the work
+        than to look for loopholes.
+      </p>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>The classroom problem</h3>
+          <ul>
+            <li>Students coordinated answers via notes and phones despite clear instructions.</li>
+            <li>Paper exams generated a lot of waste and extra logistics.</li>
+            <li>Marking handwritten copies took too long for a quick feedback loop.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>What this beta aims to do</h3>
+          <ul>
+            <li>Create a focused, full-screen exam space for in-person classes.</li>
+            <li>Make cheating less convenient than simply answering the questions.</li>
+            <li>Give instructors a clear, structured report they can mark quickly.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. EXAM AT A GLANCE – STUDENT VIEW -->
+    <section id="student-view" class="section">
+      <div class="section-header">
+        <p class="section-kicker">Inside the exam</p>
+        <h2>Exam at a glance – what students see</h2>
+        <p class="section-subtitle">
+          A simple, full-screen exam flow: students log in, confirm their details, and complete the exam
+          in a distraction-free interface.
+        </p>
+      </div>
+
+      <div class="exam-showcase">
+        <button class="exam-showcase-nav prev" type="button" aria-label="Previous screen">‹</button>
+        <div class="exam-showcase-main">
+          <img
+            id="examSlideImage"
+            src="exam-login.png"
+            alt="Exam login page with passcode"
+          />
+        </div>
+        <button class="exam-showcase-nav next" type="button" aria-label="Next screen">›</button>
+      </div>
+
+      <div class="exam-showcase-caption">
+        <p id="examSlideStep" class="exam-showcase-step">Step 1 · Login</p>
+        <h3 id="examSlideTitle" class="exam-showcase-title">Exam login page with passcode</h3>
+        <p id="examSlideText" class="exam-showcase-text">
+          Students access the exam using a class code and passcode. Their name and email are collected
+          before they can continue.
+        </p>
+      </div>
+
+      <div class="exam-showcase-dots" aria-label="Exam steps">
+        <button type="button" class="dot active" data-index="0">Login</button>
+        <button type="button" class="dot" data-index="1">Confirmation</button>
+        <button type="button" class="dot" data-index="2">Exam – full screen 1</button>
+        <button type="button" class="dot" data-index="3">Exam – full screen 2</button>
+      </div>
+    </section>
+
+    <!-- 3. INSTRUCTOR TOOLS -->
+    <section id="instructor-tools" class="section">
+      <div class="section-header">
+        <p class="section-kicker">For instructors</p>
+        <h2>Instructor tools at a glance</h2>
+        <p class="section-subtitle">
+          Behind the scenes, the beta focuses on two things: a simple way to configure a strict exam,
+          and a clean report sent directly to your inbox.
+        </p>
+      </div>
+
+      <!-- 3A. Backend / configuration snapshot -->
+      <div class="beta-layout" style="margin-top:1.25rem;">
+        <div class="beta-checklist-panel">
+          <h3>Backend & exam controls</h3>
+          <p>Everything you need to run a strict, focused exam in an in-person classroom.</p>
+          <ul class="beta-checklist">
+            <li>Guided exam creation flow with basic templates.</li>
+            <li>QCU, QCM and open-ended questions in the same exam.</li>
+            <li>Time-limited exams with a visible countdown.</li>
+            <li>Full-screen mode with penalties if the window loses focus.</li>
+            <li>Protection against overlays and extra windows on top of the exam.</li>
+            <li>No copy–paste in answer fields.</li>
+            <li>Login page with passcode and identity confirmation.</li>
+            <li>Email-based exam delivery straight to the instructor’s inbox.</li>
+          </ul>
+        </div>
+
+        <figure class="beta-media">
+          <img src="exam-fullscreen1.png" alt="Example of the exam interface as seen by students" />
+          <figcaption>Example of the exam interface as seen by students.</figcaption>
+        </figure>
+      </div>
+
+      <!-- 3B. Report by email -->
+      <div class="report-layout" style="margin-top:2rem;">
+        <div class="report-text">
+          <h3>Automatic exam report by email</h3>
+          <p>
+            When a student submits, the platform generates an HTML report that is sent directly to the
+            instructor’s inbox. It includes:
+          </p>
+          <ul>
+            <li>Student identity (name, email, class code)</li>
+            <li>Score breakdown for the vocabulary section (Part A)</li>
+            <li>The full written answer (Part B) in a readable format</li>
+            <li>A simple grid for manual scoring and comments</li>
+          </ul>
+          <p class="muted">
+            In this beta version, no exam data is stored on a central server. Each report is delivered by
+            email so instructors can archive, annotate, or export it using their usual tools.
+          </p>
+        </div>
+
+        <div class="report-image-card">
+          <img
+            src="exam-report.png"
+            alt="Example of exam report emailed to the instructor"
+          />
+        </div>
+      </div>
+    </section>
+
+  </main>
+
   <script>
-  (function () {
-    const slides = [
-      {
-        step: "Step 1 · Login",
-        title: "Exam login page with passcode",
-        text:
-          "Students enter the class code and a passcode before accessing the exam. " +
-          "Basic identity information (name and email) is collected at this stage.",
-        src: "exam-login.png",
-        alt: "Exam login page with passcode"
-      },
-      {
-        step: "Step 2 · Confirmation",
-        title: "Confirmation screen",
-        text:
-          "Students confirm that their name and email are correct before starting the exam " +
-          "and launching the full-screen mode.",
-        src: "exam-confrimatio.png",
-        alt: "Confirmation screen before starting the exam"
-      },
-      {
-        step: "Step 3 · Exam View ",
-        title: "Exam interface in full screen",
-        text:
-          "The vocabulary section (Part A) appears in a clean, full-screen interface with " +
-          "navigation controls and a visible timer.",
-        src: "exam-fullscreen1.png",
-        alt: "Exam interface in full screen mode – Part A"
-      },
-      {
-        step: "Step 4 · Exam View",
-        title: "Writing task in full screen",
-        text:
-          "The writing task (Part B) uses a focused editor where copy–paste and translation " +
-          "features are restricted to limit cheating.",
-        src: "exam-fullscreen2.png",
-        alt: "Exam interface in full screen mode – Part B"
+    (function () {
+      const slides = [
+        {
+          step: "Step 1 · Login",
+          title: "Exam login page with passcode",
+          text:
+            "Students enter the class code and a passcode before accessing the exam. " +
+            "Basic identity information (name and email) is collected at this stage.",
+          src: "exam-login.png",
+          alt: "Exam login page with passcode"
+        },
+        {
+          step: "Step 2 · Confirmation",
+          title: "Confirmation screen",
+          text:
+            "Students confirm that their name and email are correct before starting the exam " +
+            "and launching the full-screen mode.",
+          src: "exam-confirmatio.png",  // make sure this matches the actual filename
+          alt: "Confirmation screen before starting the exam"
+        },
+        {
+          step: "Step 3 · Exam View",
+          title: "Exam interface in full screen",
+          text:
+            "The vocabulary section (Part A) appears in a clean, full-screen interface with " +
+            "navigation controls and a visible timer.",
+          src: "exam-fullscreen1.png",
+          alt: "Exam interface in full screen mode – Part A"
+        },
+        {
+          step: "Step 4 · Exam View",
+          title: "Writing task in full screen",
+          text:
+            "The writing task (Part B) uses a focused editor where copy–paste and translation " +
+            "features are restricted to limit cheating.",
+          src: "exam-fullscreen2.png",
+          alt: "Exam interface in full screen mode – Part B"
+        }
+      ];
+
+      const imgEl   = document.getElementById("examSlideImage");
+      const stepEl  = document.getElementById("examSlideStep");
+      const titleEl = document.getElementById("examSlideTitle");
+      const textEl  = document.getElementById("examSlideText");
+      const dots    = Array.from(document.querySelectorAll(".exam-showcase-dots .dot"));
+      const prevBtn = document.querySelector(".exam-showcase-nav.prev");
+      const nextBtn = document.querySelector(".exam-showcase-nav.next");
+
+      if (!imgEl || !stepEl || !titleEl || !textEl || !prevBtn || !nextBtn || !dots.length) return;
+
+      let index = 0;
+
+      function renderSlide(i) {
+        const slide = slides[i];
+        if (!slide) return;
+        index = i;
+        imgEl.src = slide.src;
+        imgEl.alt = slide.alt;
+        stepEl.textContent  = slide.step;
+        titleEl.textContent = slide.title;
+        textEl.textContent  = slide.text;
+        dots.forEach((d, idx) => d.classList.toggle("active", idx === index));
       }
-    ];
 
-    const imgEl   = document.getElementById("examSlideImage");
-    const stepEl  = document.getElementById("examSlideStep");
-    const titleEl = document.getElementById("examSlideTitle");
-    const textEl  = document.getElementById("examSlideText");
-    const dots    = Array.from(document.querySelectorAll(".exam-showcase-dots .dot"));
-    const prevBtn = document.querySelector(".exam-showcase-nav.prev");
-    const nextBtn = document.querySelector(".exam-showcase-nav.next");
-
-    if (!imgEl || !stepEl || !titleEl || !textEl || !prevBtn || !nextBtn || !dots.length) return;
-
-    let index = 0;
-
-    function renderSlide(i) {
-      const slide = slides[i];
-      if (!slide) return;
-      index = i;
-      imgEl.src = slide.src;
-      imgEl.alt = slide.alt;
-      stepEl.textContent  = slide.step;
-      titleEl.textContent = slide.title;
-      textEl.textContent  = slide.text;
-      dots.forEach((d, idx) => d.classList.toggle("active", idx === index));
-    }
-
-    prevBtn.addEventListener("click", () => {
-      renderSlide((index - 1 + slides.length) % slides.length);
-    });
-    nextBtn.addEventListener("click", () => {
-      renderSlide((index + 1) % slides.length);
-    });
-    dots.forEach(dot => {
-      dot.addEventListener("click", () => {
-        const i = parseInt(dot.dataset.index, 10);
-        if (!isNaN(i)) renderSlide(i);
+      prevBtn.addEventListener("click", () => {
+        renderSlide((index - 1 + slides.length) % slides.length);
       });
-    });
+      nextBtn.addEventListener("click", () => {
+        renderSlide((index + 1) % slides.length);
+      });
+      dots.forEach(dot => {
+        dot.addEventListener("click", () => {
+          const i = parseInt(dot.dataset.index, 10);
+          if (!isNaN(i)) renderSlide(i);
+        });
+      });
 
-    renderSlide(0);
-  })();
-</script>
+      renderSlide(0);
+    })();
+  </script>
 </body>
 </html>
