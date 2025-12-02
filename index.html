@@ -164,7 +164,107 @@
     .card h3 {
       margin-top: 0;
     }
+.checklist {
+  margin-top: 0.75rem;
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+}
+.checklist li {
+  margin-bottom: 0.3rem;
+}
 
+/* Simple responsive grid for screenshots */
+.screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+.screenshot-grid img {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  display: block;
+}
+.screenshot-grid figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+    /* Blue checklist panel + media layout */
+.beta-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
+  gap: 2rem;
+  margin-top: 1.5rem;
+  align-items: center;
+}
+
+.beta-checklist-panel {
+  background: #2643e9;
+  color: #ffffff;
+  border-radius: 18px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
+}
+
+.beta-checklist-panel h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.beta-checklist-panel p {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #e5e7ff;
+}
+
+.beta-checklist {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.beta-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+.beta-checklist li::before {
+  content: "✔";
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.beta-media {
+  text-align: center;
+}
+
+.beta-media img {
+  max-width: 100%;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+}
+
+.beta-media figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Stack on mobile */
+@media (max-width: 800px) {
+  .beta-layout {
+    grid-template-columns: 1fr;
+  }
+}
     @media (max-width: 800px) {
       .hero {
         grid-template-columns: 1fr;
@@ -180,139 +280,100 @@
     <div class="nav">
       <div class="nav-title">Online Exam Platform – Beta</div>
       <nav class="nav-links">
-        <a href="#about">About</a>
-        <a href="#benefits">About the beta</a>
-        <!-- Top CTA button -->
+        <a href="#about-beta">About this beta</a>
+        <a href="#screenshots">Screenshots</a>
         <a href="instructor.html" class="btn-outline">Create an exam</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- HERO / LANDING -->
-    <section id="about">
-      <div class="hero">
-        <div>
-          <div class="hero-badge">Created by a business-school teacher</div>
-
-          <h1 class="hero-title">An online exam space that students can't outsmart</h1>
-
-          <p class="hero-subtitle">
-            I built this platform after too many paper exams where students shared “scratch notes,”
-            hid phones, and turned in identical answers. I wanted something simple, strict, and
-            adapted to real classrooms of 15–30 students – not another heavy corporate e-learning tool.
-          </p>
-
-          <!-- Secondary CTA inside the hero -->
-          <p style="margin-bottom:1rem;">
-            <a href="instructor.html" class="btn-outline">Create an exam</a>
-          </p>
-
-          <p><strong>What this platform focuses on:</strong></p>
-          <ul class="hero-list">
-            <li>Online exams for in-person classes where the teacher is in the room.</li>
-            <li>Full-screen mode with strong penalties so students can’t quietly browse or use AI tools.</li>
-            <li>No copy–paste in answers: students must commit to their own writing.</li>
-            <li>Exams sent directly by email to the instructor for instant confirmation and flexible archiving.</li>
-          </ul>
-        </div>
-        <div class="hero-visual">
-          <img src="img/exam-settings-overview.png" alt="Exam settings overview screenshot" />
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT THE BETA / STORY -->
-    <section id="benefits">
-      <h2>About this beta</h2>
-
-      <p>
+    <!-- ABOUT THIS BETA (now the main “hero”) -->
+    <section id="about-beta">
+      <h1 class="hero-title" style="margin-bottom:0.75rem;">Why I built this exam platform</h1>
+      <p style="margin-bottom:1rem; font-size:0.98rem;">
         This project started in a very ordinary way: with paper exams that no longer worked.
-        Students brought “scratch” notes they passed around, hid phones under the table, and
-        turned in answers that were copy–paste identical. At that point, the exam was no longer
-        a serious way to measure progress – it was a game of who could outsmart the rules.
+        Students used “scratch” notes they passed around, hid phones under the table, and
+        turned in answers that were copy–paste identical. At that point, the exam was no
+        longer a serious way to measure progress – it was a game of who could outsmart the rules.
       </p>
 
-      <p>
+      <p style="margin-bottom:1.5rem; font-size:0.98rem;">
         Instead of fighting that with more paper, more surveillance and more frustration, I decided
-        to build a lightweight online exam space that makes cheating harder and thinking easier.
-        The goal is not to catch students, but to design an environment where it’s simply more
+        to build an online exam space that makes cheating harder and thinking the focus. The goal
+        is not to catch students cheating, but to design an environment where it’s simply more
         efficient to do the work than to look for loopholes.
       </p>
 
-      <div class="two-col" style="margin-top:1rem;">
+      <div class="two-col">
         <div class="card">
           <h3>The classroom problem</h3>
           <ul>
-            <li>Paper exams used 3–4 pages per student and generated a lot of waste.</li>
-            <li>Marking stacks of handwritten copies took too long for a quick feedback loop.</li>
             <li>Students coordinated answers via notes and phones despite clear instructions.</li>
-            <li>As tools evolved, traditional “no phone, no notes” rules stopped being realistic.</li>
+            <li>Paper exams generated a lot of waste.</li>
+            <li>Marking handwritten copies took too long for a quick feedback loop.</li>
           </ul>
         </div>
 
         <div class="card">
-          <h3>The design principles</h3>
+          <h3>The solution</h3>
           <ul>
-            <li>Students must focus on the content, not on finding ways around the rules.</li>
-            <li>The tool must stay straightforward for in-person classes of 15–30 students.</li>
-            <li>Instructors should confirm in real time that every exam has been received.</li>
-            <li>The technical solution should be lean, without heavy infrastructure.</li>
+            <li>Students focus on content, not on finding ways around the rules.</li>
+            <li>Light login, a straightforward exam page, and a report emailed to the teacher.</li>
+            <li>QCM questions are pre-graded so teachers can focus on written / subjective parts.</li>
           </ul>
         </div>
       </div>
 
-      <h3>What’s included in this beta</h3>
-      <ul>
-        <li>
-          A guided exam creation flow with basic templates so instructors don’t forget key settings.
-        </li>
-        <li>
-          Support for QCU/QCM and open-ended questions, suitable for business-school style exams.
-        </li>
-        <li>
-          Time-limited exams with a clear countdown visible to students.
-        </li>
-        <li>
-          Full-screen mode: if the exam window loses focus or the student exits full screen,
-          the exam content is erased and the timer keeps running. The message is clear:
-          stay focused or lose time.
-        </li>
-        <li>
-          Protection against overlays and extra windows on top of the exam (no hidden tools quietly running over it).
-        </li>
-        <li>
-          No copy–paste in answer fields, even for text sections, to encourage real expression instead of pasting.
-        </li>
-        <li>
-          A login page with passcode protection and a confirmation page so the workflow is explicit for students.
-        </li>
-        <li>
-          Email-based generation: each completed exam is sent directly to the instructor’s inbox,
-          who can confirm receipt on the spot before students leave the room.
-        </li>
-      </ul>
+     <h3 style="margin-top:2rem;">What’s included in this beta</h3>
 
-      <h3>What’s deliberately not there yet</h3>
-      <p>
-        For this beta, there is no central storage or full instructor back-office. Exams are not
-        stored on a separate server: the platform focuses on generating and securing the exam,
-        then sending the result by email. On my side, I still handle some generation steps manually
-        while testing the tool with my own classes.
+<div class="beta-layout">
+  <div class="beta-checklist-panel">
+    <h3>Snapshot of the current beta</h3>
+    <p>Everything you need to run a strict, focused exam in an in-person classroom.</p>
+    <ul class="beta-checklist">
+      <li>Guided exam creation flow with basic templates.</li>
+      <li>QCU, QCM and open-ended questions.</li>
+      <li>Time-limited exams with a clear countdown.</li>
+      <li>Full-screen mode with penalties if the window loses focus.</li>
+      <li>Protection against overlays and extra windows on top of the exam.</li>
+      <li>No copy–paste in answer fields.</li>
+      <li>Login page with passcode and confirmation page.</li>
+      <li>Email-based exam delivery straight to the instructor’s inbox.</li>
+    </ul>
+  </div>
+
+  <figure class="beta-media">
+    <!-- Swap this for whatever screenshot makes the most sense -->
+    <img src="img/exam-overview.png" alt="Overview of the online exam interface" />
+    <figcaption>Example view of the exam settings and student interface.</figcaption>
+  </figure>
+</div>
+
+    <!-- SCREENSHOTS SECTION -->
+    <section id="screenshots">
+      <h2>Inside the exam</h2>
+      <p style="margin-bottom:1rem; font-size:0.95rem;">
+        A few screenshots of the current beta, as used in real in-person classes.
       </p>
 
-      <p>
-        Later iterations may add a teacher dashboard and more flexible “unlock” flows
-        (for example, allowing an instructor to reopen an exam instead of deleting it),
-        but the current version stays intentionally strict and minimal so it can be tested and
-        refined in real classrooms first.
-      </p>
+      <div class="screenshot-grid">
+        <!-- Replace src paths with your actual captures -->
+        <figure>
+          <img src="img/exam-login.png" alt="Exam login page with passcode" />
+          <figcaption>Login page with passcode protection.</figcaption>
+        </figure>
 
-      <p>
-        If you’re a school or instructor who recognises this situation – too much cheating,
-        too much paper, and not enough real evaluation – this beta is a first, pragmatic step
-        toward something better.
-      </p>
+        <figure>
+          <img src="img/exam-fullscreen.png" alt="Exam interface in full-screen mode" />
+          <figcaption>Exam interface in full-screen mode with countdown timer.</figcaption>
+        </figure>
+
+        <figure>
+          <img src="img/exam-report.png" alt="Example of exam report emailed to teacher" />
+          <figcaption>Example of an exam report emailed to the instructor.</figcaption>
+        </figure>
+      </div>
     </section>
   </main>
 </body>
