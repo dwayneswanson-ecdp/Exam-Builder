@@ -258,6 +258,27 @@
   font-size: 0.85rem;
   color: #6b7280;
 }
+    .screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.screenshot-grid img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+.screenshot-grid figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
 
 /* Stack on mobile */
 @media (max-width: 800px) {
@@ -347,31 +368,24 @@
   </figure>
 </div>
 
-    <!-- SCREENSHOTS SECTION -->
-    <section id="screenshots">
-      <h2>Inside the exam</h2>
-      <p style="margin-bottom:1rem; font-size:0.95rem;">
-        A few screenshots of the current beta, as used in real in-person classes.
-      </p>
+  <section id="screenshots">
+  <h2>Exam at a glance</h2>
+  <p style="margin-bottom:1rem; font-size:0.95rem;">
+    A quick look at the current beta screens, as used in real in-person classes.
+  </p>
 
-      <div class="screenshot-grid">
-        <!-- Replace src paths with your actual captures -->
-        <figure>
-          <img src="img/exam-login.png" alt="Exam login page with passcode" />
-          <figcaption>Login page with passcode protection.</figcaption>
-        </figure>
+  <div class="screenshot-grid">
+    <figure>
+      <img src="exam-login.png" alt="Exam login page with passcode" />
+      <figcaption>Exam login page with passcode.</figcaption>
+    </figure>
 
-        <figure>
-          <img src="img/exam-fullscreen.png" alt="Exam interface in full-screen mode" />
-          <figcaption>Exam interface in full-screen mode with countdown timer.</figcaption>
-        </figure>
-
-        <figure>
-          <img src="img/exam-report.png" alt="Example of exam report emailed to teacher" />
-          <figcaption>Example of an exam report emailed to the instructor.</figcaption>
-        </figure>
-      </div>
-    </section>
+    <figure>
+      <img src="exam-confirmatio.png" alt="Exam confirmation page" />
+      <figcaption>Exam confirmation page.</figcaption>
+    </figure>
+  </div>
+</section>
   </main>
 </body>
 </html>
