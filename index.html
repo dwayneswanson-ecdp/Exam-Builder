@@ -181,7 +181,7 @@
       <div class="nav-title">Online Exam Platform – Beta</div>
       <nav class="nav-links">
         <a href="#about">About</a>
-        <a href="#benefits">Benefits</a>
+        <a href="#benefits">About the beta</a>
         <!-- Top CTA button -->
         <a href="instructor.html" class="btn-outline">Create an exam</a>
       </nav>
@@ -189,17 +189,18 @@
   </header>
 
   <main>
-    <!-- ABOUT / LANDING -->
+    <!-- HERO / LANDING -->
     <section id="about">
       <div class="hero">
         <div>
-          <div class="hero-badge">For schools & instructors</div>
+          <div class="hero-badge">Created by a business-school teacher</div>
 
-          <h1 class="hero-title">Secure, lightweight online exams – without central storage</h1>
+          <h1 class="hero-title">An online exam space that students can't outsmart</h1>
 
           <p class="hero-subtitle">
-            This beta version standardises exam formats and helps instructors build online exams
-            while keeping full control: exams are generated and sent directly by email, not stored on a server.
+            I built this platform after too many paper exams where students shared “scratch notes,”
+            hid phones, and turned in identical answers. I wanted something simple, strict, and
+            adapted to real classrooms of 15–30 students – not another heavy corporate e-learning tool.
           </p>
 
           <!-- Secondary CTA inside the hero -->
@@ -207,45 +208,111 @@
             <a href="instructor.html" class="btn-outline">Create an exam</a>
           </p>
 
-          <p><strong>Why this platform?</strong></p>
+          <p><strong>What this platform focuses on:</strong></p>
           <ul class="hero-list">
-            <li>Harmonise exam practices across classes and teachers.</li>
-            <li>No central storage: each exam is generated and emailed to the instructor.</li>
-            <li>Support for QCU/QCM and open-ended questions, with multimedia options.</li>
-            <li>Simple workflow so instructors can focus on pedagogy, not tools.</li>
+            <li>Online exams for in-person classes where the teacher is in the room.</li>
+            <li>Full-screen mode with strong penalties so students can’t quietly browse or use AI tools.</li>
+            <li>No copy–paste in answers: students must commit to their own writing.</li>
+            <li>Exams sent directly by email to the instructor for instant confirmation and flexible archiving.</li>
           </ul>
         </div>
         <div class="hero-visual">
-          <!-- Replace with a global screenshot if you have one -->
           <img src="img/exam-settings-overview.png" alt="Exam settings overview screenshot" />
         </div>
       </div>
     </section>
 
-    <!-- BENEFITS SECTION -->
+    <!-- ABOUT THE BETA / STORY -->
     <section id="benefits">
-      <h2>Benefits of the beta</h2>
+      <h2>About this beta</h2>
+
+      <p>
+        This project started in a very ordinary way: with paper exams that no longer worked.
+        Students brought “scratch” notes they passed around, hid phones under the table, and
+        turned in answers that were copy–paste identical. At that point, the exam was no longer
+        a serious way to measure progress – it was a game of who could outsmart the rules.
+      </p>
+
+      <p>
+        Instead of fighting that with more paper, more surveillance and more frustration, I decided
+        to build a lightweight online exam space that makes cheating harder and thinking easier.
+        The goal is not to catch students, but to design an environment where it’s simply more
+        efficient to do the work than to look for loopholes.
+      </p>
 
       <div class="two-col" style="margin-top:1rem;">
         <div class="card">
-          <h3>For the school</h3>
+          <h3>The classroom problem</h3>
           <ul>
-            <li><strong>Lightweight, privacy-friendly beta:</strong> exams are not stored centrally.</li>
-            <li>Standardised exam format across different modules and classes.</li>
-            <li>Clear exam templates that can be reused and adapted.</li>
-            <li>Easy to extend later towards a more integrated solution.</li>
+            <li>Paper exams used 3–4 pages per student and generated a lot of waste.</li>
+            <li>Marking stacks of handwritten copies took too long for a quick feedback loop.</li>
+            <li>Students coordinated answers via notes and phones despite clear instructions.</li>
+            <li>As tools evolved, traditional “no phone, no notes” rules stopped being realistic.</li>
           </ul>
         </div>
+
         <div class="card">
-          <h3>For instructors & students</h3>
+          <h3>The design principles</h3>
           <ul>
-            <li>Guided “Create exam” flow with minimal technical steps.</li>
-            <li>Multiple question types: QCU, QCM, and open-ended responses.</li>
-            <li>Control over difficulty, timing and scoring rules.</li>
-            <li>Exams received by email so instructors can archive them however they prefer.</li>
+            <li>Students must focus on the content, not on finding ways around the rules.</li>
+            <li>The tool must stay straightforward for in-person classes of 15–30 students.</li>
+            <li>Instructors should confirm in real time that every exam has been received.</li>
+            <li>The technical solution should be lean, without heavy infrastructure.</li>
           </ul>
         </div>
       </div>
+
+      <h3>What’s included in this beta</h3>
+      <ul>
+        <li>
+          A guided exam creation flow with basic templates so instructors don’t forget key settings.
+        </li>
+        <li>
+          Support for QCU/QCM and open-ended questions, suitable for business-school style exams.
+        </li>
+        <li>
+          Time-limited exams with a clear countdown visible to students.
+        </li>
+        <li>
+          Full-screen mode: if the exam window loses focus or the student exits full screen,
+          the exam content is erased and the timer keeps running. The message is clear:
+          stay focused or lose time.
+        </li>
+        <li>
+          Protection against overlays and extra windows on top of the exam (no hidden tools quietly running over it).
+        </li>
+        <li>
+          No copy–paste in answer fields, even for text sections, to encourage real expression instead of pasting.
+        </li>
+        <li>
+          A login page with passcode protection and a confirmation page so the workflow is explicit for students.
+        </li>
+        <li>
+          Email-based generation: each completed exam is sent directly to the instructor’s inbox,
+          who can confirm receipt on the spot before students leave the room.
+        </li>
+      </ul>
+
+      <h3>What’s deliberately not there yet</h3>
+      <p>
+        For this beta, there is no central storage or full instructor back-office. Exams are not
+        stored on a separate server: the platform focuses on generating and securing the exam,
+        then sending the result by email. On my side, I still handle some generation steps manually
+        while testing the tool with my own classes.
+      </p>
+
+      <p>
+        Later iterations may add a teacher dashboard and more flexible “unlock” flows
+        (for example, allowing an instructor to reopen an exam instead of deleting it),
+        but the current version stays intentionally strict and minimal so it can be tested and
+        refined in real classrooms first.
+      </p>
+
+      <p>
+        If you’re a school or instructor who recognises this situation – too much cheating,
+        too much paper, and not enough real evaluation – this beta is a first, pragmatic step
+        toward something better.
+      </p>
     </section>
   </main>
 </body>
