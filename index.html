@@ -279,7 +279,168 @@
   font-size: 0.85rem;
   color: #6b7280;
 }
+/* Generic section styling for new blocks */
+.section {
+  max-width: 960px;
+  margin: 2.5rem auto 3rem;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
 
+.section-header {
+  padding: 0 0 1rem;
+}
+
+.section-kicker {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 0.3rem;
+}
+
+.section-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+  max-width: 620px;
+}
+
+/* Exam carousel */
+.exam-showcase {
+  position: relative;
+  margin: 1rem 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: radial-gradient(circle at top left, #eef2ff, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 420px;
+}
+
+.exam-showcase-main {
+  width: 100%;
+  max-width: 820px;
+  height: 100%;
+  padding: 1.25rem 2.5rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exam-showcase-main img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+  background: #fff;
+}
+
+/* Arrows */
+.exam-showcase-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: #ffffffdd;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
+}
+
+.exam-showcase-nav.prev { left: 14px; }
+.exam-showcase-nav.next { right: 14px; }
+
+.exam-showcase-nav:hover { filter: brightness(0.96); }
+
+/* Caption + dots */
+.exam-showcase-caption {
+  margin: 0.75rem 0 0.25rem;
+}
+
+.exam-showcase-step {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #6b7280;
+  margin-bottom: 0.1rem;
+}
+
+.exam-showcase-title {
+  font-size: 1.05rem;
+  margin-bottom: 0.1rem;
+}
+
+.exam-showcase-text {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.exam-showcase-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.exam-showcase-dots .dot {
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #4b5563;
+}
+
+.exam-showcase-dots .dot.active {
+  border-color: #2643e9;
+  background: #2643e9;
+  color: #fff;
+}
+
+/* Report layout */
+.report-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.report-image-card {
+  border-radius: 18px;
+  background: #f3f4ff;
+  padding: 14px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.report-image-card img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  background: #fff;
+}
+
+@media (max-width: 900px) {
+  .exam-showcase { height: 320px; }
+  .exam-showcase-main { padding: 0.75rem 1.25rem; }
+}
+
+@media (max-width: 768px) {
+  .exam-showcase { height: 260px; }
+  .report-layout { grid-template-columns: 1fr; }
+}
 /* Stack on mobile */
 @media (max-width: 800px) {
   .beta-layout {
@@ -389,7 +550,7 @@
     <div class="exam-showcase-main">
       <img
         id="examSlideImage"
-        src="img/exam-login.png"
+        src="exam-login.png"
         alt="Exam login page with passcode"
       />
     </div>
@@ -451,12 +612,93 @@
 
     <div class="report-image-card">
       <img
-        src="img/exam-report.png"
+        src="exam-report.png"
         alt="Example of exam report emailed to the instructor"
       />
     </div>
   </div>
 </section>
   </main>
+  <script>
+  (function () {
+    const slides = [
+      {
+        step: "Step 1 · Login",
+        title: "Exam login page with passcode",
+        text:
+          "Students enter the class code and a passcode before accessing the exam. " +
+          "Basic identity information (name and email) is collected at this stage.",
+        src: "exam-login.png",
+        alt: "Exam login page with passcode"
+      },
+      {
+        step: "Step 2 · Confirmation",
+        title: "Confirmation screen",
+        text:
+          "Students confirm that their name and email are correct before starting the exam " +
+          "and launching the full-screen mode.",
+        src: "exam-confirmatio.png",
+        alt: "Confirmation screen before starting the exam"
+      },
+      {
+        step: "Step 3 · Exam (full screen 1)",
+        title: "Exam interface in full screen",
+        text:
+          "The vocabulary section (Part A) appears in a clean, full-screen interface with " +
+          "navigation controls and a visible timer.",
+        src: "exam-fullscreen-1.png",
+        alt: "Exam interface in full screen mode – Part A"
+      },
+      {
+        step: "Step 4 · Exam (full screen 2)",
+        title: "Writing task in full screen",
+        text:
+          "The writing task (Part B) uses a focused editor where copy–paste and translation " +
+          "features are restricted to limit cheating.",
+        src: "exam-fullscreen-2.png",
+        alt: "Exam interface in full screen mode – Part B"
+      }
+    ];
+
+    const imgEl   = document.getElementById("examSlideImage");
+    const stepEl  = document.getElementById("examSlideStep");
+    const titleEl = document.getElementById("examSlideTitle");
+    const textEl  = document.getElementById("examSlideText");
+    const dots    = Array.from(document.querySelectorAll(".exam-showcase-dots .dot"));
+    const prevBtn = document.querySelector(".exam-showcase-nav.prev");
+    const nextBtn = document.querySelector(".exam-showcase-nav.next");
+
+    if (!imgEl || !stepEl || !titleEl || !textEl || !prevBtn || !nextBtn || !dots.length) return;
+
+    let index = 0;
+
+    function renderSlide(i) {
+      const slide = slides[i];
+      if (!slide) return;
+      index = i;
+      imgEl.src = slide.src;
+      imgEl.alt = slide.alt;
+      stepEl.textContent  = slide.step;
+      titleEl.textContent = slide.title;
+      textEl.textContent  = slide.text;
+      dots.forEach((d, idx) => d.classList.toggle("active", idx === index));
+    }
+
+    prevBtn.addEventListener("click", () => {
+      renderSlide((index - 1 + slides.length) % slides.length);
+    });
+    nextBtn.addEventListener("click", () => {
+      renderSlide((index + 1) % slides.length);
+    });
+    dots.forEach(dot => {
+      dot.addEventListener("click", () => {
+        const i = parseInt(dot.dataset.index, 10);
+        if (!isNaN(i)) renderSlide(i);
+      });
+    });
+
+    renderSlide(0);
+  })();
+</script>
 </body>
 </html>
