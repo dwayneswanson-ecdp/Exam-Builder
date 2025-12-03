@@ -400,7 +400,7 @@
           <h1 class="hero-title">Instructor page – create an exam</h1>
           <p class="hero-subtitle">
             Use this page to describe your exam and how you want it to behave in the classroom.
-            When you’re ready, click <strong>Create an exam</strong> and fill out the 3-step form.
+            For the beta, you simply upload your exam as a PDF and set a few key parameters.
             A summary report will be emailed so the exam can be configured on the backend.
           </p>
         </div>
@@ -417,15 +417,15 @@
           <h3>Configuration</h3>
           <p>
             You provide the key identification information: your name and contact,
-            class, subject, exam title, date, duration, and how the exam will be used in class.
+            class, groups, subject, exam title, date, duration, and how the exam will be used in class.
           </p>
         </div>
         <div class="step-card">
           <p class="step-kicker">Step 2</p>
-          <h3>Exam configuration</h3>
+          <h3>Exam configuration & PDF</h3>
           <p>
-            You choose the exam format (vocabulary / QCM / written / oral), the number of questions,
-            scoring rules, and any timing or anti-cheating options you want activated.
+            You choose the exam format and timing behaviour, and upload your exam PDF
+            (plus an optional correction grid or answer key).
           </p>
         </div>
         <div class="step-card">
@@ -493,8 +493,16 @@
               <input id="schoolName" type="text" placeholder="Institution / campus (optional)" />
             </div>
             <div class="form-field">
-              <label for="className">Class / group name</label>
+              <label for="className">Class / programme</label>
               <input id="className" type="text" placeholder="Ex: M2 – Business Resources" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="groups">Groups for this exam</label>
+              <textarea id="groups" placeholder="Enter one group per line (ex: G1&#10;G2&#10;G3)"></textarea>
+              <small>These names will be used in the student drop-down (ex: G1, G2, G3).</small>
             </div>
             <div class="form-field">
               <label for="subject">Subject / module</label>
@@ -504,6 +512,9 @@
               <label for="examTitle">Exam title</label>
               <input id="examTitle" type="text" placeholder="Ex: CC1 – Business Resources" />
             </div>
+          </div>
+
+          <div class="form-grid">
             <div class="form-field">
               <label for="examDate">Exam date</label>
               <input id="examDate" type="date" />
@@ -512,9 +523,6 @@
               <label for="examDuration">Duration (minutes)</label>
               <input id="examDuration" type="number" min="5" step="5" placeholder="40" />
             </div>
-          </div>
-
-          <div class="form-grid">
             <div class="form-field">
               <label for="deliveryMode">Delivery mode</label>
               <select id="deliveryMode">
@@ -525,10 +533,11 @@
               </select>
               <small>Helps define how strict the anti-cheat behaviour should be.</small>
             </div>
-            <div class="form-field">
-              <label for="notesForBuilder">Notes for exam builder (optional)</label>
-              <textarea id="notesForBuilder" placeholder="Anything special I should know about this group or exam?"></textarea>
-            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="notesForBuilder">Notes for exam builder (optional)</label>
+            <textarea id="notesForBuilder" placeholder="Anything special I should know about this group or exam?"></textarea>
           </div>
         </div>
 
@@ -536,7 +545,7 @@
         <div class="wizard-step" data-step="2" style="display:none;">
           <div class="wizard-section-title">Exam configuration</div>
           <div class="wizard-section-subtitle">
-            Describe the structure of the exam and the behaviour you expect during the test.
+            Describe the structure of the exam, how it should behave, and upload your exam PDF.
           </div>
 
           <div class="form-grid">
@@ -605,7 +614,21 @@
             </label>
           </div>
 
-          <div class="form-field" style="margin-top:0.8rem;">
+          <h3>Exam files (beta)</h3>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="examPdf">Exam PDF</label>
+              <input id="examPdf" type="file" accept="application/pdf" />
+              <small>Upload the final version of your exam in PDF format.</small>
+            </div>
+            <div class="form-field">
+              <label for="correctionPdf">Correction / grading grid (optional)</label>
+              <input id="correctionPdf" type="file" accept="application/pdf" />
+              <small>You can upload a correction grid or answer key.</small>
+            </div>
+          </div>
+
+          <div class="form-field">
             <label for="examContentDescription">Short description of exam content</label>
             <textarea id="examContentDescription" placeholder="Ex: Vocabulary on business resources (10 items) + written answer about how a company manages resources."></textarea>
           </div>
@@ -737,11 +760,17 @@
           const el = document.getElementById(id);
           return el ? el.value.trim() : "";
         };
+        const getFileName = (id) => {
+          const el = document.getElementById(id);
+          return el && el.files && el.files[0] ? el.files[0].name : "";
+        };
+
         return {
           instructorName: get("instructorName"),
           instructorEmail: get("instructorEmail"),
           schoolName: get("schoolName"),
           className: get("className"),
+          examGroups: get("groups"),
           subject: get("subject"),
           examTitle: get("examTitle"),
           examDate: get("examDate"),
@@ -757,6 +786,8 @@
           antiCheatFullscreen: document.getElementById("antiCheatFullscreen")?.checked || false,
           antiCheatCopyPaste: document.getElementById("antiCheatCopyPaste")?.checked || false,
           antiCheatLanguageTools: document.getElementById("antiCheatLanguageTools")?.checked || false,
+          examPdf: getFileName("examPdf"),
+          correctionPdf: getFileName("correctionPdf"),
           examContentDescription: get("examContentDescription")
         };
       }
@@ -780,7 +811,8 @@
         add(configList, "Instructor", data.instructorName);
         add(configList, "Email", data.instructorEmail);
         add(configList, "School / campus", data.schoolName);
-        add(configList, "Class / group", data.className);
+        add(configList, "Class / programme", data.className);
+        add(configList, "Groups for this exam", data.examGroups);
         add(configList, "Subject / module", data.subject);
         add(configList, "Exam title", data.examTitle);
         add(configList, "Exam date", data.examDate);
@@ -797,6 +829,8 @@
         add(examList, "Anti-cheat – full-screen", data.antiCheatFullscreen ? "Yes" : "No");
         add(examList, "Anti-cheat – block copy-paste", data.antiCheatCopyPaste ? "Yes" : "No");
         add(examList, "Anti-cheat – restrict translation tools", data.antiCheatLanguageTools ? "Yes" : "No");
+        add(examList, "Exam PDF", data.examPdf || "Not uploaded");
+        add(examList, "Correction / grading grid", data.correctionPdf || "Not uploaded");
         add(examList, "Exam content description", data.examContentDescription);
       }
     })();
