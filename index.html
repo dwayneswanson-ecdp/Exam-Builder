@@ -10,7 +10,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
       color: #1f2933;
-      background: #f5f7fb;
+      background: #f5f7fb; /* light, clean background */
     }
     header {
       position: sticky;
@@ -47,7 +47,6 @@
       color: #2643e9;
     }
 
-    /* Primary CTA button */
     .btn-outline {
       text-decoration: none;
       padding: 0.4rem 1rem;
@@ -76,13 +75,13 @@
       padding: 2rem 1.5rem 3rem;
     }
 
-    /* Base white card section (Section 1) */
+    /* Base section card */
     section {
       margin-bottom: 3rem;
       background: #ffffff;
       border-radius: 16px;
       padding: 2rem;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
     }
 
     .hero-title {
@@ -132,17 +131,11 @@
       margin-top: 0;
     }
 
-    /* Tinted “section card” for Sections 2 & 3 */
-    .section {
-      max-width: 1100px;
-      margin: 3rem auto;
-      padding: 2.25rem 2rem;
-      background: #f3f4ff;
-      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
-      border-radius: 18px;
-    }
+    /* Section header helper (for 2 & 3) */
     .section-header {
-      padding: 0 0 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 1.25rem;
     }
     .section-kicker {
       font-size: 0.8rem;
@@ -157,24 +150,23 @@
       max-width: 620px;
     }
 
-    /* Exam slideshow (big slide, one at a time) */
+    /* Exam slideshow – flatter, less “boxy” */
     .exam-showcase {
       position: relative;
-      margin-top: 1.5rem;
-      border-radius: 18px;
-      overflow: hidden;
-      background: radial-gradient(circle at top left, #eef2ff, #e5e7eb);
+      margin-top: 0.5rem;
+      border-radius: 14px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
       height: 420px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
     }
     .exam-showcase-main {
       width: 100%;
-      max-width: 860px;
+      max-width: 880px;
       height: 100%;
-      padding: 1.25rem 3.25rem;
+      padding: 1.25rem 3rem;
       box-sizing: border-box;
       display: flex;
       align-items: center;
@@ -185,31 +177,31 @@
       max-height: 100%;
       object-fit: contain;
       display: block;
-      border-radius: 12px;
+      border-radius: 10px;
       background: #ffffff;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+      /* no extra box-shadow here to avoid “box in a box” */
     }
 
     .exam-nav {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 999px;
-      border: none;
-      background: #ffffffee;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       font-size: 1.4rem;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
     }
-    .exam-nav.prev { left: 14px; }
-    .exam-nav.next { right: 14px; }
+    .exam-nav.prev { left: 12px; }
+    .exam-nav.next { right: 12px; }
     .exam-nav:hover {
-      filter: brightness(0.96);
+      filter: brightness(0.97);
     }
 
     .exam-showcase-caption {
@@ -226,7 +218,7 @@
       color: #4b5563;
     }
 
-    /* Beta layout (instructor tools) */
+    /* Instructor tools layout */
     .beta-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
@@ -239,7 +231,7 @@
       color: #ffffff;
       border-radius: 18px;
       padding: 1.5rem 1.75rem;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.25);
     }
     .beta-checklist-panel h3 {
       margin-top: 0;
@@ -277,7 +269,6 @@
       max-width: 100%;
       border-radius: 16px;
       border: 1px solid #e5e7eb;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
     }
     .beta-media figcaption {
       margin-top: 0.4rem;
@@ -285,24 +276,23 @@
       color: #6b7280;
     }
 
-    /* Report layout */
     .report-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
       gap: 32px;
       align-items: center;
-      margin-top: 1.5rem;
+      margin-top: 1.8rem;
     }
     .report-image-card {
-      border-radius: 18px;
-      background: #f3f4ff;
-      padding: 14px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 12px;
     }
     .report-image-card img {
       width: 100%;
       display: block;
-      border-radius: 12px;
+      border-radius: 10px;
       background: #fff;
     }
 
@@ -322,9 +312,6 @@
       section {
         padding: 1.5rem;
       }
-      .section {
-        padding: 1.75rem 1.5rem;
-      }
     }
 
     @media (max-width: 768px) {
@@ -332,7 +319,7 @@
         height: 280px;
       }
       .exam-showcase-main {
-        padding: 0.75rem 2.1rem;
+        padding: 0.75rem 1.5rem;
       }
       .report-layout { grid-template-columns: 1fr; }
     }
@@ -353,7 +340,7 @@
 
   <main>
 
-    <!-- 1. WHY THIS EXISTS (white card) -->
+    <!-- 1. WHY THIS EXISTS -->
     <section id="about-beta">
       <h1 class="hero-title" style="margin-bottom:0.75rem;">Why this exam space exists</h1>
 
@@ -399,14 +386,14 @@
       </div>
     </section>
 
-    <!-- 2. EXAM AT A GLANCE – STUDENT VIEW (tinted card with slideshow) -->
-    <section id="student-view" class="section">
+    <!-- 2. EXAM AT A GLANCE – STUDENT VIEW -->
+    <section id="student-view">
       <div class="section-header">
         <p class="section-kicker">Inside the exam</p>
         <h2>Exam at a glance – what students see</h2>
         <p class="section-subtitle">
           A slide-style snapshot of the four key screens: login, confirmation, vocabulary & multiple choice,
-          and the written task. Click the arrows to move through the exam views.
+          and the written task.
         </p>
       </div>
 
@@ -427,13 +414,13 @@
       <div class="exam-showcase-caption">
         <h3 id="examSlideTitle">Login screen</h3>
         <p id="examSlideText">
-          To Login, students enter their name and email address, then access the exam using a unique class code. 
+          Students enter their name and email address, then access the exam using a unique class code.
         </p>
       </div>
     </section>
 
-    <!-- 3. INSTRUCTOR TOOLS (tinted card) -->
-    <section id="instructor-tools" class="section">
+    <!-- 3. INSTRUCTOR TOOLS -->
+    <section id="instructor-tools">
       <div class="section-header">
         <p class="section-kicker">For instructors</p>
         <h2>Instructor tools at a glance</h2>
@@ -443,7 +430,6 @@
         </p>
       </div>
 
-      <!-- 3A. Backend / configuration snapshot -->
       <div class="beta-layout">
         <div class="beta-checklist-panel">
           <h3>Backend & exam controls</h3>
@@ -466,7 +452,6 @@
         </figure>
       </div>
 
-      <!-- 3B. Report by email -->
       <div class="report-layout">
         <div class="report-text">
           <h3>Automatic exam report by email</h3>
@@ -503,31 +488,28 @@
         {
           title: "Login screen",
           text:
-            "To Login, students enter their name and email address, then access the exam using a unique class code.",
+            "Students enter their name and email address, then access the exam using a unique class code.",
           src: "exam-login.png",
           alt: "Exam login screen with passcode"
         },
         {
           title: "Confirmation screen",
           text:
-            "Students verify that their identity information is correct before launching the " +
-            "full-screen exam session.",
+            "Students quickly verify that their identity information is correct before launching the full-screen exam session.",
           src: "exam-confrimatio.png", // make sure this matches your actual filename
           alt: "Confirmation screen before starting the exam"
         },
         {
-          title: "MCQ -Multiple choice questions",
+          title: "Multiple choice questions",
           text:
-            "Multiple choice questions appear in a clean, full-screen layout with a visible " +
-            "timer and simple navigation.",
+            "Vocabulary and multiple choice questions appear in a clean, full-screen layout with a visible timer and simple navigation.",
           src: "exam-fullscreen1.png",
           alt: "Exam interface showing multiple choice questions"
         },
         {
           title: "Written response",
           text:
-            "The writing task uses a focused editor where copy–paste and translation shortcuts are restricted, " +
-            "encouraging original, thoughtful answers.",
+            "The writing task uses a focused editor where copy–paste and translation shortcuts are restricted, encouraging original, thoughtful answers.",
           src: "exam-fullscreen2.png",
           alt: "Exam interface showing written response editor"
         }
@@ -563,7 +545,6 @@
         renderSlide(nextIndex);
       });
 
-      // Optional: arrow keys navigation
       document.addEventListener("keydown", (event) => {
         if (event.key === "ArrowLeft") {
           const nextIndex = (index - 1 + slides.length) % slides.length;
