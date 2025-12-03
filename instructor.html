@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create an Exam – Online Exam Platform</title>
+  <title>Create an exam – Instructor</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -47,18 +47,41 @@
       color: #2643e9;
     }
 
-    .btn-primary {
-      padding: 0.45rem 1rem;
+    .btn-primary,
+    .btn-outline {
+      text-decoration: none;
       border-radius: 999px;
-      border: none;
-      background: #2643e9;
-      color: #ffffff;
+      padding: 0.45rem 1.2rem;
       font-size: 0.9rem;
       font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
       cursor: pointer;
+      border: 2px solid transparent;
+      background: #2643e9;
+      color: #ffffff;
+    }
+    .btn-primary::after {
+      content: "→";
+      font-size: 0.85rem;
     }
     .btn-primary:hover {
       filter: brightness(0.95);
+    }
+    .btn-outline {
+      border-color: #2643e9;
+      background: #ffffff;
+      color: #2643e9;
+    }
+    .btn-outline::after {
+      content: "→";
+      font-size: 0.85rem;
+    }
+    .btn-outline:hover {
+      background: #2643e9;
+      color: #ffffff;
     }
 
     main {
@@ -72,7 +95,26 @@
       background: #ffffff;
       border-radius: 16px;
       padding: 2rem;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .hero-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.5rem;
+    }
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: #4b5563;
+      max-width: 520px;
     }
 
     h2 {
@@ -81,83 +123,259 @@
       color: #111827;
     }
     h3 {
-      font-size: 1.1rem;
-      margin-top: 1.5rem;
-      margin-bottom: 0.4rem;
+      font-size: 1.05rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.35rem;
       color: #111827;
     }
     p {
       margin-bottom: 0.6rem;
-      font-size: 0.96rem;
+      font-size: 0.97rem;
     }
     ul {
       padding-left: 1.2rem;
-      font-size: 0.94rem;
+      font-size: 0.95rem;
     }
     ul li {
       margin-bottom: 0.35rem;
     }
 
-    .step-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #6b7280;
-      margin-bottom: 0.3rem;
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.75rem;
+      margin-top: 1.25rem;
     }
-
-    .card {
+    .step-card {
       border-radius: 14px;
       border: 1px solid #e5e7eb;
-      padding: 1.1rem 1.25rem;
+      padding: 1rem 1.25rem;
       background: #f9fafb;
-      margin-bottom: 1.5rem;
+    }
+    .step-kicker {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 0.2rem;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.75rem;
+    .hint {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-top: 0.3rem;
     }
 
-    input, textarea {
-      width: 100%;
-      padding: 0.4rem 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      font-size: 0.94rem;
-    }
-    label {
-      font-size: 0.84rem;
-      color: #4b5563;
+    .bottom-cta {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: flex-end;
     }
 
-    .step {
-      display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
-      gap: 1.5rem;
-      margin-top: 1.75rem;
+    /* Modal overlay + wizard */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      display: none;
       align-items: center;
+      justify-content: center;
+      z-index: 40;
     }
-    .step img {
-      max-width: 100%;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
+    .modal-overlay.active {
+      display: flex;
     }
-
-    .cta-note {
-      margin-top: 1rem;
-      font-size: 0.85rem;
+    .modal {
+      width: 100%;
+      max-width: 760px;
+      max-height: 90vh;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .modal-header h2 {
+      font-size: 1.15rem;
+      margin: 0;
+    }
+    .modal-close {
+      border: none;
+      background: transparent;
+      font-size: 1.3rem;
+      cursor: pointer;
       color: #6b7280;
     }
+    .modal-body {
+      padding: 1.25rem 1.5rem 1rem;
+      overflow-y: auto;
+    }
+    .wizard-steps {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+    }
+    .wizard-step-pill {
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #4b5563;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .wizard-step-pill span {
+      font-weight: 600;
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+    .wizard-step-pill.active {
+      background: #2643e9;
+      color: #ffffff;
+    }
 
-    @media (max-width: 800px) {
+    .wizard-section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .wizard-section-subtitle {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 0.9rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+    }
+    .form-field label {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #4b5563;
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      font: inherit;
+      padding: 0.4rem 0.55rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      font-size: 0.9rem;
+    }
+    .form-field textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+    .form-field small {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .form-row-inline {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 0.6rem 0;
+    }
+    .checkbox-field {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      color: #4b5563;
+    }
+    .checkbox-field input {
+      width: 16px;
+      height: 16px;
+    }
+
+    .modal-footer {
+      padding: 0.9rem 1.5rem 1.1rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-left {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+    .footer-actions {
+      display: flex;
+      gap: 0.6rem;
+    }
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      padding: 0.35rem 1.1rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .btn-ghost:hover {
+      background: #f3f4f6;
+    }
+
+    .summary-block {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 0.9rem 1rem;
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+    }
+    .summary-block h4 {
+      margin: 0 0 0.3rem;
+      font-size: 0.95rem;
+    }
+    .summary-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .summary-list li {
+      margin-bottom: 0.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      main {
+        padding: 1.5rem 1rem 2.5rem;
+      }
       section {
         padding: 1.5rem;
       }
-      .step {
-        grid-template-columns: 1fr;
+      .modal {
+        max-width: 95vw;
+      }
+      .modal-body {
+        padding: 1rem 1rem 0.75rem;
+      }
+      .modal-footer {
+        padding: 0.8rem 1rem 1rem;
       }
     }
   </style>
@@ -165,260 +383,423 @@
 <body>
   <header>
     <div class="nav">
-      <div class="nav-title">Create an exam</div>
+      <div class="nav-title">Online Exam Platform – Beta</div>
       <nav class="nav-links">
-        <a href="index.html">← Back to About</a>
+        <a href="index.html">Why this exists</a>
+        <a href="index.html#student-view">Student view</a>
+        <a href="index.html#instructor-tools">Instructor tools</a>
+        <button id="openWizardTopNav" class="btn-outline" type="button">Create an exam</button>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- INSTRUCTOR INFO + EMAIL GENERATION -->
     <section>
-      <h2>Step 1 – Instructor information</h2>
-      <p>
-        Fill in your details below. When you generate the exam, this information will appear in
-        the exam header and in the email you receive. The beta does not store any data: the exam
-        is simply assembled in your browser and sent to your email address.
-      </p>
-
-      <div class="card">
-        <form id="instructor-form">
-          <div class="grid">
-            <div>
-              <label for="instName">Instructor name</label><br />
-              <input id="instName" name="instName" type="text" required />
-            </div>
-            <div>
-              <label for="instEmail">Instructor email</label><br />
-              <input id="instEmail" name="instEmail" type="email" required />
-            </div>
-            <div>
-              <label for="courseName">Course / Module</label><br />
-              <input id="courseName" name="courseName" type="text" />
-            </div>
-            <div>
-              <label for="classGroup">Class / Group</label><br />
-              <input id="classGroup" name="classGroup" type="text" />
-            </div>
-            <div>
-              <label for="examTitle">Exam title</label><br />
-              <input id="examTitle" name="examTitle" type="text" placeholder="Midterm – Online Assessment" />
-            </div>
-            <div>
-              <label for="examDate">Exam date</label><br />
-              <input id="examDate" name="examDate" type="date" />
-            </div>
-          </div>
-
-          <h3 style="margin-top:1.25rem;">Step 2 – Choose exam template (for now, hard-coded)</h3>
-          <p style="font-size:0.9rem;">
-            For the beta, the questions are baked into the code. Later, this can be replaced by
-            a dynamic editor. Choose the bloc you want to use:
-          </p>
-
-          <div class="grid">
-            <label>
-              <input type="radio" name="template" value="mcq" checked />
-              MCQ / QCU + short open questions
-            </label>
-            <label>
-              <input type="radio" name="template" value="open" />
-              Long-form open questions (essays / case study)
-            </label>
-            <label>
-              <input type="radio" name="template" value="mixed" />
-              Mixed exam (MCQ + longer open questions)
-            </label>
-          </div>
-
-          <button type="button" id="generate-exam" class="btn-primary" style="margin-top:1.2rem;">
-            Generate exam & prepare email (beta)
-          </button>
-
-          <div class="cta-note">
-            When you click the button, your email client will open with a draft email containing
-            the full exam text. You can then save it, edit it or print it as you like.
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- VISUAL STEP-BY-STEP WITH YOUR SCREENSHOTS -->
-    <section>
-      <h2>How the online exam will look</h2>
-
-      <!-- STEP SETTINGS -->
-      <div class="step">
+      <div class="hero">
         <div>
-          <div class="step-label">Overview</div>
-          <h3>Exam settings</h3>
-          <p>
-            Exams are configured with a school year, class, subject, duration and time zone.
-            In a future version, these settings will be synchronised with the school’s systems.
+          <h1 class="hero-title">Instructor page – create an exam</h1>
+          <p class="hero-subtitle">
+            Use this page to describe your exam and how you want it to behave in the classroom.
+            When you’re ready, click <strong>Create an exam</strong> and fill out the 3-step form.
+            A summary report will be emailed so the exam can be configured on the backend.
           </p>
-          <ul>
-            <li>Desktop or web application.</li>
-            <li>Time interval or specific exam time.</li>
-            <li>Options such as incompressible duration, anonymous correction and copy/paste rules.</li>
-          </ul>
         </div>
         <div>
-          <img src="img/exam-settings.png" alt="Exam settings screenshot" />
+          <button id="openWizardHero" class="btn-primary" type="button">Create an exam</button>
+          <p class="hint">You can also use the button at the bottom of this page.</p>
         </div>
       </div>
 
-      <!-- STEP QCM/QCU -->
-      <div class="step">
-        <div>
-          <img src="img/qcm-editor.png" alt="QCU and QCM editor screenshot" />
-        </div>
-        <div>
-          <div class="step-label">Question type</div>
-          <h3>QCU & QCM (single or multiple choice)</h3>
+      <h2>How it works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <p class="step-kicker">Step 1</p>
+          <h3>Configuration</h3>
           <p>
-            MCQ questions can include text, images, videos or graphs. Instructors can set points,
-            penalties and decide whether to show or hide the scoring scale.
+            You provide the key identification information: your name and contact,
+            class, subject, exam title, date, duration, and how the exam will be used in class.
           </p>
-          <ul>
-            <li>Create questions one by one or copy existing ones.</li>
-            <li>Randomise choices and control penalties for wrong answers.</li>
-            <li>Define difficulty level and estimated time per question.</li>
-          </ul>
+        </div>
+        <div class="step-card">
+          <p class="step-kicker">Step 2</p>
+          <h3>Exam configuration</h3>
+          <p>
+            You choose the exam format (vocabulary / QCM / written / oral), the number of questions,
+            scoring rules, and any timing or anti-cheating options you want activated.
+          </p>
+        </div>
+        <div class="step-card">
+          <p class="step-kicker">Step 3</p>
+          <h3>Review & send</h3>
+          <p>
+            You review a summary of everything you submitted. You can go back and adjust any field,
+            or send the configuration. The report will be emailed so the exam can be created on the backend.
+          </p>
         </div>
       </div>
 
-      <!-- STEP OPEN RESPONSES -->
-      <div class="step">
-        <div>
-          <div class="step-label">Question type</div>
-          <h3>Open-ended responses</h3>
-          <p>
-            Open questions are ideal for essays, case studies and situational exercises. Students
-            answer directly in the platform’s editor.
-          </p>
-          <ul>
-            <li>Free-text responses with rich formatting options.</li>
-            <li>Useful for evaluating reasoning, argumentation and writing.</li>
-          </ul>
-        </div>
-        <div>
-          <img src="img/open-response.png" alt="Open responses screenshot" />
-        </div>
-      </div>
+      <h3>What you don’t have to worry about</h3>
+      <ul>
+        <li>You don’t need to write any code or update the exam website yourself.</li>
+        <li>You don’t have to manage anti-cheat rules or timers manually in the classroom.</li>
+        <li>You don’t need to store or process results – the platform will email you reports per student.</li>
+      </ul>
 
-      <!-- STEP QUESTION BUILDER -->
-      <div class="step">
-        <div>
-          <img src="img/question-builder.png" alt="Exam question builder screenshot" />
-        </div>
-        <div>
-          <div class="step-label">Structure</div>
-          <h3>Exam question builder</h3>
-          <p>
-            The exam interface allows instructors to mix different question types and structure
-            the exam in parts. The beta page you are using simply produces the content; the platform
-            will eventually mirror this structure.
-          </p>
-        </div>
+      <div class="bottom-cta">
+        <button id="openWizardBottom" class="btn-primary" type="button">Create an exam</button>
       </div>
     </section>
   </main>
 
+  <!-- Modal wizard -->
+  <div id="wizardOverlay" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="wizardTitle">
+      <div class="modal-header">
+        <h2 id="wizardTitle">Create an exam – instructor form</h2>
+        <button class="modal-close" type="button" id="wizardClose" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="wizard-steps">
+          <div class="wizard-step-pill" data-step-pill="1">
+            <span>1</span> Configuration
+          </div>
+          <div class="wizard-step-pill" data-step-pill="2">
+            <span>2</span> Exam configuration
+          </div>
+          <div class="wizard-step-pill" data-step-pill="3">
+            <span>3</span> Review &amp; send
+          </div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="wizard-step" data-step="1">
+          <div class="wizard-section-title">Configuration</div>
+          <div class="wizard-section-subtitle">
+            Basic identification details for you, your class, and this specific exam.
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="instructorName">Instructor name</label>
+              <input id="instructorName" type="text" placeholder="First name / Last name" />
+            </div>
+            <div class="form-field">
+              <label for="instructorEmail">Instructor email</label>
+              <input id="instructorEmail" type="email" placeholder="name@school.fr" />
+            </div>
+            <div class="form-field">
+              <label for="schoolName">School / campus</label>
+              <input id="schoolName" type="text" placeholder="Institution / campus (optional)" />
+            </div>
+            <div class="form-field">
+              <label for="className">Class / group name</label>
+              <input id="className" type="text" placeholder="Ex: M2 – Business Resources" />
+            </div>
+            <div class="form-field">
+              <label for="subject">Subject / module</label>
+              <input id="subject" type="text" placeholder="Ex: Business English – Resources" />
+            </div>
+            <div class="form-field">
+              <label for="examTitle">Exam title</label>
+              <input id="examTitle" type="text" placeholder="Ex: CC1 – Business Resources" />
+            </div>
+            <div class="form-field">
+              <label for="examDate">Exam date</label>
+              <input id="examDate" type="date" />
+            </div>
+            <div class="form-field">
+              <label for="examDuration">Duration (minutes)</label>
+              <input id="examDuration" type="number" min="5" step="5" placeholder="40" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="deliveryMode">Delivery mode</label>
+              <select id="deliveryMode">
+                <option value="">Select…</option>
+                <option value="in-person">In-person classroom</option>
+                <option value="online-supervised">Online – supervised</option>
+                <option value="online-unsupervised">Online – unsupervised</option>
+              </select>
+              <small>Helps define how strict the anti-cheat behaviour should be.</small>
+            </div>
+            <div class="form-field">
+              <label for="notesForBuilder">Notes for exam builder (optional)</label>
+              <textarea id="notesForBuilder" placeholder="Anything special I should know about this group or exam?"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="wizard-step" data-step="2" style="display:none;">
+          <div class="wizard-section-title">Exam configuration</div>
+          <div class="wizard-section-subtitle">
+            Describe the structure of the exam and the behaviour you expect during the test.
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="examType">Exam format</label>
+              <select id="examType">
+                <option value="">Select…</option>
+                <option value="vocabulary-mcq">Vocabulary / QCM only</option>
+                <option value="written-only">Written expression only</option>
+                <option value="mixed">Mixed – vocabulary + written answer</option>
+                <option value="oral">Oral exam support</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="numQuestions">Approx. number of questions</label>
+              <input id="numQuestions" type="number" min="1" placeholder="Ex: 20 MCQ + 1 written" />
+              <small>You can describe the split (ex: 15 MCQ + 5 vocabulary items).</small>
+            </div>
+            <div class="form-field">
+              <label for="scoringScheme">Scoring / weighting</label>
+              <input id="scoringScheme" type="text" placeholder="Ex: Part A 10 pts, Part B 10 pts" />
+            </div>
+            <div class="form-field">
+              <label for="languageLevel">Language level / difficulty</label>
+              <input id="languageLevel" type="text" placeholder="Ex: B2, M2 – advanced, etc." />
+            </div>
+          </div>
+
+          <h3>Timing and behaviour</h3>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="timerMode">Timer behaviour</label>
+              <select id="timerMode">
+                <option value="">Select…</option>
+                <option value="strict-auto-submit">Strict – auto submit when timer ends</option>
+                <option value="soft-warning-only">Soft – warning only, manual collection</option>
+                <option value="no-timer">No visible timer</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="attempts">Number of attempts</label>
+              <select id="attempts">
+                <option value="1">Single attempt</option>
+                <option value="2">Two attempts (best score)</option>
+                <option value="draft-final">Draft + final submission</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-inline">
+            <label class="checkbox-field">
+              <input id="antiCheatFullscreen" type="checkbox" checked />
+              Enforce full-screen mode and log if students leave the exam window.
+            </label>
+          </div>
+          <div class="form-row-inline">
+            <label class="checkbox-field">
+              <input id="antiCheatCopyPaste" type="checkbox" checked />
+              Block copy–paste in text fields (recommended).
+            </label>
+          </div>
+          <div class="form-row-inline">
+            <label class="checkbox-field">
+              <input id="antiCheatLanguageTools" type="checkbox" checked />
+              Restrict access to built-in translation tools during written answers.
+            </label>
+          </div>
+
+          <div class="form-field" style="margin-top:0.8rem;">
+            <label for="examContentDescription">Short description of exam content</label>
+            <textarea id="examContentDescription" placeholder="Ex: Vocabulary on business resources (10 items) + written answer about how a company manages resources."></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="wizard-step" data-step="3" style="display:none;">
+          <div class="wizard-section-title">Review &amp; send</div>
+          <div class="wizard-section-subtitle">
+            Check the summary below. You can go back to adjust any field, or send the configuration report.
+          </div>
+
+          <div class="summary-block">
+            <h4>Instructor &amp; exam details</h4>
+            <ul class="summary-list" id="summaryConfig"></ul>
+          </div>
+
+          <div class="summary-block">
+            <h4>Exam configuration</h4>
+            <ul class="summary-list" id="summaryExamConfig"></ul>
+          </div>
+
+          <p class="hint">
+            When you click <strong>Send exam request</strong>, this summary will be included in a report
+            that can be emailed and used to configure the exam on the backend.
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="footer-left" id="wizardProgressLabel">Step 1 of 3</div>
+        <div class="footer-actions">
+          <button type="button" class="btn-ghost" id="wizardBack" disabled>Back</button>
+          <button type="button" class="btn-primary" id="wizardNext">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Hard-coded templates for the beta phase.
-    const templates = {
-      mcq: `
-PART 1 – Multiple choice (QCU/QCM)
-1. Online assessment allows:
-   a) Only paper-based exams
-   b) Exams to be taken on digital platforms
-   c) Exams without any time limit
+    (function () {
+      const overlay = document.getElementById("wizardOverlay");
+      const openButtons = [
+        document.getElementById("openWizardTopNav"),
+        document.getElementById("openWizardHero"),
+        document.getElementById("openWizardBottom")
+      ].filter(Boolean);
+      const closeButton = document.getElementById("wizardClose");
+      const backButton  = document.getElementById("wizardBack");
+      const nextButton  = document.getElementById("wizardNext");
+      const progressLabel = document.getElementById("wizardProgressLabel");
+      const stepPills = Array.from(document.querySelectorAll("[data-step-pill]"));
+      const steps = Array.from(document.querySelectorAll(".wizard-step"));
 
-2. Which option improves exam security?
-   a) Anonymous correction
-   b) Sharing answers on social media
-   c) Allowing copy/paste of all questions
+      let currentStep = 1;
 
-PART 2 – Short open questions
-3. In a few lines, explain the main difference between online and traditional paper-based exams.
-4. Give one example of how multimedia (image, video, graph) can be used in an exam question.
-      `.trim(),
+      function setStep(step) {
+        currentStep = step;
+        steps.forEach(s => {
+          const sNum = parseInt(s.getAttribute("data-step"), 10);
+          s.style.display = sNum === step ? "block" : "none";
+        });
+        stepPills.forEach(p => {
+          const pNum = parseInt(p.getAttribute("data-step-pill"), 10);
+          p.classList.toggle("active", pNum === step);
+        });
+        backButton.disabled = step === 1;
+        nextButton.textContent = step === 3 ? "Send exam request" : "Next";
+        progressLabel.textContent = `Step ${step} of 3`;
 
-      open: `
-PART 1 – Open questions
-
-1. Explain the advantages and limitations of online assessment for students.
-2. Describe how an online exam can be designed to remain fair for students with different levels of digital access.
-3. Propose a short case study (5–10 lines) that could be used in an online exam for your course.
-      `.trim(),
-
-      mixed: `
-PART 1 – Multiple choice (QCU/QCM)
-
-1. Online exams can:
-   a) Only be taken in person
-   b) Be taken remotely under controlled conditions
-   c) Never include multimedia content
-
-2. Which option best describes "incompressible duration"?
-   a) Minimum time the student must stay connected before submitting
-   b) Maximum time allowed for the exam
-   c) Time spent correcting exams
-
-PART 2 – Open questions
-
-3. Describe one situation where anonymous correction is particularly important.
-4. Suggest three rules you would include in the exam instructions to avoid cheating.
-      `.trim()
-    };
-
-    document.getElementById('generate-exam').addEventListener('click', function () {
-      const name = document.getElementById('instName').value.trim();
-      const email = document.getElementById('instEmail').value.trim();
-      const course = document.getElementById('courseName').value.trim();
-      const group = document.getElementById('classGroup').value.trim();
-      const examTitle = document.getElementById('examTitle').value.trim() || 'Online exam';
-      const examDate = document.getElementById('examDate').value;
-      const templateChoice = document.querySelector('input[name="template"]:checked').value;
-
-      if (!name || !email) {
-        alert('Please fill in at least your name and email.');
-        return;
+        if (step === 3) {
+          buildSummary();
+        }
       }
 
-      const questions = templates[templateChoice] || templates.mcq;
-
-      let header = '';
-      header += `Instructor: ${name}\n`;
-      header += `Email: ${email}\n`;
-      if (course) header += `Course: ${course}\n`;
-      if (group) header += `Class/Group: ${group}\n`;
-      if (examDate) header += `Exam date: ${examDate}\n`;
-      header += `Exam title: ${examTitle}\n`;
-      header += '\n------------------------------\n\n';
-
-      const fullExamText = header + questions;
-
-      const subject = `[Exam] ${examTitle}` + (course ? ` – ${course}` : '');
-      const mailto = `mailto:${encodeURIComponent(email)}`
-        + `?subject=${encodeURIComponent(subject)}`
-        + `&body=${encodeURIComponent(fullExamText)}`;
-
-      // Open email draft
-      window.location.href = mailto;
-
-      // Optional: also open in a new window for copy/paste/print
-      const w = window.open('', '_blank');
-      if (w) {
-        w.document.write(
-          '<pre style="font-family:system-ui,monospace;white-space:pre-wrap;">' +
-          fullExamText.replace(/</g, '&lt;').replace(/>/g, '&gt;') +
-          '</pre>'
-        );
-        w.document.close();
+      function openWizard() {
+        overlay.classList.add("active");
+        overlay.setAttribute("aria-hidden", "false");
+        setStep(1);
       }
-    });
+
+      function closeWizard() {
+        overlay.classList.remove("active");
+        overlay.setAttribute("aria-hidden", "true");
+      }
+
+      openButtons.forEach(btn => {
+        btn.addEventListener("click", openWizard);
+      });
+
+      if (closeButton) {
+        closeButton.addEventListener("click", closeWizard);
+      }
+
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+          closeWizard();
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && overlay.classList.contains("active")) {
+          closeWizard();
+        }
+      });
+
+      if (backButton) {
+        backButton.addEventListener("click", () => {
+          if (currentStep > 1) setStep(currentStep - 1);
+        });
+      }
+
+      if (nextButton) {
+        nextButton.addEventListener("click", () => {
+          if (currentStep < 3) {
+            setStep(currentStep + 1);
+          } else {
+            // Final "Send" action
+            const payload = collectPayload();
+            console.log("Exam configuration payload:", payload);
+            alert("Your exam configuration has been captured.\n\nNext step: connect this form to your email / backend.");
+            closeWizard();
+          }
+        });
+      }
+
+      function collectPayload() {
+        const get = (id) => {
+          const el = document.getElementById(id);
+          return el ? el.value.trim() : "";
+        };
+        return {
+          instructorName: get("instructorName"),
+          instructorEmail: get("instructorEmail"),
+          schoolName: get("schoolName"),
+          className: get("className"),
+          subject: get("subject"),
+          examTitle: get("examTitle"),
+          examDate: get("examDate"),
+          examDuration: get("examDuration"),
+          deliveryMode: get("deliveryMode"),
+          notesForBuilder: get("notesForBuilder"),
+          examType: get("examType"),
+          numQuestions: get("numQuestions"),
+          scoringScheme: get("scoringScheme"),
+          languageLevel: get("languageLevel"),
+          timerMode: get("timerMode"),
+          attempts: get("attempts"),
+          antiCheatFullscreen: document.getElementById("antiCheatFullscreen")?.checked || false,
+          antiCheatCopyPaste: document.getElementById("antiCheatCopyPaste")?.checked || false,
+          antiCheatLanguageTools: document.getElementById("antiCheatLanguageTools")?.checked || false,
+          examContentDescription: get("examContentDescription")
+        };
+      }
+
+      function buildSummary() {
+        const data = collectPayload();
+        const configList = document.getElementById("summaryConfig");
+        const examList   = document.getElementById("summaryExamConfig");
+        if (!configList || !examList) return;
+
+        configList.innerHTML = "";
+        examList.innerHTML = "";
+
+        const add = (ul, label, value) => {
+          if (!value) return;
+          const li = document.createElement("li");
+          li.textContent = `${label}: ${value}`;
+          ul.appendChild(li);
+        };
+
+        add(configList, "Instructor", data.instructorName);
+        add(configList, "Email", data.instructorEmail);
+        add(configList, "School / campus", data.schoolName);
+        add(configList, "Class / group", data.className);
+        add(configList, "Subject / module", data.subject);
+        add(configList, "Exam title", data.examTitle);
+        add(configList, "Exam date", data.examDate);
+        add(configList, "Duration (minutes)", data.examDuration);
+        add(configList, "Delivery mode", data.deliveryMode);
+        add(configList, "Notes", data.notesForBuilder);
+
+        add(examList, "Exam format", data.examType);
+        add(examList, "Approx. number of questions", data.numQuestions);
+        add(examList, "Scoring / weighting", data.scoringScheme);
+        add(examList, "Language level / difficulty", data.languageLevel);
+        add(examList, "Timer mode", data.timerMode);
+        add(examList, "Attempts", data.attempts);
+        add(examList, "Anti-cheat – full-screen", data.antiCheatFullscreen ? "Yes" : "No");
+        add(examList, "Anti-cheat – block copy-paste", data.antiCheatCopyPaste ? "Yes" : "No");
+        add(examList, "Anti-cheat – restrict translation tools", data.antiCheatLanguageTools ? "Yes" : "No");
+        add(examList, "Exam content description", data.examContentDescription);
+      }
+    })();
   </script>
 </body>
 </html>
