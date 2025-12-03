@@ -76,6 +76,7 @@
       padding: 2rem 1.5rem 3rem;
     }
 
+    /* Base section card */
     section {
       margin-bottom: 3rem;
       background: #ffffff;
@@ -190,14 +191,14 @@
       color: #6b7280;
     }
 
-    /* Generic section styling for new blocks */
+    /* Section blocks with tinted background for separation */
     .section {
-      max-width: 960px;
-      margin: 2.5rem auto 3rem;
-      padding: 0;
-      background: none;
-      box-shadow: none;
-      border-radius: 0;
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 2.25rem 2rem;
+      background: #f3f4ff;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+      border-radius: 18px;
     }
     .section-header {
       padding: 0 0 1rem;
@@ -215,94 +216,50 @@
       max-width: 620px;
     }
 
-    /* Exam carousel */
-    .exam-showcase {
-      position: relative;
-      margin: 1rem 0;
-      border-radius: 18px;
-      overflow: hidden;
+    /* Exam “at a glance” – horizontal strip */
+    .exam-strip-wrapper {
+      margin-top: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+    }
+    .exam-strip {
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 0.25rem;
+      scroll-snap-type: x mandatory;
+    }
+    .exam-card {
+      flex: 0 0 280px;
+      scroll-snap-align: center;
       background: radial-gradient(circle at top left, #eef2ff, #e5e7eb);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 420px;
+      border-radius: 18px;
+      padding: 1rem 1rem 1.2rem;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
     }
-    .exam-showcase-main {
+    .exam-card-inner {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 0.75rem;
+    }
+    .exam-card img {
       width: 100%;
-      max-width: 820px;
-      height: 100%;
-      padding: 1.25rem 2.5rem;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .exam-showcase-main img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
       display: block;
-      border-radius: 12px;
-      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+      border-radius: 10px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
       background: #fff;
     }
-    .exam-showcase-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background: #ffffffdd;
-      border-radius: 999px;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
+    .exam-card-caption {
+      margin-top: 0.6rem;
     }
-    .exam-showcase-nav.prev { left: 14px; }
-    .exam-showcase-nav.next { right: 14px; }
-    .exam-showcase-nav:hover { filter: brightness(0.96); }
-
-    .exam-showcase-caption {
-      margin: 0.75rem 0 0.25rem;
+    .exam-card-caption h3 {
+      margin-top: 0;
+      margin-bottom: 0.15rem;
+      font-size: 1rem;
     }
-    .exam-showcase-step {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #6b7280;
-      margin-bottom: 0.1rem;
-    }
-    .exam-showcase-title {
-      font-size: 1.05rem;
-      margin-bottom: 0.1rem;
-    }
-    .exam-showcase-text {
-      font-size: 0.95rem;
+    .exam-card-caption p {
+      margin-bottom: 0;
+      font-size: 0.9rem;
       color: #4b5563;
-    }
-    .exam-showcase-dots {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 0.5rem;
-    }
-    .exam-showcase-dots .dot {
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      color: #4b5563;
-    }
-    .exam-showcase-dots .dot.active {
-      border-color: #2643e9;
-      background: #2643e9;
-      color: #fff;
     }
 
     /* Report layout */
@@ -311,6 +268,7 @@
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
       gap: 32px;
       align-items: center;
+      margin-top: 1.5rem;
     }
     .report-image-card {
       border-radius: 18px;
@@ -326,9 +284,11 @@
     }
 
     @media (max-width: 900px) {
-      .exam-showcase { height: 320px; }
-      .exam-showcase-main { padding: 0.75rem 1.25rem; }
+      .exam-card {
+        flex: 0 0 240px;
+      }
     }
+
     @media (max-width: 800px) {
       .beta-layout {
         grid-template-columns: 1fr;
@@ -336,9 +296,11 @@
       section {
         padding: 1.5rem;
       }
+      .section {
+        padding: 1.75rem 1.5rem;
+      }
     }
     @media (max-width: 768px) {
-      .exam-showcase { height: 260px; }
       .report-layout { grid-template-columns: 1fr; }
     }
   </style>
@@ -368,11 +330,18 @@
         was just a game of who could outsmart the rules.
       </p>
 
-      <p style="margin-bottom:1.2rem; font-size:0.98rem;">
+      <p style="margin-bottom:1rem; font-size:0.98rem;">
         Instead of trying to fix that with more paper, more surveillance and more frustration, I started
         building an online exam space that makes cheating harder and thinking the focus. The goal is not to
         catch students cheating, but to design an environment where it’s simply more efficient to do the work
         than to look for loopholes.
+      </p>
+
+      <p style="margin-bottom:1.2rem; font-size:0.98rem;">
+        Just as important, this space is meant to <strong>re-value the students who show up and do the work
+        day after day</strong>. Those who prepare, participate and arrive on time deserve grades that reflect
+        that effort. Students who do not engage in the same way should not automatically receive the same
+        marks. The aim is to reward consistent, honest work rather than demoralise the students who actually try.
       </p>
 
       <div class="two-col">
@@ -391,6 +360,7 @@
             <li>Create a focused, full-screen exam space for in-person classes.</li>
             <li>Make cheating less convenient than simply answering the questions.</li>
             <li>Give instructors a clear, structured report they can mark quickly.</li>
+            <li>Re-valorise students who consistently do the work, instead of demoralising them with unfair grade inflation.</li>
           </ul>
         </div>
       </div>
@@ -398,41 +368,65 @@
 
     <!-- 2. EXAM AT A GLANCE – STUDENT VIEW -->
     <section id="student-view" class="section">
-      <div class="section-header">
-        <p class="section-kicker">Inside the exam</p>
-        <h2>Exam at a glance – what students see</h2>
-        <p class="section-subtitle">
-          A simple, full-screen exam flow: students log in, confirm their details, and complete the exam
-          in a distraction-free interface.
-        </p>
-      </div>
+     
+      <div class="exam-strip-wrapper" aria-label="Exam screens – horizontal snapshot">
+        <div class="exam-strip">
+          <!-- Login -->
+          <article class="exam-card">
+            <div class="exam-card-inner">
+              <img src="exam-login.png" alt="Exam login screen with passcode" />
+              <div class="exam-card-caption">
+                <h3>Login screen</h3>
+                <p>
+                  Students access the exam using a class code and passcode. Their name and email are collected
+                  before they can continue.
+                </p>
+              </div>
+            </div>
+          </article>
 
-      <div class="exam-showcase">
-        <button class="exam-showcase-nav prev" type="button" aria-label="Previous screen">‹</button>
-        <div class="exam-showcase-main">
-          <img
-            id="examSlideImage"
-            src="exam-login.png"
-            alt="Exam login page with passcode"
-          />
+          <!-- Confirmation -->
+          <article class="exam-card">
+            <div class="exam-card-inner">
+              <img src="exam-confrimatio.png" alt="Confirmation screen before starting the exam" />
+              <div class="exam-card-caption">
+                <h3>Confirmation screen</h3>
+                <p>
+                  Students quickly verify that their identity information is correct before launching the
+                  full-screen exam session.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Multiple choice -->
+          <article class="exam-card">
+            <div class="exam-card-inner">
+              <img src="exam-fullscreen1.png" alt="Exam interface showing multiple choice questions" />
+              <div class="exam-card-caption">
+                <h3>Multiple choice questions</h3>
+                <p>
+                  Vocabulary and multiple choice questions appear in a clean, full-screen layout with a visible
+                  timer and simple navigation.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Written response -->
+          <article class="exam-card">
+            <div class="exam-card-inner">
+              <img src="exam-fullscreen2.png" alt="Exam interface showing written response editor" />
+              <div class="exam-card-caption">
+                <h3>Written response</h3>
+                <p>
+                  The writing task uses a focused editor where copy–paste and translation shortcuts are restricted,
+                  encouraging original, thoughtful answers.
+                </p>
+              </div>
+            </div>
+          </article>
         </div>
-        <button class="exam-showcase-nav next" type="button" aria-label="Next screen">›</button>
-      </div>
-
-      <div class="exam-showcase-caption">
-        <p id="examSlideStep" class="exam-showcase-step">Step 1 · Login</p>
-        <h3 id="examSlideTitle" class="exam-showcase-title">Exam login page with passcode</h3>
-        <p id="examSlideText" class="exam-showcase-text">
-          Students access the exam using a class code and passcode. Their name and email are collected
-          before they can continue.
-        </p>
-      </div>
-
-      <div class="exam-showcase-dots" aria-label="Exam steps">
-        <button type="button" class="dot active" data-index="0">Login</button>
-        <button type="button" class="dot" data-index="1">Confirmation</button>
-        <button type="button" class="dot" data-index="2">Exam – full screen 1</button>
-        <button type="button" class="dot" data-index="3">Exam – full screen 2</button>
       </div>
     </section>
 
@@ -448,7 +442,7 @@
       </div>
 
       <!-- 3A. Backend / configuration snapshot -->
-      <div class="beta-layout" style="margin-top:1.25rem;">
+      <div class="beta-layout">
         <div class="beta-checklist-panel">
           <h3>Backend & exam controls</h3>
           <p>Everything you need to run a strict, focused exam in an in-person classroom.</p>
@@ -471,7 +465,7 @@
       </div>
 
       <!-- 3B. Report by email -->
-      <div class="report-layout" style="margin-top:2rem;">
+      <div class="report-layout">
         <div class="report-text">
           <h3>Automatic exam report by email</h3>
           <p>
@@ -500,87 +494,5 @@
     </section>
 
   </main>
-
-  <script>
-    (function () {
-      const slides = [
-        {
-          step: "Step 1 · Login",
-          title: "Exam login page with passcode",
-          text:
-            "Students enter the class code and a passcode before accessing the exam. " +
-            "Basic identity information (name and email) is collected at this stage.",
-          src: "exam-login.png",
-          alt: "Exam login page with passcode"
-        },
-        {
-          step: "Step 2 · Confirmation",
-          title: "Confirmation screen",
-          text:
-            "Students confirm that their name and email are correct before starting the exam " +
-            "and launching the full-screen mode.",
-          src: "exam-confirmatio.png",  // make sure this matches the actual filename
-          alt: "Confirmation screen before starting the exam"
-        },
-        {
-          step: "Step 3 · Exam View",
-          title: "Exam interface in full screen",
-          text:
-            "The vocabulary section (Part A) appears in a clean, full-screen interface with " +
-            "navigation controls and a visible timer.",
-          src: "exam-fullscreen1.png",
-          alt: "Exam interface in full screen mode – Part A"
-        },
-        {
-          step: "Step 4 · Exam View",
-          title: "Writing task in full screen",
-          text:
-            "The writing task (Part B) uses a focused editor where copy–paste and translation " +
-            "features are restricted to limit cheating.",
-          src: "exam-fullscreen2.png",
-          alt: "Exam interface in full screen mode – Part B"
-        }
-      ];
-
-      const imgEl   = document.getElementById("examSlideImage");
-      const stepEl  = document.getElementById("examSlideStep");
-      const titleEl = document.getElementById("examSlideTitle");
-      const textEl  = document.getElementById("examSlideText");
-      const dots    = Array.from(document.querySelectorAll(".exam-showcase-dots .dot"));
-      const prevBtn = document.querySelector(".exam-showcase-nav.prev");
-      const nextBtn = document.querySelector(".exam-showcase-nav.next");
-
-      if (!imgEl || !stepEl || !titleEl || !textEl || !prevBtn || !nextBtn || !dots.length) return;
-
-      let index = 0;
-
-      function renderSlide(i) {
-        const slide = slides[i];
-        if (!slide) return;
-        index = i;
-        imgEl.src = slide.src;
-        imgEl.alt = slide.alt;
-        stepEl.textContent  = slide.step;
-        titleEl.textContent = slide.title;
-        textEl.textContent  = slide.text;
-        dots.forEach((d, idx) => d.classList.toggle("active", idx === index));
-      }
-
-      prevBtn.addEventListener("click", () => {
-        renderSlide((index - 1 + slides.length) % slides.length);
-      });
-      nextBtn.addEventListener("click", () => {
-        renderSlide((index + 1) % slides.length);
-      });
-      dots.forEach(dot => {
-        dot.addEventListener("click", () => {
-          const i = parseInt(dot.dataset.index, 10);
-          if (!isNaN(i)) renderSlide(i);
-        });
-      });
-
-      renderSlide(0);
-    })();
-  </script>
 </body>
 </html>
