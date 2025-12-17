@@ -1,562 +1,209 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Online Exam Platform</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.6;
-      color: #1f2933;
-      background: #f5f7fb; /* light, clean background */
-    }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: #ffffffcc;
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid #e1e4f0;
-    }
-    .nav {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1.5rem;
-    }
-    .nav-title {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #2643e9;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.95rem;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: #4b5563;
-    }
-    .nav-links a:hover {
-      color: #2643e9;
-    }
-
-    .btn-outline {
-      text-decoration: none;
-      padding: 0.4rem 1rem;
-      border-radius: 999px;
-      border: 2px solid #2643e9;
-      color: #2643e9;
-      font-weight: 600;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: #ffffff;
-    }
-    .btn-outline::after {
-      content: "→";
-      font-size: 0.85rem;
-    }
-    .btn-outline:hover {
-      background: #2643e9;
-      color: #ffffff;
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 3rem;
-    }
-
-    /* Base section card */
-    section {
-      margin-bottom: 3rem;
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-    }
-
-    .hero-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 0.75rem;
-    }
-
-    h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.75rem;
-      color: #111827;
-    }
-    h3 {
-      font-size: 1.1rem;
-      margin-top: 1.5rem;
-      margin-bottom: 0.4rem;
-      color: #111827;
-    }
-    p {
-      margin-bottom: 0.6rem;
-      font-size: 0.98rem;
-    }
-    ul {
-      padding-left: 1.2rem;
-      font-size: 0.95rem;
-    }
-    ul li {
-      margin-bottom: 0.35rem;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.75rem;
-      margin-top: 1rem;
-    }
-
-    .card {
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      padding: 1.1rem 1.25rem;
-      background: #f9fafb;
-    }
-    .card h3 {
-      margin-top: 0;
-    }
-
-    /* Section header helper (for 2 & 3) */
-    .section-header {
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #e5e7eb;
-      margin-bottom: 1.25rem;
-    }
-    .section-kicker {
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #6b7280;
-      margin-bottom: 0.3rem;
-    }
-    .section-subtitle {
-      font-size: 0.95rem;
-      color: #4b5563;
-      max-width: 620px;
-    }
-
-    /* Exam slideshow – flatter, less “boxy” */
-    .exam-showcase {
-      position: relative;
-      margin-top: 0.5rem;
-      border-radius: 14px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      height: 420px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .exam-showcase-main {
-      width: 100%;
-      max-width: 880px;
-      height: 100%;
-      padding: 1.25rem 3rem;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .exam-showcase-main img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      display: block;
-      border-radius: 10px;
-      background: #ffffff;
-      /* no extra box-shadow here to avoid “box in a box” */
-    }
-
-    .exam-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.4rem;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
-    }
-    .exam-nav.prev { left: 12px; }
-    .exam-nav.next { right: 12px; }
-    .exam-nav:hover {
-      filter: brightness(0.97);
-    }
-
-    .exam-showcase-caption {
-      margin-top: 0.85rem;
-    }
-    .exam-showcase-caption h3 {
-      margin-top: 0;
-      margin-bottom: 0.2rem;
-      font-size: 1.05rem;
-    }
-    .exam-showcase-caption p {
-      margin-bottom: 0;
-      font-size: 0.95rem;
-      color: #4b5563;
-    }
-
-    /* Instructor tools layout */
-    .beta-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
-      gap: 2rem;
-      margin-top: 1.5rem;
-      align-items: center;
-    }
-    .beta-checklist-panel {
-      background: #2643e9;
-      color: #ffffff;
-      border-radius: 18px;
-      padding: 1.5rem 1.75rem;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.25);
-    }
-    .beta-checklist-panel h3 {
-      margin-top: 0;
-      margin-bottom: 0.75rem;
-      font-size: 1.1rem;
-      color: #ffffff;
-    }
-    .beta-checklist-panel p {
-      margin-bottom: 0.75rem;
-      font-size: 0.9rem;
-      color: #e5e7ff;
-    }
-    .beta-checklist {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-      font-size: 0.95rem;
-    }
-    .beta-checklist li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.45rem;
-      margin-bottom: 0.45rem;
-    }
-    .beta-checklist li::before {
-      content: "✔";
-      font-weight: 600;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-    }
-    .beta-media {
-      text-align: center;
-    }
-    .beta-media img {
-      max-width: 100%;
-      border-radius: 16px;
-      border: 1px solid #e5e7eb;
-    }
-    .beta-media figcaption {
-      margin-top: 0.4rem;
-      font-size: 0.85rem;
-      color: #6b7280;
-    }
-
-    .report-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 32px;
-      align-items: center;
-      margin-top: 1.8rem;
-    }
-    .report-image-card {
-      border-radius: 16px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      padding: 12px;
-    }
-    .report-image-card img {
-      width: 100%;
-      display: block;
-      border-radius: 10px;
-      background: #fff;
-    }
-
-    @media (max-width: 900px) {
-      .exam-showcase {
-        height: 340px;
-      }
-      .exam-showcase-main {
-        padding: 0.75rem 2.25rem;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .beta-layout {
-        grid-template-columns: 1fr;
-      }
-      section {
-        padding: 1.5rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .exam-showcase {
-        height: 280px;
-      }
-      .exam-showcase-main {
-        padding: 0.75rem 1.5rem;
-      }
-      .report-layout { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
 <body>
-  <header>
-    <div class="nav">
-      <div class="nav-title">Online Exam Platform – Beta</div>
-      <nav class="nav-links">
-        <a href="#about-beta">Why this exists</a>
-        <a href="#student-view">Student view</a>
-        <a href="#instructor-tools">Instructor tools</a>
-        <a href="instructor.html" class="btn-outline">Create an exam</a>
-      </nav>
+  <!-- En-tête -->
+  <header style="padding:16px 24px; border-bottom:1px solid #e5e7eb;">
+    <div style="display:flex; justify-content:space-between; align-items:center; max-width:960px; margin:0 auto;">
+      <div>
+        <h1 style="margin:0; font-size:1.4rem;">
+          Plateforme d’examen en ligne – Version bêta
+        </h1>
+        <p style="margin:4px 0 0; font-size:0.9rem; color:#6b7280;">
+          Projet pilote pour examens écrits surveillés (Licence / Master).
+        </p>
+      </div>
+
+      <!-- Lien enseignant -->
+      <a href="create-exam.html"
+         style="padding:8px 16px; border-radius:999px; border:1px solid #111827; text-decoration:none; font-size:0.9rem;">
+        Créer un examen (enseignant)
+      </a>
     </div>
   </header>
 
-  <main>
+  <!-- Contenu principal -->
+  <main style="max-width:960px; margin:24px auto 40px; padding:0 16px;">
 
-    <!-- 1. WHY THIS EXISTS -->
-    <section id="about-beta">
-      <h1 class="hero-title" style="margin-bottom:0.75rem;">Why this exam space exists</h1>
-
-      <p style="margin-bottom:1rem; font-size:0.98rem;">
-        Paper exams had stopped working. Students passed around “scratch” notes, hid phones under the table,
-        and handed in copy–paste identical answers. The exam wasn’t really measuring knowledge anymore – it
-        was just a game of who could outsmart the rules.
+    <!-- Bloc intro : pourquoi -->
+    <section style="margin-bottom:24px;">
+      <h2>Pourquoi cette plateforme&nbsp;?</h2>
+      <p>
+        Cette plateforme est née d’un constat simple&nbsp;: pendant les examens écrits,
+        il devient de plus en plus facile pour certains étudiants d’utiliser l’IA,
+        la traduction automatique ou des ressources externes, même en présentiel.
       </p>
-
-      <p style="margin-bottom:1rem; font-size:0.98rem;">
-        Instead of trying to fix that with more paper, more surveillance and more frustration, I started
-        building an online exam space that makes cheating harder and thinking the focus. The goal is not to
-        catch students cheating, but to design an environment where it’s simply more efficient to do the work
-        than to look for loopholes.
+      <p>
+        L’objectif est double&nbsp;:
       </p>
-
-      <p style="margin-bottom:1.2rem; font-size:0.98rem;">
-        Just as important, this space is meant to <strong>re-value the students who show up and do the work
-        day after day</strong>. Those who prepare, participate and arrive on time deserve grades that reflect
-        that effort. Students who do not engage in the same way should not automatically receive the same
-        marks. The aim is to reward consistent, honest work rather than demoralise the students who actually try.
+      <ul>
+        <li><strong>Limiter la triche</strong> (IA, copier-coller, changement de fenêtre, etc.).</li>
+        <li><strong>Revaloriser les étudiants qui travaillent réellement</strong> et respectent les consignes.</li>
+      </ul>
+      <p>
+        La plateforme propose donc un format d’épreuve en ligne simple, sécurisé et rapide à corriger,
+        que l’on peut utiliser dans différentes matières (langues, management, finance, etc.).
       </p>
-
-      <div class="two-col">
-        <div class="card">
-          <h3>The classroom problem</h3>
-          <ul>
-            <li>Students coordinated answers via notes and phones despite clear instructions.</li>
-            <li>Paper exams generated a lot of waste and extra logistics.</li>
-            <li>Marking handwritten copies took too long for a quick feedback loop.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>What this beta aims to do</h3>
-          <ul>
-            <li>Create a focused, full-screen exam space for in-person classes.</li>
-            <li>Make cheating less convenient than simply answering the questions.</li>
-            <li>Give instructors a clear, structured report they can mark quickly.</li>
-            <li>Re-valorise students who consistently do the work, instead of demoralising them with unfair grade inflation.</li>
-          </ul>
-        </div>
-      </div>
     </section>
 
-    <!-- 2. EXAM AT A GLANCE – STUDENT VIEW -->
-    <section id="student-view">
-      <div class="section-header">
-        <p class="section-kicker">Inside the exam</p>
-        <h2>Exam at a glance – what students see</h2>
-        <p class="section-subtitle">
-          A slide-style snapshot of the four key screens: login, confirmation, vocabulary & multiple choice,
-          and the written task.
-        </p>
-      </div>
-
-      <div class="exam-showcase" aria-label="Exam screens – slideshow">
-        <button class="exam-nav prev" type="button" aria-label="Previous screen">‹</button>
-
-        <div class="exam-showcase-main">
-          <img
-            id="examSlideImage"
-            src="exam-login.png"
-            alt="Exam login screen with passcode"
-          />
-        </div>
-
-        <button class="exam-nav next" type="button" aria-label="Next screen">›</button>
-      </div>
-
-      <div class="exam-showcase-caption">
-        <h3 id="examSlideTitle">Login screen</h3>
-        <p id="examSlideText">
-          Students enter their name and email address, then access the exam using a unique class code.
-        </p>
-      </div>
+    <!-- Objectifs du pilote -->
+    <section style="margin-bottom:24px;">
+      <h2>Objectifs du projet pilote</h2>
+      <ul>
+        <li>Tester un format d’examen écrit en ligne compatible avec les cours en présentiel.</li>
+        <li>Réduire autant que possible l’usage de l’IA et des outils externes pendant l’épreuve.</li>
+        <li>Accélérer la correction et le retour des résultats aux étudiants.</li>
+        <li>Vérifier si le format peut être facilement réutilisé par plusieurs enseignants.</li>
+      </ul>
     </section>
 
-    <!-- 3. INSTRUCTOR TOOLS -->
-    <section id="instructor-tools">
-      <div class="section-header">
-        <p class="section-kicker">For instructors</p>
-        <h2>Instructor tools at a glance</h2>
-        <p class="section-subtitle">
-          Behind the scenes, the beta focuses on two things: a simple way to configure a strict exam,
-          and a clean report sent directly to your inbox.
-        </p>
-      </div>
+    <!-- Fonctionnalités principales -->
+    <section style="margin-bottom:24px;">
+      <h2>Fonctionnalités clés</h2>
 
-      <div class="beta-layout">
-        <div class="beta-checklist-panel">
-          <h3>Backend & exam controls</h3>
-          <p>Everything you need to run a strict, focused exam in an in-person classroom.</p>
-          <ul class="beta-checklist">
-            <li>Guided exam creation flow with basic templates.</li>
-            <li>QCU, QCM and open-ended questions in the same exam.</li>
-            <li>Time-limited exams with a visible countdown.</li>
-            <li>Full-screen mode with penalties if the window loses focus.</li>
-            <li>Protection against overlays and extra windows on top of the exam.</li>
-            <li>No copy–paste in answer fields.</li>
-            <li>Login page with passcode and identity confirmation.</li>
-            <li>Email-based exam delivery straight to the instructor’s inbox.</li>
-          </ul>
-        </div>
+      <h3>1. Mécanismes anti-triche intégrés</h3>
+      <ul>
+        <li>Épreuve en plein écran, avec avertissements en cas de changement de fenêtre ou de sortie du navigateur.</li>
+        <li>Blocage du clic droit, du copier-coller et de la traduction automatique de la page.</li>
+        <li>Journal de session (évènements techniques) joint à chaque copie envoyée à l’enseignant.</li>
+      </ul>
 
-        <figure class="beta-media">
-          <img src="exam-fullscreen1.png" alt="Example of the exam interface as seen by students" />
-          <figcaption>Example of the exam interface as seen by students.</figcaption>
-        </figure>
-      </div>
+      <h3>2. Correction plus rapide</h3>
+      <ul>
+        <li>Partie «&nbsp;questions fermées&nbsp;» (vocabulaire, QCM, correspondance, etc.) déjà corrigée dans le rapport.</li>
+        <li>Partie rédaction présentée dans un encadré prêt à être lue, annotée et notée.</li>
+        <li>Grille de notation intégrée (critères et champs de notes) dans le même e-mail.</li>
+      </ul>
 
-      <div class="report-layout">
-        <div class="report-text">
-          <h3>Automatic exam report by email</h3>
-          <p>
-            When a student submits, the platform generates an HTML report that is sent directly to the
-            instructor’s inbox. It includes:
-          </p>
-          <ul>
-            <li>Student identity (name, email, class code)</li>
-            <li>Score breakdown for the vocabulary section (Part A)</li>
-            <li>The full written answer (Part B) in a readable format</li>
-            <li>A simple grid for manual scoring and comments</li>
-          </ul>
-          <p class="muted">
-            In this beta version, no exam data is stored on a central server. Each report is delivered by
-            email so instructors can archive, annotate, or export it using their usual tools.
-          </p>
-        </div>
-
-        <div class="report-image-card">
-          <img
-            src="exam-report.png"
-            alt="Example of exam report emailed to the instructor"
-          />
-        </div>
-      </div>
+      <h3>3. Pas de stockage centralisé des données</h3>
+      <ul>
+        <li>L’étudiant saisit son nom, son e-mail universitaire et son groupe.</li>
+        <li>À la fin de l’épreuve, toutes les réponses sont envoyées uniquement par e-mail à l’enseignant.</li>
+        <li>Pas de base de données ni de compte administrateur&nbsp;: chaque examen est autonome.</li>
+      </ul>
     </section>
 
+    <!-- Pour les enseignants : créer et utiliser un examen -->
+    <section style="margin-bottom:24px;">
+      <h2>Pour les enseignants – Utilisation en pratique</h2>
+      <ol>
+        <li>Cliquez sur <strong>«&nbsp;Créer un examen (enseignant)&nbsp;»</strong> en haut de la page.</li>
+        <li>Renseignez les paramètres de base&nbsp;: nom de l’épreuve, code de classe, durée, groupes, etc.</li>
+        <li>Testez l’examen en mode démo pour vérifier que tout fonctionne (réception des e-mails, consignes, timer).</li>
+        <li>Le jour J, partagez le lien et le code de classe avec les étudiants en salle (ordinateurs de la fac ou ordinateurs personnels).</li>
+        <li>Corrigez directement à partir des rapports reçus, puis renvoyez les résultats aux étudiants si souhaité.</li>
+      </ol>
+    </section>
+
+    <!-- Aperçu de l’épreuve : texte + image à chaque étape -->
+    <section style="margin-bottom:24px;">
+      <h2>Aperçu de l’épreuve (côté étudiant et enseignant)</h2>
+
+      <!-- 1. Écran de connexion -->
+      <h3>1. Écran de connexion</h3>
+      <p>
+        L’étudiant entre son nom, son e-mail universitaire et sélectionne son groupe.
+        Un code de classe est nécessaire pour accéder à l’épreuve.
+      </p>
+      <figure style="margin:8px 0 20px;">
+        <img src="img/01-login.png" alt="Écran de connexion de l’épreuve"
+             style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+      </figure>
+
+      <!-- 2. Page de confirmation -->
+      <h3>2. Page de confirmation avant de commencer</h3>
+      <p>
+        L’étudiant vérifie ses informations (nom, e-mail, groupe) et lit un rappel
+        des règles techniques (plein écran, avertissements, etc.) avant de démarrer.
+      </p>
+      <figure style="margin:8px 0 20px;">
+        <img src="img/02-confirmation.png" alt="Page de confirmation de l’épreuve"
+             style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+      </figure>
+
+      <!-- 3. Partie questions fermées -->
+      <h3>3. Partie «&nbsp;questions fermées&nbsp;»</h3>
+      <p>
+        Exemple&nbsp;: correspondance de vocabulaire ou QCM. L’étudiant sélectionne les réponses
+        dans des menus déroulants. Ces questions sont corrigées automatiquement dans le rapport.
+      </p>
+      <figure style="margin:8px 0 20px;">
+        <img src="img/03-partie-A.png" alt="Partie questions fermées de l’épreuve"
+             style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+      </figure>
+
+      <!-- 4. Partie rédaction – haut de page -->
+      <h3>4. Partie rédaction – consigne et début de la réponse</h3>
+      <p>
+        La consigne est affichée en haut de page, avec une zone de rédaction intégrée.
+        L’étudiant rédige directement dans l’éditeur sans possibilité de copier-coller du texte externe.
+      </p>
+      <figure style="margin:8px 0 20px;">
+        <img src="img/04-partie-B-haut.png" alt="Consigne et début de la partie rédaction"
+             style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+      </figure>
+
+      <!-- 5. Partie rédaction – bas de page + envoi -->
+      <h3>5. Partie rédaction – bas de page et bouton d’envoi</h3>
+      <p>
+        L’étudiant termine sa réponse puis envoie l’épreuve. Un seul clic déclenche
+        l’envoi complet du rapport à l’enseignant.
+      </p>
+      <figure style="margin:8px 0 20px;">
+        <img src="img/05-partie-B-bas.png" alt="Fin de la partie rédaction avec bouton d’envoi"
+             style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+      </figure>
+
+      <!-- 6. Avertissement anti-triche -->
+      <h3>6. Fenêtre d’avertissement en cas de sortie de l’épreuve</h3>
+      <p>
+        Si l’étudiant quitte le plein écran ou change de fenêtre, une fenêtre d’avertissement apparaît.
+        Après plusieurs évènements, l’épreuve est interrompue ou envoyée automatiquement à l’enseignant.
+      </p>
+      <figure style="margin:8px 0 20px;">
+        <img src="img/06-warning.png" alt="Fenêtre d’avertissement en cas de sortie de l’épreuve"
+             style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+      </figure>
+
+      <!-- 7. Confirmation d’envoi -->
+      <h3>7. Confirmation d’envoi</h3>
+      <p>
+        Une fois l’épreuve envoyée, l’étudiant voit un message de confirmation lui indiquant
+        que sa copie a bien été transmise.
+      </p>
+      <figure style="margin:8px 0 20px;">
+        <img src="img/07-submission-success.png" alt="Message de confirmation après envoi de l’épreuve"
+             style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+      </figure>
+
+      <!-- 8. Rapport reçu par l’enseignant (vidéo) -->
+      <h3>8. Rapport reçu par l’enseignant</h3>
+      <p>
+        L’enseignant reçoit un e-mail contenant&nbsp;:
+      </p>
+      <ul>
+        <li>les informations de l’étudiant (nom, e-mail, groupe) ;</li>
+        <li>les réponses à la partie «&nbsp;questions fermées&nbsp;» avec correction automatique ;</li>
+        <li>la réponse rédigée dans un encadré ;</li>
+        <li>une grille de notation prête à être complétée.</li>
+      </ul>
+      <p>
+        Une courte vidéo montre le déroulé du rapport et la facilité pour saisir la note
+        et renvoyer un retour à l’étudiant.
+      </p>
+      <figure style="margin:8px 0 0;">
+        <!-- Remplace la source par ton fichier vidéo -->
+        <video controls style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb;">
+          <source src="video/rapport-enseignant.mp4" type="video/mp4">
+          Votre navigateur ne supporte pas la lecture de cette vidéo.
+        </video>
+      </figure>
+    </section>
+
+    <!-- Note de bas de page -->
+    <section style="font-size:0.85rem; color:#6b7280;">
+      <p>
+        Cette plateforme est une <strong>version bêta</strong> développée pour un usage limité
+        au sein de l’université (projet pilote). Elle a été conçue pour protéger les étudiants
+        qui travaillent sérieusement, tout en restant simple à utiliser pour les enseignants.
+      </p>
+    </section>
   </main>
-
-  <script>
-    (function () {
-      const slides = [
-        {
-          title: "Login screen",
-          text:
-            "Students enter their name and email address, then access the exam using a unique class code.",
-          src: "exam-login.png",
-          alt: "Exam login screen with passcode"
-        },
-        {
-          title: "Confirmation screen",
-          text:
-            "Students quickly verify that their identity information is correct before launching the full-screen exam session.",
-          src: "exam-confrimatio.png", // make sure this matches your actual filename
-          alt: "Confirmation screen before starting the exam"
-        },
-        {
-          title: "Multiple choice questions",
-          text:
-            "Vocabulary and multiple choice questions appear in a clean, full-screen layout with a visible timer and simple navigation.",
-          src: "exam-fullscreen1.png",
-          alt: "Exam interface showing multiple choice questions"
-        },
-        {
-          title: "Written response",
-          text:
-            "The writing task uses a focused editor where copy–paste and translation shortcuts are restricted, encouraging original, thoughtful answers.",
-          src: "exam-fullscreen2.png",
-          alt: "Exam interface showing written response editor"
-        }
-      ];
-
-      const imgEl   = document.getElementById("examSlideImage");
-      const titleEl = document.getElementById("examSlideTitle");
-      const textEl  = document.getElementById("examSlideText");
-      const prevBtn = document.querySelector(".exam-nav.prev");
-      const nextBtn = document.querySelector(".exam-nav.next");
-
-      if (!imgEl || !titleEl || !textEl || !prevBtn || !nextBtn) return;
-
-      let index = 0;
-
-      function renderSlide(i) {
-        const slide = slides[i];
-        if (!slide) return;
-        index = i;
-        imgEl.src = slide.src;
-        imgEl.alt = slide.alt;
-        titleEl.textContent = slide.title;
-        textEl.textContent  = slide.text;
-      }
-
-      prevBtn.addEventListener("click", () => {
-        const nextIndex = (index - 1 + slides.length) % slides.length;
-        renderSlide(nextIndex);
-      });
-
-      nextBtn.addEventListener("click", () => {
-        const nextIndex = (index + 1) % slides.length;
-        renderSlide(nextIndex);
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-          const nextIndex = (index - 1 + slides.length) % slides.length;
-          renderSlide(nextIndex);
-        } else if (event.key === "ArrowRight") {
-          const nextIndex = (index + 1) % slides.length;
-          renderSlide(nextIndex);
-        }
-      });
-
-      renderSlide(0);
-    })();
-  </script>
 </body>
-</html>
