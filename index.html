@@ -300,6 +300,46 @@
       margin-top: 40px;
     }
 
+    /* Demo video section */
+    .demo-video-section {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+      padding: 32px;
+      margin-bottom: 28px;
+    }
+
+    .demo-video-section h2 {
+      margin: 0 0 8px 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .demo-video-section > p {
+      margin: 0 0 20px 0;
+      font-size: 0.95rem;
+      color: #4b5563;
+      line-height: 1.6;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15);
+    }
+
+    .video-container video {
+      width: 100%;
+      display: block;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       header {
@@ -340,6 +380,19 @@
   </header>
 
   <main>
+    <!-- Demo Video Section -->
+    <div class="demo-video-section">
+      <h2>Démo rapide : 1 minute pour tout voir</h2>
+      <p>Voici un aperçu complet de la plateforme, de la connexion à l'envoi de l'épreuve.</p>
+      
+      <div class="video-container">
+        <video controls>
+          <source src="Exam Page Workflow/Exam at a glance 2.mp4" type="video/mp4">
+          Votre navigateur ne supporte pas la lecture vidéo.
+        </video>
+      </div>
+    </div>
+
     <!-- Section 1 -->
     <div class="section-card">
       <h2>1. Pourquoi cette plateforme ?</h2>
