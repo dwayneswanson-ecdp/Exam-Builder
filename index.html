@@ -333,74 +333,105 @@
     <figcaption>Image&nbsp;2 – Page de confirmation</figcaption>
   </figure>
 
+<section id="section-2" class="section">
+  <h2>2. Comment fonctionne l’épreuve ?</h2>
+
+  <!-- Phase 1 -->
+  <article class="step">
+    <h3>Phase 1 : Connexion sécurisée</h3>
+    <p>
+      L’étudiant se connecte avec son nom, son e-mail universitaire et un code de classe fourni par l’enseignant.
+      Il vérifie ensuite ses informations et prend connaissance des règles : épreuve en plein écran, désactivation
+      du copier-coller et du clic droit, enregistrement de tous les événements techniques.
+    </p>
+
+    <div class="screenshot-row">
+      <figure class="screenshot">
+        <img src="Exam Page Workflow/1. Login Screen.png" alt="Écran de connexion de l’épreuve">
+        <figcaption>Écran 1 – Page de connexion</figcaption>
+      </figure>
+
+      <figure class="screenshot">
+        <img src="Exam Page Workflow/2. Confirmation Page.png" alt="Page de confirmation avant le début de l’épreuve">
+        <figcaption>Écran 2 – Page de confirmation</figcaption>
+      </figure>
+    </div>
+  </article>
+
   <!-- Phase 2 -->
-  <h3>Phase 2 : Passage de l’épreuve</h3>
-  <p>
-    L’épreuve se déroule en deux parties :
-  </p>
-  <p>
-    <strong>Partie A (questions fermées)</strong> : QCM, vocabulaire, correspondances...
-    Les réponses sont sélectionnées via des menus déroulants et seront corrigées automatiquement.
-    <br>
-    <strong>Partie B (rédaction)</strong> : consigne claire en haut de page, éditeur de texte intégré.
-    Le copier-coller, la traduction automatique et le clic droit sont désactivés.
-  </p>
+  <article class="step">
+    <h3>Phase 2 : Passage de l’épreuve</h3>
+    <p>
+      L’épreuve se déroule en deux parties :
+    </p>
+    <ul>
+      <li>
+        <strong>Partie A (questions fermées)</strong> : QCM, vocabulaire, correspondances… Les réponses sont
+        sélectionnées via des menus déroulants et seront corrigées automatiquement.
+      </li>
+      <li>
+        <strong>Partie B (rédaction)</strong> : consigne claire en haut de page, éditeur de texte intégré.
+        Le copier-coller, la traduction automatique et le clic droit sont désactivés.
+      </li>
+    </ul>
+    <p>
+      Pendant toute l’épreuve, les tentatives de sortie du plein écran ou de changement d’onglet déclenchent
+      des avertissements. Ces événements sont enregistrés dans un journal de session. Après plusieurs alertes,
+      l’épreuve peut être automatiquement envoyée à l’enseignant.
+    </p>
 
-  <figure class="screenshot">
-    <img src="img/3.%20Part%20A%20Vocabulary.png"
-         alt="Exemple de la partie A : vocabulaire et questions fermées">
-    <figcaption>Image&nbsp;3 – Partie A : questions fermées</figcaption>
-  </figure>
+    <div class="screenshot-column">
+      <figure class="screenshot">
+        <img src="Exam Page Workflow/3. Part A Vocabulary.png" alt="Partie A - Vocabulaire et questions fermées">
+        <figcaption>Écran 3 – Partie A : vocabulaire</figcaption>
+      </figure>
 
-  <figure class="screenshot">
-    <img src="img/4.%20Part%20B%20Top.png"
-         alt="Haut de la partie B avec la consigne de rédaction">
-    <figcaption>Image&nbsp;4 – Partie B : consigne et début de la rédaction</figcaption>
-  </figure>
+      <figure class="screenshot">
+        <img src="Exam Page Workflow/4a. Written Exercise.png" alt="Partie B - Consigne de l’exercice rédigé">
+        <figcaption>Écran 4a – Partie B : consigne</figcaption>
+      </figure>
 
-  <figure class="screenshot">
-    <img src="img/5.%20Part%20B%20Bottom%20-%20Submit.png"
-         alt="Bas de la partie B avec le bouton d’envoi de l’épreuve">
-    <figcaption>Image&nbsp;5 – Partie B : zone de rédaction et bouton d’envoi</figcaption>
-  </figure>
+      <figure class="screenshot">
+        <img src="Exam Page Workflow/4b Written Exercise.png" alt="Partie B - Zone de rédaction et bouton d’envoi">
+        <figcaption>Écran 4b – Partie B : rédaction et envoi</figcaption>
+      </figure>
 
-  <p>
-    Pendant toute l’épreuve, les tentatives de sortie du plein écran ou de changement d’onglet
-    déclenchent des avertissements. Ces événements sont enregistrés dans un journal de session.
-    Après plusieurs alertes, l’épreuve peut être automatiquement envoyée à l’enseignant.
-  </p>
-
-  <figure class="screenshot">
-    <img src="img/6.%20Warning%20Popup.png"
-         alt="Fenêtre d’avertissement lorsque l’étudiant tente de quitter l’écran de l’épreuve">
-    <figcaption>Image&nbsp;6 – Fenêtre d’avertissement en cas de sortie d’écran</figcaption>
-  </figure>
+      <figure class="screenshot">
+        <img src="Exam Page Workflow/5. Warning Pop-up.png" alt="Fenêtre d’avertissement en cas de sortie d’écran">
+        <figcaption>Écran 5 – Fenêtre d’avertissement (anti-triche)</figcaption>
+      </figure>
+    </div>
+  </article>
 
   <!-- Phase 3 -->
-  <h3>Phase 3 : Correction simplifiée</h3>
-  <p>
-    Une fois l’épreuve envoyée, l’étudiant reçoit une confirmation. L’enseignant reçoit un e-mail contenant :
-  </p>
-  <ul>
-    <li>Les informations de l’étudiant (nom, groupe)</li>
-    <li>La partie A déjà corrigée automatiquement</li>
-    <li>La réponse rédigée, prête à être évaluée</li>
-    <li>Une grille de notation à remplir</li>
-    <li>Le journal de session complet (sorties d’écran, avertissements, etc.)</li>
-  </ul>
+  <article class="step">
+    <h3>Phase 3 : Correction simplifiée</h3>
+    <p>
+      Une fois l’épreuve envoyée, l’étudiant reçoit une confirmation. L’enseignant reçoit un e-mail contenant :
+    </p>
+    <ul>
+      <li>Les informations de l’étudiant (nom, groupe)</li>
+      <li>La partie A déjà corrigée automatiquement</li>
+      <li>La réponse rédigée, prête à être évaluée</li>
+      <li>Une grille de notation à remplir</li>
+      <li>Le journal de session complet (sorties d’écran, avertissements, etc.)</li>
+    </ul>
 
-  <figure class="screenshot">
-    <img src="img/7.%20Submission%20Success.png"
-         alt="Message de confirmation après l’envoi réussi de l’épreuve">
-    <figcaption>Image&nbsp;7 – Confirmation d’envoi pour l’étudiant</figcaption>
-  </figure>
+    <div class="screenshot-row">
+      <figure class="screenshot">
+        <img src="Exam Page Workflow/6. Successful Submission.png" alt="Message de confirmation d’envoi côté étudiant">
+        <figcaption>Écran 6 – Confirmation d’envoi pour l’étudiant</figcaption>
+      </figure>
 
-  <figure class="screenshot">
-    <!-- Si c’est une vidéo ou un GIF de défilement du rapport, adaptez l’extension -->
-    <img src="img/Teacher%20Report%20Scroll.gif"
-         alt="Exemple de rapport d’épreuve reçu par l’enseignant avec correction de la partie A et réponse rédigée">
-    <figcaption>Image&nbsp;8 – Rapport enseignant avec résultats et journal de session</figcaption>
-  </figure>
+      <figure class="screenshot">
+        <video controls class="video-demo">
+          <source src="Exam Page Workflow/7. Email Report.mp4" type="video/mp4">
+          Votre navigateur ne supporte pas la lecture vidéo.
+        </video>
+        <figcaption>Écran 7 – Rapport reçu par l’enseignant (e-mail)</figcaption>
+      </figure>
+    </div>
+  </article>
 </section>
 
     <!-- SECTION 3 – CRÉER UN EXAMEN (ENSEIGNANTS) -->
