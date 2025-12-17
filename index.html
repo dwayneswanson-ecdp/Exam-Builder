@@ -145,21 +145,22 @@
     /* Screenshot gallery */
     .screenshot-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin: 24px 0;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      margin: 28px 0;
     }
 
     .screenshot-item {
       background: #f9fafb;
       border-radius: 8px;
-      padding: 12px;
+      padding: 16px;
       border: 1px solid #e5e7eb;
       transition: all 0.2s;
+      cursor: pointer;
     }
 
     .screenshot-item:hover {
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
       transform: translateY(-2px);
     }
 
@@ -172,10 +173,46 @@
     }
 
     .screenshot-item figcaption {
-      margin-top: 8px;
-      font-size: 0.8rem;
+      margin-top: 10px;
+      font-size: 0.85rem;
       color: #6b7280;
       text-align: center;
+      font-weight: 500;
+    }
+
+    /* Single column for important screenshots */
+    .screenshot-large {
+      margin: 28px 0;
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .screenshot-large img,
+    .screenshot-large video {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      display: block;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .screenshot-large img:hover,
+    .screenshot-large video:hover {
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+      transform: scale(1.01);
+    }
+
+    .screenshot-large figcaption {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #6b7280;
+      text-align: center;
+      font-weight: 500;
     }
 
     /* CTA Section */
@@ -377,22 +414,25 @@
           automatiquement envoyée.
         </p>
 
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/3. Part A Vocabulary.png" alt="Partie A">
+          <figcaption>Partie A : questions de vocabulaire avec menus déroulants</figcaption>
+        </figure>
+
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/4a. Written Exercise.png" alt="Partie B consigne">
+          <figcaption>Partie B : consigne de l'exercice rédigé</figcaption>
+        </figure>
+
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/4b Written Exercise.png" alt="Partie B rédaction">
+          <figcaption>Partie B : zone de rédaction avec éditeur de texte intégré</figcaption>
+        </figure>
+
         <div class="screenshot-grid">
           <figure class="screenshot-item">
-            <img src="Exam Page Workflow/3. Part A Vocabulary.png" alt="Partie A">
-            <figcaption>Partie A : vocabulaire</figcaption>
-          </figure>
-          <figure class="screenshot-item">
-            <img src="Exam Page Workflow/4a. Written Exercise.png" alt="Partie B consigne">
-            <figcaption>Partie B : consigne</figcaption>
-          </figure>
-          <figure class="screenshot-item">
-            <img src="Exam Page Workflow/4b Written Exercise.png" alt="Partie B rédaction">
-            <figcaption>Partie B : rédaction</figcaption>
-          </figure>
-          <figure class="screenshot-item">
             <img src="Exam Page Workflow/5. Warning Pop-up.png" alt="Avertissement">
-            <figcaption>Fenêtre d'avertissement</figcaption>
+            <figcaption>Fenêtre d'avertissement anti-triche</figcaption>
           </figure>
         </div>
       </div>
@@ -414,15 +454,16 @@
         <div class="screenshot-grid">
           <figure class="screenshot-item">
             <img src="Exam Page Workflow/6. Successful Submission.png" alt="Confirmation">
-            <figcaption>Confirmation d'envoi</figcaption>
-          </figure>
-          <figure class="screenshot-item">
-            <video controls>
-              <source src="Exam Page Workflow/7. Email Report.mp4" type="video/mp4">
-            </video>
-            <figcaption>Rapport enseignant par e-mail</figcaption>
+            <figcaption>Confirmation d'envoi pour l'étudiant</figcaption>
           </figure>
         </div>
+
+        <figure class="screenshot-large">
+          <video controls>
+            <source src="Exam Page Workflow/7. Email Report.mp4" type="video/mp4">
+          </video>
+          <figcaption>Rapport complet reçu par e-mail – Partie A corrigée automatiquement, Partie B prête à noter</figcaption>
+        </figure>
       </div>
     </div>
 
