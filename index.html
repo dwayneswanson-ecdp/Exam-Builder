@@ -2,14 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Plateforme d’examen en ligne – Version bêta</title>
+  <title>Plateforme d'examen en ligne – Version bêta</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google" content="notranslate" />
   <meta http-equiv="Content-Language" content="fr" />
   <meta name="robots" content="no-translate" />
 
   <style>
-    /* Style global – proche de l’esthétique de l’épreuve */
     html, body {
       margin: 0;
       padding: 0;
@@ -20,239 +19,272 @@
 
     body {
       line-height: 1.6;
-      padding-top: 90px; /* pour laisser la place au header fixe */
+      padding-top: 80px;
     }
 
-    /* Header fixe – comme sur l’exam */
+    /* Header */
     header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-
-      background: #ffffffcc;
+      background: #ffffffee;
       backdrop-filter: blur(10px);
       border-bottom: 1px solid #e1e4f0;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
-      padding: 14px 24px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      padding: 16px 24px;
     }
 
     .header-left h1 {
       margin: 0;
-      font-size: 1.25rem;
-      letter-spacing: 0.03em;
+      font-size: 1.2rem;
+      letter-spacing: 0.02em;
       font-weight: 700;
       color: #2643e9;
     }
 
     .header-left p {
-      margin: 4px 0 0;
-      font-size: 0.9rem;
+      margin: 2px 0 0;
+      font-size: 0.85rem;
       color: #6b7280;
     }
 
     .header-right a {
       text-decoration: none;
-      padding: 9px 20px;
-      border-radius: 999px;
-      border: 1px solid #2643e9;
+      padding: 10px 22px;
+      border-radius: 8px;
       font-size: 0.9rem;
       font-weight: 600;
-      color: #2643e9;
-      background: #eef2ff;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .header-right a span.icon {
-      font-size: 1.1rem;
+      color: #fff;
+      background: #2643e9;
+      box-shadow: 0 2px 8px rgba(38, 67, 233, 0.25);
+      transition: all 0.2s;
     }
 
     .header-right a:hover {
-      background: #e0e7ff;
+      background: #1e3bd6;
+      box-shadow: 0 4px 12px rgba(38, 67, 233, 0.35);
+      transform: translateY(-1px);
     }
 
-    /* Contenu principal */
+    /* Main content */
     main {
-      max-width: 980px;
-      margin: 24px auto 40px;
-      padding: 0 16px 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
     }
 
-    /* Cartes de section – miroir des cartes exam */
-    .card {
+    /* Section cards */
+    .section-card {
       background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
       border: 1px solid #e5e7eb;
-      padding: 24px 24px 28px;
-      margin-bottom: 24px;
+      padding: 32px;
+      margin-bottom: 28px;
     }
 
-    .card h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-      font-weight: 600;
+    .section-card h2 {
+      margin: 0 0 20px 0;
+      font-size: 1.4rem;
+      font-weight: 700;
       color: #111827;
+      border-bottom: 2px solid #eef2ff;
+      padding-bottom: 12px;
     }
 
-    .card p {
-      margin: 8px 0;
-      font-size: 0.95rem;
+    .section-card h3 {
+      margin: 24px 0 12px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #374151;
     }
 
-    .card ul,
-    .card ol {
-      margin: 8px 0 0;
-      padding-left: 20px;
+    .section-card p {
+      margin: 12px 0;
       font-size: 0.95rem;
-    }
-
-    .tagline {
-      font-size: 0.95rem;
+      line-height: 1.7;
       color: #4b5563;
     }
 
-    .highlight {
-      background: #eef2ff;
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 0.9rem;
-      margin-top: 8px;
-      border: 1px solid #c7d2fe;
+    .section-card ul {
+      margin: 12px 0;
+      padding-left: 24px;
+      font-size: 0.95rem;
+      line-height: 1.7;
     }
 
-    /* Sous-sections et étapes (section 2) */
-    .steps {
-      margin-top: 12px;
+    .section-card li {
+      margin: 8px 0;
     }
 
-    .step {
-      margin-bottom: 20px;
-    }
-
-    .step h3 {
-      margin: 12px 0 4px;
-      font-size: 1rem;
-      font-weight: 600;
+    .section-card strong {
       color: #111827;
     }
 
-    .step p {
-      margin: 4px 0 6px;
-      font-size: 0.95rem;
+    /* Highlight box */
+    .highlight-box {
+      background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+      border-left: 4px solid #2643e9;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
     }
 
-    figure {
-      margin: 6px 0 0;
+    .highlight-box p {
+      margin: 0;
+      color: #1e3a8a;
+      font-weight: 500;
     }
 
-    figure img, figure video {
-      max-width: 100%;
-      border-radius: 10px;
+    /* Screenshot gallery */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .screenshot-item {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 12px;
       border: 1px solid #e5e7eb;
+      transition: all 0.2s;
+    }
+
+    .screenshot-item:hover {
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .screenshot-item img,
+    .screenshot-item video {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
       display: block;
     }
 
-    figure figcaption {
-      margin-top: 4px;
-      font-size: 0.85rem;
+    .screenshot-item figcaption {
+      margin-top: 8px;
+      font-size: 0.8rem;
       color: #6b7280;
-    }
-
-    /* Section 3 – bloc enseignant avec plus de présence visuelle */
-    .teacher-section {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-      gap: 20px;
-      align-items: center;
-    }
-
-    .teacher-section h2 {
-      margin-bottom: 6px;
-    }
-
-    .teacher-section p {
-      font-size: 0.95rem;
-    }
-
-    .teacher-cta {
       text-align: center;
     }
 
-    .teacher-cta-inner {
-      border-radius: 18px;
-      padding: 18px 16px 20px;
-      background: radial-gradient(circle at top left, #eef2ff 0, #ffffff 60%);
-      border: 1px solid #c7d2fe;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.12);
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+      border: 2px solid #c7d2fe;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      margin: 32px 0;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.12);
     }
 
-    .teacher-cta p {
-      margin: 0 0 12px;
-      font-size: 0.9rem;
+    .cta-section h2 {
+      margin: 0 0 12px 0;
+      font-size: 1.5rem;
+      color: #1e3a8a;
+    }
+
+    .cta-section p {
+      margin: 12px 0 24px 0;
+      font-size: 1rem;
       color: #4b5563;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .teacher-cta a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 24px;
-      border-radius: 999px;
-      border: none;
-      text-decoration: none;
-      font-size: 0.95rem;
+    .cta-button {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 1rem;
       font-weight: 600;
+      color: #fff;
       background: #2643e9;
-      color: #ffffff;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45);
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(38, 67, 233, 0.35);
+      transition: all 0.2s;
     }
 
-    .teacher-cta a:hover {
-      filter: brightness(0.96);
+    .cta-button:hover {
+      background: #1e3bd6;
+      box-shadow: 0 6px 20px rgba(38, 67, 233, 0.45);
+      transform: translateY(-2px);
     }
 
-    .badge-beta {
+    .beta-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
+      padding: 6px 12px;
+      border-radius: 20px;
       font-size: 0.75rem;
+      font-weight: 600;
       background: #fef3c7;
       color: #92400e;
       border: 1px solid #fbbf24;
-      margin-top: 6px;
+      margin-top: 16px;
     }
 
-    .muted {
+    .note-text {
       font-size: 0.85rem;
       color: #6b7280;
+      font-style: italic;
+      margin-top: 16px;
+    }
+
+    /* Phase sections */
+    .phase-block {
+      margin: 32px 0;
+      padding: 24px;
+      background: #f9fafb;
+      border-radius: 10px;
+      border-left: 4px solid #2643e9;
+    }
+
+    /* Footer note */
+    .footer-note {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.9rem;
+      color: #6b7280;
+      border-top: 1px solid #e5e7eb;
+      margin-top: 40px;
     }
 
     /* Responsive */
-    @media (max-width: 800px) {
+    @media (max-width: 768px) {
       header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
+        gap: 8px;
+        padding: 12px 16px;
       }
 
       body {
-        padding-top: 110px;
+        padding-top: 120px;
       }
 
-      .teacher-section {
+      .section-card {
+        padding: 24px 20px;
+      }
+
+      .cta-section {
+        padding: 28px 20px;
+      }
+
+      .screenshot-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -260,235 +292,175 @@
 </head>
 <body>
 
-  <!-- HEADER (même esprit que l’exam) -->
   <header>
     <div class="header-left">
-      <h1>Plateforme d’examen en ligne – Version bêta</h1>
-      <p>Épreuves écrites surveillées, en présentiel, avec correction facilitée.</p>
+      <h1>Plateforme d'examen en ligne – Version bêta</h1>
+      <p>Épreuves surveillées en présentiel, avec correction facilitée</p>
     </div>
     <div class="header-right">
-      <!-- Lien direct vers la page de création d’examen -->
-      <a href="create-exam.html">
-        
-        <span>Créer un examen</span>
-      </a>
+      <a href="create-exam.html">Créer un examen</a>
     </div>
   </header>
 
   <main>
-    <!-- SECTION 1 – POURQUOI -->
-    <section id="section-1" class="section-block">
-  <h2>1. Pourquoi cette plateforme ?</h2>
+    <!-- Section 1 -->
+    <div class="section-card">
+      <h2>1. Pourquoi cette plateforme ?</h2>
+      
+      <p>
+        Pendant les examens écrits en salle de classe, la triche peut prendre de nombreuses formes :
+        utilisation discrète de l'IA ou de traducteurs en ligne, échanges de brouillons entre étudiants,
+        réponses préparées à l'avance sur papier, ou encore collaboration non autorisée.
+      </p>
 
-  <p>
-    Pendant les examens écrits en salle de classe, la triche peut prendre de nombreuses formes :
-    utilisation discrète de l’IA ou de traducteurs en ligne, échanges de brouillons entre étudiants,
-    réponses préparées à l’avance sur papier, ou encore collaboration non autorisée.
-    Cette plateforme a été conçue pour répondre à ces problèmes très concrets.
-  </p>
+      <div class="highlight-box">
+        <p>L'objectif : valoriser le travail honnête tout en limitant la triche.</p>
+      </div>
 
-  <p>
-    <strong>L’objectif est de valoriser le travail honnête tout en limitant la triche.</strong>
-  </p>
+      <p>
+        L'idée n'est pas de « piéger » les étudiants, mais de créer un environnement plus équitable.
+        Les étudiants qui révisent et rédigent leurs propres réponses méritent d'être protégés –
+        que la triche passe par l'IA, le copier-coller, ou simplement un morceau de papier glissé
+        discrètement sous la table.
+      </p>
 
-  <p>
-    L’idée n’est pas de « piéger » les étudiants, mais de créer un environnement plus équitable.
-    Les étudiants qui révisent et rédigent leurs propres réponses méritent d’être protégés –
-    que la triche passe par l’IA, le copier-coller, ou simplement un morceau de papier glissé
-    discrètement sous la table.
-  </p>
+      <h3>Une solution légère pour l'enseignant</h3>
 
-  <h3>Une solution légère pour l’enseignant</h3>
-
-  <p>
-    Pas de plateforme complexe, pas de comptes à créer, pas de back-office à gérer.
-    Chaque épreuve fonctionne de manière autonome : lorsque l’étudiant envoie ses réponses,
-    l’enseignant reçoit un e-mail avec un rapport complet
-    (partie fermée déjà corrigée, partie rédigée, grille de notation,
-    journal des événements techniques).
-  </p>
-</section>
-
-    <!-- SECTION 2 – COMMENT / QUOI : WORKFLOW + CAPTURES -->
-    <section id="section-2" class="section-block">
-  <h2>2. Comment fonctionne l’épreuve ?</h2>
-
-  <!-- Phase 1 -->
-  <h3>Phase 1 : Connexion sécurisée</h3>
-  <p>
-    L’étudiant se connecte avec son nom, son e-mail universitaire et un code de classe fourni par l’enseignant.
-    Il vérifie ensuite ses informations et prend connaissance des règles : épreuve en plein écran,
-    désactivation du copier-coller et du clic droit, enregistrement de tous les événements techniques.
-  </p>
-
-  <figure class="screenshot">
-    <img src="img/1.%20Login%20Screen.png"
-         alt="Écran de connexion de l’étudiant – plateforme d’examen en ligne">
-    <figcaption>Image&nbsp;1 – Écran de connexion</figcaption>
-  </figure>
-
-  <figure class="screenshot">
-    <img src="img/2.%20Confrimation%20Page.png"
-         alt="Page de confirmation des informations et des règles avant le début de l’épreuve">
-    <figcaption>Image&nbsp;2 – Page de confirmation</figcaption>
-  </figure>
-
-<section id="section-2" class="section">
-  <h2>2. Comment fonctionne l’épreuve ?</h2>
-
-  <!-- Phase 1 -->
-  <article class="step">
-    <h3>Phase 1 : Connexion sécurisée</h3>
-    <p>
-      L’étudiant se connecte avec son nom, son e-mail universitaire et un code de classe fourni par l’enseignant.
-      Il vérifie ensuite ses informations et prend connaissance des règles : épreuve en plein écran, désactivation
-      du copier-coller et du clic droit, enregistrement de tous les événements techniques.
-    </p>
-
-    <div class="screenshot-row">
-      <figure class="screenshot">
-        <img src="Exam Page Workflow/1. Login Screen.png" alt="Écran de connexion de l’épreuve">
-        <figcaption>Écran 1 – Page de connexion</figcaption>
-      </figure>
-
-      <figure class="screenshot">
-        <img src="Exam Page Workflow/2. Confirmation Page.png" alt="Page de confirmation avant le début de l’épreuve">
-        <figcaption>Écran 2 – Page de confirmation</figcaption>
-      </figure>
+      <p>
+        Pas de plateforme complexe, pas de comptes à créer, pas de back-office à gérer.
+        Chaque épreuve fonctionne de manière autonome : lorsque l'étudiant envoie ses réponses,
+        vous recevez un e-mail avec un rapport complet (partie fermée déjà corrigée, 
+        partie rédigée, grille de notation, journal des événements techniques).
+      </p>
     </div>
-  </article>
 
-  <!-- Phase 2 -->
-  <article class="step">
-    <h3>Phase 2 : Passage de l’épreuve</h3>
-    <p>
-      L’épreuve se déroule en deux parties :
-    </p>
-    <ul>
-      <li>
-        <strong>Partie A (questions fermées)</strong> : QCM, vocabulaire, correspondances… Les réponses sont
-        sélectionnées via des menus déroulants et seront corrigées automatiquement.
-      </li>
-      <li>
-        <strong>Partie B (rédaction)</strong> : consigne claire en haut de page, éditeur de texte intégré.
-        Le copier-coller, la traduction automatique et le clic droit sont désactivés.
-      </li>
-    </ul>
-    <p>
-      Pendant toute l’épreuve, les tentatives de sortie du plein écran ou de changement d’onglet déclenchent
-      des avertissements. Ces événements sont enregistrés dans un journal de session. Après plusieurs alertes,
-      l’épreuve peut être automatiquement envoyée à l’enseignant.
-    </p>
+    <!-- Section 2 -->
+    <div class="section-card">
+      <h2>2. Comment fonctionne l'épreuve ?</h2>
 
-    <div class="screenshot-column">
-      <figure class="screenshot">
-        <img src="Exam Page Workflow/3. Part A Vocabulary.png" alt="Partie A - Vocabulaire et questions fermées">
-        <figcaption>Écran 3 – Partie A : vocabulaire</figcaption>
-      </figure>
+      <div class="phase-block">
+        <h3>Phase 1 : Connexion sécurisée</h3>
+        <p>
+          L'étudiant se connecte avec son nom, son e-mail universitaire et un code de classe que vous fournissez.
+          Il vérifie ses informations et prend connaissance des règles : épreuve en plein écran,
+          désactivation du copier-coller et du clic droit, enregistrement de tous les événements techniques.
+        </p>
 
-      <figure class="screenshot">
-        <img src="Exam Page Workflow/4a. Written Exercise.png" alt="Partie B - Consigne de l’exercice rédigé">
-        <figcaption>Écran 4a – Partie B : consigne</figcaption>
-      </figure>
-
-      <figure class="screenshot">
-        <img src="Exam Page Workflow/4b Written Exercise.png" alt="Partie B - Zone de rédaction et bouton d’envoi">
-        <figcaption>Écran 4b – Partie B : rédaction et envoi</figcaption>
-      </figure>
-
-      <figure class="screenshot">
-        <img src="Exam Page Workflow/5. Warning Pop-up.png" alt="Fenêtre d’avertissement en cas de sortie d’écran">
-        <figcaption>Écran 5 – Fenêtre d’avertissement (anti-triche)</figcaption>
-      </figure>
-    </div>
-  </article>
-
-  <!-- Phase 3 -->
-  <article class="step">
-    <h3>Phase 3 : Correction simplifiée</h3>
-    <p>
-      Une fois l’épreuve envoyée, l’étudiant reçoit une confirmation. L’enseignant reçoit un e-mail contenant :
-    </p>
-    <ul>
-      <li>Les informations de l’étudiant (nom, groupe)</li>
-      <li>La partie A déjà corrigée automatiquement</li>
-      <li>La réponse rédigée, prête à être évaluée</li>
-      <li>Une grille de notation à remplir</li>
-      <li>Le journal de session complet (sorties d’écran, avertissements, etc.)</li>
-    </ul>
-
-    <div class="screenshot-row">
-      <figure class="screenshot">
-        <img src="Exam Page Workflow/6. Successful Submission.png" alt="Message de confirmation d’envoi côté étudiant">
-        <figcaption>Écran 6 – Confirmation d’envoi pour l’étudiant</figcaption>
-      </figure>
-
-      <figure class="screenshot">
-        <video controls class="video-demo">
-          <source src="Exam Page Workflow/7. Email Report.mp4" type="video/mp4">
-          Votre navigateur ne supporte pas la lecture vidéo.
-        </video>
-        <figcaption>Écran 7 – Rapport reçu par l’enseignant (e-mail)</figcaption>
-      </figure>
-    </div>
-  </article>
-</section>
-
-    <!-- SECTION 3 – CRÉER UN EXAMEN (ENSEIGNANTS) -->
-    <section class="card" id="creer-examen">
-      <div class="teacher-section">
-        <div>
-          <h2>3. Pour les enseignants&nbsp;: créer un examen</h2>
-          <p>
-            Cette version bêta a été pensée pour être utilisée
-            par plusieurs enseignants, dans différentes matières (langues, management,
-            finance, etc.), <strong>sans back-office ni compte administrateur</strong>.
-          </p>
-          <p>
-            Chaque examen est un fichier autonome&nbsp;: il envoie uniquement des rapports
-            par e-mail à l’enseignant. Il n’y a pas de base de données centrale.
-          </p>
-          <p>
-            Dans le cadre d’un projet pilote, l’idée est de&nbsp;:
-          </p>
-          <ul>
-            <li>tester la plateforme avec plusieurs groupes d’étudiants ;</li>
-            <li>mesurer l’impact sur la triche et la qualité des copies ;</li>
-            <li>voir si le format est facile à réutiliser par 5 ou 6 enseignants.</li>
-          </ul>
-          <div class="badge-beta">
-            <span>●</span>
-            <span>Version bêta – usage limité et expérimental</span>
-          </div>
-        </div>
-
-        <div class="teacher-cta">
-          <div class="teacher-cta-inner">
-            <p><strong>Envie de tester la plateforme&nbsp;?</strong></p>
-            <p>
-              Cliquez sur le bouton ci-dessous pour accéder à la page
-              «&nbsp;Créer un examen&nbsp;», avec des instructions simples
-              pour configurer votre première épreuve.
-            </p>
-            <a href="create-exam.html">
-              <span>Créer un examen </span>
-            </a>
-            <p class="muted" style="margin-top:10px;">
-              (Conseil&nbsp;: commencez avec un petit groupe pour tester le format,
-              puis élargissez progressivement.)
-            </p>
-          </div>
+        <div class="screenshot-grid">
+          <figure class="screenshot-item">
+            <img src="Exam Page Workflow/1. Login Screen.png" alt="Écran de connexion">
+            <figcaption>Écran de connexion</figcaption>
+          </figure>
+          <figure class="screenshot-item">
+            <img src="Exam Page Workflow/2. Confrimation Page.png" alt="Page de confirmation">
+            <figcaption>Page de confirmation</figcaption>
+          </figure>
         </div>
       </div>
-    </section>
 
-    <section class="muted" style="margin-top:8px;">
+      <div class="phase-block">
+        <h3>Phase 2 : Passage de l'épreuve</h3>
+        <p>L'épreuve se déroule en deux parties :</p>
+        <ul>
+          <li>
+            <strong>Partie A (questions fermées)</strong> : QCM, vocabulaire, correspondances…
+            Les réponses sont corrigées automatiquement.
+          </li>
+          <li>
+            <strong>Partie B (rédaction)</strong> : consigne claire, éditeur de texte intégré.
+            Le copier-coller et la traduction automatique sont désactivés.
+          </li>
+        </ul>
+        <p>
+          Les tentatives de sortie du plein écran ou de changement d'onglet déclenchent
+          des avertissements enregistrés. Après plusieurs alertes, l'épreuve peut être
+          automatiquement envoyée.
+        </p>
+
+        <div class="screenshot-grid">
+          <figure class="screenshot-item">
+            <img src="Exam Page Workflow/3. Part A Vocabulary.png" alt="Partie A">
+            <figcaption>Partie A : vocabulaire</figcaption>
+          </figure>
+          <figure class="screenshot-item">
+            <img src="Exam Page Workflow/4a. Written Exercise.png" alt="Partie B consigne">
+            <figcaption>Partie B : consigne</figcaption>
+          </figure>
+          <figure class="screenshot-item">
+            <img src="Exam Page Workflow/4b Written Exercise.png" alt="Partie B rédaction">
+            <figcaption>Partie B : rédaction</figcaption>
+          </figure>
+          <figure class="screenshot-item">
+            <img src="Exam Page Workflow/5. Warning Pop-up.png" alt="Avertissement">
+            <figcaption>Fenêtre d'avertissement</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="phase-block">
+        <h3>Phase 3 : Correction simplifiée</h3>
+        <p>
+          Une fois l'épreuve envoyée, l'étudiant reçoit une confirmation.
+          Vous recevez un e-mail contenant :
+        </p>
+        <ul>
+          <li>Les informations de l'étudiant (nom, groupe)</li>
+          <li>La partie A déjà corrigée automatiquement</li>
+          <li>La réponse rédigée, prête à être évaluée</li>
+          <li>Une grille de notation à remplir</li>
+          <li>Le journal de session complet</li>
+        </ul>
+
+        <div class="screenshot-grid">
+          <figure class="screenshot-item">
+            <img src="Exam Page Workflow/6. Successful Submission.png" alt="Confirmation">
+            <figcaption>Confirmation d'envoi</figcaption>
+          </figure>
+          <figure class="screenshot-item">
+            <video controls>
+              <source src="Exam Page Workflow/7. Email Report.mp4" type="video/mp4">
+            </video>
+            <figcaption>Rapport enseignant par e-mail</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3 - CTA -->
+    <div class="cta-section">
+      <h2>Envie de tester ?</h2>
+      
       <p>
-        Cette plateforme a été développée pour
-        <strong>protéger les étudiants qui font le travail</strong>
-        tout en restant simple à déployer pour les enseignants.
+        Je cherche quelques enseignants pour m'aider à tester cette plateforme avec leurs groupes.
+        Pas de compte à créer, pas de plateforme compliquée – juste un fichier autonome qui envoie
+        les rapports par e-mail.
       </p>
-    </section>
+
+      <p>
+        <strong>L'objectif :</strong> voir si le format est facile à utiliser, si ça réduit vraiment
+        la triche, et si les copies sont de meilleure qualité.
+      </p>
+
+      <a href="create-exam.html" class="cta-button">Créer un examen</a>
+
+      <div class="beta-badge">
+        <span>●</span>
+        <span>Version bêta – usage expérimental</span>
+      </div>
+
+      <p class="note-text">
+        Conseil : commencez avec un petit groupe pour tester, puis élargissez progressivement.
+        N'hésitez pas à me faire des retours !
+      </p>
+    </div>
+
+    <div class="footer-note">
+      <p>
+        <strong>Cette plateforme a été développée pour protéger les étudiants qui font le travail,<br>
+        tout en restant simple à déployer pour les enseignants.</strong>
+      </p>
+    </div>
   </main>
+
 </body>
 </html>
