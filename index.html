@@ -1,506 +1,615 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plateforme d'Épreuves en Classe - Reprenez le contrôle</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <title>Plateforme d'examen en ligne – Version bêta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google" content="notranslate" />
+  <meta http-equiv="Content-Language" content="fr" />
+  <meta name="robots" content="no-translate" />
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #1e293b;
-        }
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f5f7fb;
+      color: #111827;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    body {
+      line-height: 1.6;
+      padding-top: 80px;
+    }
 
-        .hero {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-            color: white;
-            padding: 100px 20px;
-            text-align: center;
-        }
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: #ffffffee;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e1e4f0;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      padding: 16px 24px;
+    }
 
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
+    .header-left h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+      color: #2643e9;
+    }
 
-        .subtitle {
-            font-size: 18px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    .header-left p {
+      margin: 2px 0 0;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
 
-        .beta-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+    .header-right a {
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      background: #2643e9;
+      box-shadow: 0 2px 8px rgba(38, 67, 233, 0.25);
+      transition: all 0.2s;
+    }
 
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #2563eb;
-            padding: 16px 40px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 18px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-        }
+    .header-right a:hover {
+      background: #1e3bd6;
+      box-shadow: 0 4px 12px rgba(38, 67, 233, 0.35);
+      transform: translateY(-1px);
+    }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(0,0,0,0.3);
-        }
+    /* Main content */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
 
-        .demo-section {
-            padding: 80px 20px;
-            background: white;
-            text-align: center;
-        }
+    /* Section cards */
+    .section-card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+      padding: 32px;
+      margin-bottom: 28px;
+    }
 
-        .demo-section h2 {
-            font-size: 28px;
-            margin-bottom: 40px;
-            color: #1e293b;
-        }
+    .section-card h2 {
+      margin: 0 0 20px 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #111827;
+      border-bottom: 2px solid #eef2ff;
+      padding-bottom: 12px;
+    }
 
-        .video-container {
-            max-width: 900px;
-            margin: 0 auto;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-        }
+    .section-card h3 {
+      margin: 24px 0 12px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #374151;
+    }
 
-        .video-container video {
-            width: 100%;
-            display: block;
-        }
+    .section-card p {
+      margin: 12px 0;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #4b5563;
+    }
 
-        .features {
-            padding: 80px 20px;
-            background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
-        }
+    .section-card ul {
+      margin: 12px 0;
+      padding-left: 24px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
 
-        .features h2 {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 60px;
-            color: #1e293b;
-        }
+    .section-card li {
+      margin: 8px 0;
+    }
 
-        .pillars {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+    .section-card strong {
+      color: #111827;
+    }
 
-        .pillar {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+    /* Highlight box */
+    .highlight-box {
+      background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+      border-left: 4px solid #2643e9;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
 
-        .pillar-number {
-            display: inline-block;
-            width: 35px;
-            height: 35px;
-            background: #2563eb;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 35px;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
+    .highlight-box p {
+      margin: 0;
+      color: #1e3a8a;
+      font-weight: 500;
+    }
 
-        .pillar h3 {
-            margin: 0 0 15px 0;
-            font-size: 18px;
-            color: #1e293b;
-            font-weight: 600;
-        }
+    /* Screenshot gallery */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      margin: 28px 0;
+    }
 
-        .pillar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+    .screenshot-item {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
 
-        .pillar li {
-            padding: 8px 0;
-            color: #475569;
-            font-size: 14px;
-            position: relative;
-            padding-left: 20px;
-        }
+    .screenshot-item:hover {
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      transform: translateY(-2px);
+    }
 
-        .pillar li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #22c55e;
-            font-weight: bold;
-        }
+    .screenshot-item img,
+    .screenshot-item video {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      display: block;
+    }
 
-        .how-it-works {
-            padding: 80px 20px;
-            background: white;
-        }
+    .screenshot-item figcaption {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      font-weight: 500;
+    }
 
-        .how-it-works h2 {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 60px;
-            color: #1e293b;
-        }
+    /* Single column for important screenshots */
+    .screenshot-large {
+      margin: 28px 0;
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+    }
 
-        .phase {
-            margin-bottom: 60px;
-            padding: 40px;
-            border-radius: 12px;
-        }
+    .screenshot-large img,
+    .screenshot-large video {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      display: block;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-        .phase:nth-child(odd) {
-            background: #ffffff;
-        }
+    .screenshot-large img:hover,
+    .screenshot-large video:hover {
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+      transform: scale(1.01);
+    }
 
-        .phase:nth-child(even) {
-            background: #f8f9fa;
-        }
+    .screenshot-large figcaption {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #6b7280;
+      text-align: center;
+      font-weight: 500;
+    }
 
-        .phase-number {
-            display: inline-block;
-            background: #2563eb;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+      border: 2px solid #c7d2fe;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      margin: 32px 0;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.12);
+    }
 
-        .phase h3 {
-            font-size: 22px;
-            margin-bottom: 30px;
-            color: #1e293b;
-        }
+    .cta-section h2 {
+      margin: 0 0 12px 0;
+      font-size: 1.5rem;
+      color: #1e3a8a;
+    }
 
-        .phase-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
+    .cta-section p {
+      margin: 12px 0 24px 0;
+      font-size: 1rem;
+      color: #4b5563;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-        .phase-text p {
-            margin-bottom: 15px;
-            color: #475569;
-            font-size: 15px;
-        }
+    .cta-button {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #2643e9;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(38, 67, 233, 0.35);
+      transition: all 0.2s;
+    }
 
-        .phase-text ul {
-            list-style: none;
-            padding-left: 0;
-        }
+    .cta-button:hover {
+      background: #1e3bd6;
+      box-shadow: 0 6px 20px rgba(38, 67, 233, 0.45);
+      transform: translateY(-2px);
+    }
 
-        .phase-text li {
-            padding: 8px 0;
-            color: #475569;
-            font-size: 15px;
-            position: relative;
-            padding-left: 30px;
-        }
+    .beta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fbbf24;
+      margin-top: 16px;
+    }
 
-        .phase-text li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #22c55e;
-            font-weight: bold;
-        }
+    .note-text {
+      font-size: 0.85rem;
+      color: #6b7280;
+      font-style: italic;
+      margin-top: 16px;
+    }
 
-        .phase-image {
-            text-align: center;
-        }
+    /* Phase sections */
+    .phase-block {
+      margin: 32px 0;
+      padding: 24px;
+      background: #f9fafb;
+      border-radius: 10px;
+      border-left: 4px solid #2643e9;
+    }
 
-        .phase-image img {
-            max-width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-        }
+    /* Anti-cheat features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0 28px 0;
+    }
 
-        .cta {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-            padding: 80px 20px;
-            text-align: center;
-            color: white;
-        }
+    .feature-item {
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      padding: 16px 18px;
+    }
 
-        .cta h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
+    .feature-item h4 {
+      margin: 0 0 8px 0;
+      font-size: 0.98rem;
+      color: #111827;
+    }
 
-        .testimonial {
-            background: white;
-            padding: 60px 20px;
-        }
+    .feature-item p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
 
-        .testimonial-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
+    /* Footer note */
+    .footer-note {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.9rem;
+      color: #6b7280;
+      border-top: 1px solid #e5e7eb;
+      margin-top: 40px;
+    }
 
-        .testimonial blockquote {
-            font-size: 20px;
-            font-style: italic;
-            color: #1e293b;
-            margin: 0 0 20px 0;
-            line-height: 1.8;
-        }
+    /* Demo video section */
+    .demo-video-section {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+      padding: 32px;
+      margin-bottom: 28px;
+    }
 
-        .testimonial-author {
-            color: #64748b;
-            font-size: 16px;
-        }
+    .demo-video-section h2 {
+      margin: 0 0 8px 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #111827;
+    }
 
-        .cta p {
-            font-size: 18px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
+    .demo-video-section > p {
+      margin: 0 0 20px 0;
+      font-size: 0.95rem;
+      color: #4b5563;
+      line-height: 1.6;
+    }
 
-        .footer {
-            background: #1e293b;
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15);
+    }
 
-        .footer p {
-            margin: 10px 0;
-            opacity: 0.8;
-        }
+    .video-container video {
+      width: 100%;
+      display: block;
+    }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 28px;
-            }
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px 16px;
+      }
 
-            .subtitle {
-                font-size: 16px;
-            }
+      body {
+        padding-top: 120px;
+      }
 
-            .features h2,
-            .how-it-works h2,
-            .cta h2 {
-                font-size: 24px;
-            }
+      .section-card {
+        padding: 24px 20px;
+      }
 
-            .pillars {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
+      .cta-section {
+        padding: 28px 20px;
+      }
 
-            .phase:nth-child(odd),
-            .phase:nth-child(even) {
-                background: white;
-            }
-            
-            .phase-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .phase-image {
-                order: -1;
-            }
-
-            .pillar {
-                padding: 30px 20px;
-            }
-
-            .testimonial blockquote {
-                font-size: 18px;
-            }
-        }
-    </style>
+      .screenshot-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <section class="hero">
-        <div class="container">
-            <div class="beta-badge">Exam Platform — Beta</div>
-            <h1>Reprenez le contrôle de vos examens en classe.</h1>
-            <p class="subtitle">Une plateforme légère pour bloquer l'IA, empêcher le copier-coller, et automatiser la correction. Sans création de compte.</p>
-            <a href="#demo" class="cta-button">Voir la démo en 2 minutes</a>
+
+  <header>
+    <div class="header-left">
+      <h1>Plateforme d'examen en ligne – Version bêta</h1>
+      <p>Épreuves surveillées en présentiel, avec correction facilitée</p>
+    </div>
+    <div class="header-right">
+      <a href="create-exam.html">Créer un examen</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Demo Video Section (no extra demo button) -->
+    <div class="demo-video-section" id="demo">
+      <h2>Démo rapide : l'épreuve en un coup d'œil</h2>
+      <p>Un aperçu complet de la plateforme, de la connexion à l'envoi de l'épreuve, puis à la correction.</p>
+      <div class="video-container">
+        <video controls>
+          <source src="Exam Page Workflow/Exam at a glance 2.mp4" type="video/mp4">
+          Votre navigateur ne supporte pas la lecture vidéo.
+        </video>
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section-card">
+      <h2>1. Pourquoi cette plateforme ?</h2>
+      
+      <p>
+        Pendant les examens écrits en salle de classe, la triche peut prendre de nombreuses formes :
+        utilisation discrète de l'IA ou de traducteurs en ligne, échanges de brouillons entre étudiants,
+        réponses préparées à l'avance sur papier, ou encore collaboration non autorisée.
+      </p>
+
+      <div class="highlight-box">
+        <p>L'objectif : valoriser le travail honnête tout en limitant la triche.</p>
+      </div>
+
+      <p>
+        L'idée n'est pas de « piéger » les étudiants, mais de créer un environnement plus équitable.
+        Les étudiants qui révisent et rédigent leurs propres réponses méritent d'être protégés –
+        que la triche passe par l'IA, le copier-coller, ou simplement un morceau de papier glissé
+        discrètement sous la table.
+      </p>
+
+      <h3>Une solution légère pour l'enseignant</h3>
+
+      <p>
+        Pas de plateforme complexe, pas de comptes à créer, pas de back-office à gérer.
+        Chaque épreuve fonctionne de manière autonome : lorsque l'étudiant envoie ses réponses,
+        vous recevez un e-mail avec un rapport complet (partie fermée déjà corrigée, 
+        partie rédigée, grille de notation, journal des événements techniques).
+      </p>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section-card">
+      <h2>2. Comment fonctionne l'épreuve ?</h2>
+
+      <!-- Phase 1 -->
+      <div class="phase-block">
+        <h3>Phase 1 : Connexion sécurisée</h3>
+        <p>
+          L'étudiant se connecte avec son nom, son e-mail universitaire et un code de classe fourni par l'enseignant.
+          Il vérifie ensuite ses informations et prend connaissance des règles : épreuve en plein écran, 
+          désactivation du copier-coller et du clic droit, enregistrement de tous les événements techniques.
+        </p>
+
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/1. Login Screen.png" alt="Écran de connexion">
+          <figcaption>Écran de connexion avec nom, e-mail, groupe et code de classe</figcaption>
+        </figure>
+
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/2. Confrimation Page.png" alt="Page de confirmation">
+          <figcaption>Page de confirmation des informations avant le début de l'épreuve</figcaption>
+        </figure>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-block">
+        <h3>Phase 2 : Passage de l'épreuve</h3>
+        <p>L'épreuve se déroule en deux parties :</p>
+        <ul>
+          <li>
+            <strong>Partie A (questions fermées)</strong> : QCM, vocabulaire, correspondances… 
+            Les réponses sont sélectionnées via des menus déroulants et seront corrigées automatiquement.
+          </li>
+          <li>
+            <strong>Partie B (rédaction)</strong> : consigne claire en haut de page, éditeur de texte intégré.
+            Le copier-coller, la traduction automatique et le clic droit sont désactivés.
+          </li>
+        </ul>
+
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/3. Part A Vocabulary.png" alt="Partie A">
+          <figcaption>Partie A : questions de vocabulaire avec menus déroulants</figcaption>
+        </figure>
+
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/4a. Written Exercise.png" alt="Partie B consigne">
+          <figcaption>Partie B : consigne de l'exercice rédigé</figcaption>
+        </figure>
+
+        <figure class="screenshot-large">
+          <img src="Exam Page Workflow/4b Written Exercise.png" alt="Partie B rédaction">
+          <figcaption>Partie B : zone de rédaction avec éditeur de texte intégré</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Section 3: Anti-cheat / Anti-AI -->
+    <div class="section-card">
+      <h2>3. Anti-triche et anti-IA</h2>
+      
+      <p>
+        Pendant toute l'épreuve, la plateforme surveille automatiquement le comportement technique de l'étudiant.
+        L'objectif n'est pas de sanctionner à tout prix, mais de décourager la triche et de documenter
+        les conditions de passage de l'épreuve.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <h4>Surveillance du plein écran</h4>
+          <p>
+            Détection des sorties de plein écran ou des changements d'onglet. Chaque événement est horodaté
+            et ajouté au journal de session.
+          </p>
         </div>
-    </section>
 
-    <section id="demo" class="demo-section">
-        <div class="container">
-            <h2>Découvrez la plateforme en 2 minutes</h2>
-            <div class="video-container">
-                <video controls>
-                    <source src="Exam at a glance 2.mp4" type="video/mp4">
-                    Votre navigateur ne supporte pas la lecture de vidéos.
-                </video>
-            </div>
+        <div class="feature-item">
+          <h4>Avertissements progressifs</h4>
+          <p>
+            Des fenêtres d'avertissement s'affichent lorsque l'étudiant quitte l'épreuve. Après plusieurs alertes,
+            l'épreuve peut être automatiquement envoyée à l'enseignant.
+          </p>
         </div>
-    </section>
 
-    <section class="features">
-        <div class="container">
-            <h1>Ce qui change pour vous</h1>
-                <div class="pillar">
-                    <div class="pillar-number">2</div>
-                    <h3>Bouclier Anti-IA & Triche</h3>
-                    <ul>
-                        <li>Plein écran obligatoire</li>
-                        <li>Copier-coller bloqué</li>
-                        <li>Alt-Tab détecté et signalé</li>
-                        <li>Raccourcis désactivés</li>
-                    </ul>
-                </div>
-
-                <div class="pillar">
-                    <div class="pillar-number">3</div>
-                    <h2>Correction Automatique</h2>
-                    <ul>
-                        <li>QCM notés instantanément</li>
-                        <li>Rédactions lisibles en PDF</li>
-                        <li>Rapport complet par email</li>
-                        <li>Gagnez des heures</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="feature-item">
+          <h4>Blocage du copier-coller et de la traduction</h4>
+          <p>
+            Le clic droit, le copier-coller et certains raccourcis clavier sont désactivés pendant la rédaction, 
+            afin de limiter l'utilisation d'outils externes (IA, traducteurs en ligne, etc.).
+          </p>
         </div>
-    </section>
 
-    <section class="how-it-works">
-        <div class="container">
-            <h2>Comment ça marche ?</h2>
-            
-
-            <div class="phase">
-                <div class="phase-number">Phase 1</div>
-                <h3>Les élèves passent l'épreuve</h3>
-                <div class="phase-content">
-                    <div class="phase-text">
-                        <p><strong>En classe, sous surveillance :</strong></p>
-                        <ul>
-                            <li>Les élèves se connectent avec le code d'accès</li>
-                            <li>Aucun compte à créer, juste un nom à saisir</li>
-                            <li>Le mode plein écran se lance automatiquement</li>
-                            <li>Toute tentative de sortie est enregistrée</li>
-                        </ul>
-                    </div>
-                    <div class="phase-image">
-                        <img src="1. Login Screen.png" alt="Interface élève">
-                    </div>
-                     </div>
-                    <div class="phase-image">
-                        <img src="2. Confrimation Page" alt="Interface élève">
-                    </div>
-                </div>
-            </div>
-
-            <div class="phase">
-                <div class="phase-number">Sécurité</div>
-                <h3>Protection Anti-IA et Anti-Triche</h3>
-                <div class="phase-content">
-                    <div class="phase-image">
-                        <img src="https://raw.githubusercontent.com/Spozder/brevet-blanc-platform/main/images/anti-cheat-window.png" alt="Interface anti-triche">
-                    </div>
-                    <div class="phase-text">
-                        <p><strong>Mesures de sécurité actives pendant l'épreuve :</strong></p>
-                        <ul>
-                            <li><strong>Mode plein écran obligatoire</strong> — impossible de réduire la fenêtre</li>
-                            <li><strong>Copier-coller désactivé</strong> — bloque ChatGPT et Google Translate</li>
-                            <li><strong>Clic droit bloqué</strong> — pas d'accès aux menus contextuels</li>
-                            <li><strong>Raccourcis clavier désactivés</strong> — Alt-Tab, Ctrl+C, Ctrl+V interceptés</li>
-                            <li><strong>Détection des tentatives de sortie</strong> — chaque Alt-Tab est enregistré et signalé</li>
-                            <li><strong>Avertissements visuels</strong> — l'élève sait qu'il est surveillé</li>
-                        </ul>
-                        <p style="margin-top: 15px; color: #64748b; font-style: italic;">Toutes les tentatives sont consignées dans le rapport final envoyé à l'enseignant.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="phase">
-                <div class="phase-number">Phase 3</div>
-                <h3>Vous recevez les résultats par email</h3>
-                <div class="phase-content">
-                    <div class="phase-text">
-                        <p><strong>Un rapport complet automatiquement généré :</strong></p>
-                        <ul>
-                            <li>Correction automatique des QCM et exercices de vocabulaire</li>
-                            <li>Export PDF propre et lisible des rédactions</li>
-                            <li>Statistiques de classe (temps passé, tentatives de sortie)</li>
-                            <li>Tout regroupé dans un seul PDF envoyé par email</li>
-                        </ul>
-                        <p style="margin-top: 20px; color: #64748b;">Gagnez des heures de correction tout en gardant le contrôle pédagogique.</p>
-                    </div>
-                </div>
-                <div style="margin-top: 40px; text-align: center;">
-                    <video controls style="width: 100%; max-width: 1000px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
-                        <source src="https://raw.githubusercontent.com/Spozder/brevet-blanc-platform/main/videos/reporting-demo.mp4" type="video/mp4">
-                        Votre navigateur ne supporte pas la lecture de vidéos.
-                    </video>
-                </div>
-            </div>
+        <div class="feature-item">
+          <h4>Journal de session complet</h4>
+          <p>
+            À la fin de l'épreuve, l'enseignant reçoit un journal détaillé des événements techniques 
+            (sorties d'écran, avertissements, durée d'examen, etc.).
+          </p>
         </div>
-    </section>
+      </div>
 
-    <section class="testimonial">
-        <div class="container">
-            <div class="testimonial-content">
-                <blockquote>
-                    "Enfin une solution qui comprend les vrais problèmes des enseignants. Plus besoin de gérer des comptes, et je sais que mes élèves ne peuvent pas tricher avec ChatGPT. La correction automatique des QCM me fait gagner un temps fou."
-                </blockquote>
-                <p class="testimonial-author">— Professeur de français, collège pilote</p>
-            </div>
-        </div>
-    </section>
+      <figure class="screenshot-large">
+        <img src="Exam Page Workflow/5. Warning Pop-up.png" alt="Avertissement anti-triche">
+        <figcaption>Fenêtre d'avertissement affichée lors d'une sortie d'écran</figcaption>
+      </figure>
+    </div>
 
-    <section class="cta">
-        <div class="container">
-            <h2>Prêt à tester la plateforme ?</h2>
-            <p>Actuellement en version bêta. Inscription gratuite pour les enseignants pilotes.</p>
-            <a href="#contact" class="cta-button">Demander un accès bêta</a>
-        </div>
-    </section>
+    <!-- Section 4: Rapport par e-mail -->
+    <div class="section-card">
+      <h2>4. Rapport par e-mail et correction simplifiée</h2>
 
-    <footer class="footer">
-        <div class="container">
-            <p>Plateforme d'Épreuves en Classe - 2024</p>
-            <p>Conçue par des enseignants, pour des enseignants</p>
-        </div>
-    </footer>
+      <p>
+        Une fois l'épreuve envoyée, l'étudiant voit une confirmation à l'écran. 
+        L'enseignant reçoit automatiquement un e-mail contenant&nbsp;:
+      </p>
+
+      <ul>
+        <li>Les informations de l'étudiant (nom, groupe, adresse e-mail)</li>
+        <li>La partie A déjà corrigée automatiquement (score détaillé question par question)</li>
+        <li>La réponse rédigée complète, prête à être évaluée</li>
+        <li>Une grille de notation à remplir (Partie B + note finale)</li>
+        <li>Le journal de session complet (sorties d'écran, avertissements, etc.)</li>
+      </ul>
+
+      <figure class="screenshot-large">
+        <video controls>
+          <source src="Exam Page Workflow/7. Email Report.mp4" type="video/mp4">
+        </video>
+        <figcaption>Exemple de rapport enseignant reçu par e-mail</figcaption>
+      </figure>
+    </div>
+
+    <!-- Section 5: Join the Pilot (Collaborative CTA) -->
+    <div class="cta-section">
+      <h2>Rejoindre le projet pilote</h2>
+      
+      <p>
+        Cette plateforme a été créée pour répondre à des besoins concrets en classe 
+        (limiter la triche, valoriser le travail autonome, accélérer la correction). 
+        L'objectif de la phase bêta est de la tester avec d'autres enseignants et d'autres matières.
+      </p>
+
+      <p>
+        <strong>Ce que je propose :</strong> travailler ensemble pour adapter le format d'épreuve 
+        à vos cours (langues, management, finance, etc.). Vos retours orientent directement 
+        les évolutions de l'outil. Vous n'êtes pas des « utilisateurs », mais des collaborateurs.
+      </p>
+
+      <a href="create-exam.html" class="cta-button">Créer votre première épreuve test</a>
+
+      <div class="beta-badge">
+        <span>●</span>
+        <span>Version bêta – collaboration en cours</span>
+      </div>
+
+      <p class="note-text">
+        Conseil : commencez avec un petit groupe pour vous familiariser avec le format, 
+        puis élargissez progressivement. N'hésitez pas à me contacter pour toute question ou suggestion.
+      </p>
+    </div>
+  </main>
+
 </body>
 </html>
