@@ -31,18 +31,28 @@
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-size: 36px;
             margin-bottom: 20px;
             font-weight: 700;
         }
 
         .subtitle {
-            font-size: 20px;
+            font-size: 18px;
             margin-bottom: 40px;
             opacity: 0.95;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        .beta-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
         .cta-button {
@@ -70,7 +80,7 @@
         }
 
         .demo-section h2 {
-            font-size: 36px;
+            font-size: 28px;
             margin-bottom: 40px;
             color: #1e293b;
         }
@@ -95,66 +105,67 @@
 
         .features h2 {
             text-align: center;
-            font-size: 36px;
+            font-size: 28px;
             margin-bottom: 60px;
             color: #1e293b;
         }
 
         .pillars {
             display: grid;
-            gap: 40px;
-            max-width: 900px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .pillar {
             background: white;
-            padding: 40px;
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 4px solid #2563eb;
         }
 
         .pillar-number {
             display: inline-block;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: #2563eb;
             color: white;
             border-radius: 50%;
             text-align: center;
-            line-height: 40px;
-            font-size: 20px;
+            line-height: 35px;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .pillar h3 {
-            margin: 0 0 20px 0;
-            font-size: 24px;
+            margin: 0 0 15px 0;
+            font-size: 18px;
             color: #1e293b;
+            font-weight: 600;
         }
 
-        .pillar-problem {
-            background: #fef2f2;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border-left: 3px solid #ef4444;
+        .pillar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .pillar-solution {
-            background: #f0fdf4;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid #22c55e;
+        .pillar li {
+            padding: 8px 0;
+            color: #475569;
+            font-size: 14px;
+            position: relative;
+            padding-left: 20px;
         }
 
-        .pillar-problem strong,
-        .pillar-solution strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #1e293b;
+        .pillar li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #22c55e;
+            font-weight: bold;
         }
 
         .how-it-works {
@@ -164,7 +175,7 @@
 
         .how-it-works h2 {
             text-align: center;
-            font-size: 36px;
+            font-size: 28px;
             margin-bottom: 60px;
             color: #1e293b;
         }
@@ -194,7 +205,7 @@
         }
 
         .phase h3 {
-            font-size: 28px;
+            font-size: 22px;
             margin-bottom: 30px;
             color: #1e293b;
         }
@@ -209,6 +220,7 @@
         .phase-text p {
             margin-bottom: 15px;
             color: #475569;
+            font-size: 15px;
         }
 
         .phase-text ul {
@@ -217,8 +229,9 @@
         }
 
         .phase-text li {
-            padding: 10px 0;
+            padding: 8px 0;
             color: #475569;
+            font-size: 15px;
             position: relative;
             padding-left: 30px;
         }
@@ -249,8 +262,32 @@
         }
 
         .cta h2 {
-            font-size: 36px;
+            font-size: 28px;
             margin-bottom: 20px;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 60px 20px;
+        }
+
+        .testimonial-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .testimonial blockquote {
+            font-size: 20px;
+            font-style: italic;
+            color: #1e293b;
+            margin: 0 0 20px 0;
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            color: #64748b;
+            font-size: 16px;
         }
 
         .cta p {
@@ -273,7 +310,7 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 32px;
+                font-size: 28px;
             }
 
             .subtitle {
@@ -283,7 +320,12 @@
             .features h2,
             .how-it-works h2,
             .cta h2 {
-                font-size: 28px;
+                font-size: 24px;
+            }
+
+            .pillars {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .phase:nth-child(odd),
@@ -303,12 +345,17 @@
             .pillar {
                 padding: 30px 20px;
             }
+
+            .testimonial blockquote {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
     <section class="hero">
         <div class="container">
+            <div class="beta-badge">Exam Platform — Beta</div>
             <h1>Reprenez le contrôle de vos examens en classe.</h1>
             <p class="subtitle">Une plateforme légère pour bloquer l'IA, empêcher le copier-coller, et automatiser la correction. Sans création de compte.</p>
             <a href="#demo" class="cta-button">Voir la démo en 2 minutes</a>
@@ -334,34 +381,34 @@
                 <div class="pillar">
                     <div class="pillar-number">1</div>
                     <h3>Zéro Administration</h3>
-                    <div class="pillar-problem">
-                        <strong>Le problème :</strong> Créer des comptes étudiants et gérer les mots de passe perdus prend trop de temps.
-                    </div>
-                    <div class="pillar-solution">
-                        <strong>La solution :</strong> Pas de création de compte. Pas de login. Vous donnez un code, l'étudiant commence. C'est tout. La plateforme fonctionne sur n'importe quel appareil avec un navigateur — aucune installation requise. Le travail est sauvegardé automatiquement en temps réel, donc aucune perte de données en cas de problème technique.
-                    </div>
+                    <ul>
+                        <li>Pas de comptes élèves</li>
+                        <li>Un simple code d'accès</li>
+                        <li>Fonctionne sur tout navigateur</li>
+                        <li>Sauvegarde automatique</li>
+                    </ul>
                 </div>
 
                 <div class="pillar">
                     <div class="pillar-number">2</div>
                     <h3>Bouclier Anti-IA & Triche</h3>
-                    <div class="pillar-problem">
-                        <strong>Le problème :</strong> ChatGPT et Google Translate sont devenus invisibles en classe.
-                    </div>
-                    <div class="pillar-solution">
-                        <strong>La solution :</strong> L'épreuve se verrouille en plein écran obligatoire. Le copier-coller est complètement bloqué. Toute tentative de sortie (Alt-Tab, clic droit, raccourcis clavier) est enregistrée et vous est signalée dans le rapport final.
-                    </div>
+                    <ul>
+                        <li>Plein écran obligatoire</li>
+                        <li>Copier-coller bloqué</li>
+                        <li>Alt-Tab détecté et signalé</li>
+                        <li>Raccourcis désactivés</li>
+                    </ul>
                 </div>
 
                 <div class="pillar">
                     <div class="pillar-number">3</div>
-                    <h3>Correction Hybride Automatique</h3>
-                    <div class="pillar-problem">
-                        <strong>Le problème :</strong> Corriger des copies papier est lent et fastidieux.
-                    </div>
-                    <div class="pillar-solution">
-                        <strong>La solution :</strong> Recevez un rapport unique par email sous format PDF. La partie QCM et vocabulaire est déjà notée automatiquement. La rédaction est propre, lisible et prête à être évaluée — plus besoin de déchiffrer les écritures illisibles. Vous gagnez des heures sur chaque épreuve.
-                    </div>
+                    <h3>Correction Automatique</h3>
+                    <ul>
+                        <li>QCM notés instantanément</li>
+                        <li>Rédactions lisibles en PDF</li>
+                        <li>Rapport complet par email</li>
+                        <li>Gagnez des heures</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -447,13 +494,24 @@
                         </ul>
                         <p style="margin-top: 20px; color: #64748b;">Gagnez des heures de correction tout en gardant le contrôle pédagogique.</p>
                     </div>
-                    <div class="phase-image">
-                        <video controls style="max-width: 100%; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
-                            <source src="https://raw.githubusercontent.com/Spozder/brevet-blanc-platform/main/videos/reporting-demo.mp4" type="video/mp4">
-                            Votre navigateur ne supporte pas la lecture de vidéos.
-                        </video>
-                    </div>
                 </div>
+                <div style="margin-top: 40px; text-align: center;">
+                    <video controls style="width: 100%; max-width: 1000px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                        <source src="https://raw.githubusercontent.com/Spozder/brevet-blanc-platform/main/videos/reporting-demo.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial">
+        <div class="container">
+            <div class="testimonial-content">
+                <blockquote>
+                    "Enfin une solution qui comprend les vrais problèmes des enseignants. Plus besoin de gérer des comptes, et je sais que mes élèves ne peuvent pas tricher avec ChatGPT. La correction automatique des QCM me fait gagner un temps fou."
+                </blockquote>
+                <p class="testimonial-author">— Professeur de français, collège pilote</p>
             </div>
         </div>
     </section>
