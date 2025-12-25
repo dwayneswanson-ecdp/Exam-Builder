@@ -89,6 +89,12 @@
       margin-bottom: 28px;
     }
 
+    /* Accent variant to visually separate some sections */
+    .section-card.section-accent {
+      background: #f8fafc;
+      border-color: #c7d2fe;
+    }
+
     .section-card h2 {
       margin: 0 0 20px 0;
       font-size: 1.4rem;
@@ -233,12 +239,25 @@
     }
 
     .cta-section p {
-      margin: 12px 0 24px 0;
+      margin: 12px 0 16px 0;
       font-size: 1rem;
       color: #4b5563;
-      max-width: 600px;
+      max-width: 650px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .cta-section ul {
+      text-align: left;
+      max-width: 650px;
+      margin: 8px auto 20px auto;
+      padding-left: 20px;
+      font-size: 0.95rem;
+      color: #4b5563;
+    }
+
+    .cta-section li {
+      margin: 6px 0;
     }
 
     .cta-button {
@@ -290,31 +309,34 @@
       border-left: 4px solid #2643e9;
     }
 
-    /* Anti-cheat features grid */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin: 20px 0 28px 0;
+    /* Anti-cheat checklist */
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+      margin: 16px 0 24px 0;
     }
 
-    .feature-item {
-      background: #f9fafb;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      padding: 16px 18px;
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 6px 0;
+      font-size: 0.95rem;
+      color: #374151;
     }
 
-    .feature-item h4 {
-      margin: 0 0 8px 0;
-      font-size: 0.98rem;
-      color: #111827;
-    }
-
-    .feature-item p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #4b5563;
+    .check-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
     }
 
     /* Footer note */
@@ -419,9 +441,9 @@
       </div>
     </div>
 
-    <!-- Section 1 -->
+    <!-- Pourquoi -->
     <div class="section-card">
-      <h2>1. Pourquoi cette plateforme ?</h2>
+      <h2>Pourquoi cette plateforme ?</h2>
       
       <p>
         Pendant les examens écrits en salle de classe, la triche peut prendre de nombreuses formes :
@@ -450,9 +472,9 @@
       </p>
     </div>
 
-    <!-- Section 2 -->
+    <!-- Comment fonctionne l'épreuve -->
     <div class="section-card">
-      <h2>2. Comment fonctionne l'épreuve ?</h2>
+      <h2>Comment fonctionne l'épreuve ?</h2>
 
       <!-- Phase 1 -->
       <div class="phase-block">
@@ -506,49 +528,33 @@
       </div>
     </div>
 
-    <!-- Section 3: Anti-cheat / Anti-AI -->
-    <div class="section-card">
-      <h2>3. Anti-triche et anti-IA</h2>
+    <!-- Anti-triche / Anti-IA -->
+    <div class="section-card section-accent">
+      <h2>Anti-triche et anti-IA</h2>
       
       <p>
         Pendant toute l'épreuve, la plateforme surveille automatiquement le comportement technique de l'étudiant.
-        L'objectif n'est pas de sanctionner à tout prix, mais de décourager la triche et de documenter
-        les conditions de passage de l'épreuve.
+        L'idée est de décourager la triche et de documenter clairement les conditions de passage de l'examen.
       </p>
 
-      <div class="features-grid">
-        <div class="feature-item">
-          <h4>Surveillance du plein écran</h4>
-          <p>
-            Détection des sorties de plein écran ou des changements d'onglet. Chaque événement est horodaté
-            et ajouté au journal de session.
-          </p>
-        </div>
-
-        <div class="feature-item">
-          <h4>Avertissements progressifs</h4>
-          <p>
-            Des fenêtres d'avertissement s'affichent lorsque l'étudiant quitte l'épreuve. Après plusieurs alertes,
-            l'épreuve peut être automatiquement envoyée à l'enseignant.
-          </p>
-        </div>
-
-        <div class="feature-item">
-          <h4>Blocage du copier-coller et de la traduction</h4>
-          <p>
-            Le clic droit, le copier-coller et certains raccourcis clavier sont désactivés pendant la rédaction, 
-            afin de limiter l'utilisation d'outils externes (IA, traducteurs en ligne, etc.).
-          </p>
-        </div>
-
-        <div class="feature-item">
-          <h4>Journal de session complet</h4>
-          <p>
-            À la fin de l'épreuve, l'enseignant reçoit un journal détaillé des événements techniques 
-            (sorties d'écran, avertissements, durée d'examen, etc.).
-          </p>
-        </div>
-      </div>
+      <ul class="checklist">
+        <li>
+          <span class="check-icon">✓</span>
+          <span>Surveillance du plein écran et des changements d'onglet (chaque sortie est horodatée).</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span>Avertissements progressifs lorsqu'un étudiant quitte l'épreuve.</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span>Blocage du clic droit, du copier-coller et de certains raccourcis clavier dans la zone de rédaction.</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span>Journal de session détaillé envoyé à l'enseignant en fin d'épreuve.</span>
+        </li>
+      </ul>
 
       <figure class="screenshot-large">
         <img src="Exam Page Workflow/5. Warning Pop-up.png" alt="Avertissement anti-triche">
@@ -556,9 +562,9 @@
       </figure>
     </div>
 
-    <!-- Section 4: Rapport par e-mail -->
+    <!-- Rapport par e-mail -->
     <div class="section-card">
-      <h2>4. Rapport par e-mail et correction simplifiée</h2>
+      <h2>Rapport par e-mail et correction simplifiée</h2>
 
       <p>
         Une fois l'épreuve envoyée, l'étudiant voit une confirmation à l'écran. 
@@ -570,7 +576,7 @@
         <li>La partie A déjà corrigée automatiquement (score détaillé question par question)</li>
         <li>La réponse rédigée complète, prête à être évaluée</li>
         <li>Une grille de notation à remplir (Partie B + note finale)</li>
-        <li>Le journal de session complet (sorties d'écran, avertissements, etc.)</li>
+        <li>Le journal de session complet (sorties d'écran, avertissements, durée d'examen, etc.)</li>
       </ul>
 
       <figure class="screenshot-large">
@@ -581,32 +587,41 @@
       </figure>
     </div>
 
-    <!-- Section 5: Join the Pilot (Collaborative CTA) -->
+     <!-- Projet pilote / appel à participation -->
     <div class="cta-section">
-      <h2>Rejoindre le projet pilote</h2>
+      <h2>Envie de tester la plateforme avec vos étudiants&nbsp;?</h2>
       
       <p>
-        Cette plateforme a été créée pour répondre à des besoins concrets en classe 
-        (limiter la triche, valoriser le travail autonome, accélérer la correction). 
-        L'objectif de la phase bêta est de la tester avec d'autres enseignants et d'autres matières.
+        Cette plateforme est actuellement en <strong>version bêta</strong> et utilisée en situation réelle
+        avec plusieurs groupes d’étudiants. Je cherche désormais quelques enseignants volontaires
+        pour la tester dans d’autres matières et formats d’examen (QCM, rédaction, études de cas, etc.).
       </p>
 
       <p>
-        <strong>Ce que je propose :</strong> travailler ensemble pour adapter le format d'épreuve 
-        à vos cours (langues, management, finance, etc.). Vos retours orientent directement 
-        les évolutions de l'outil. Vous n'êtes pas des « utilisateurs », mais des collaborateurs.
+        Si vous avez déjà été confronté à la triche (IA, traduction en ligne, copier-coller, antisèche…)
+        et que vous cherchez un format plus sécurisé, mais simple à mettre en place, 
+        je serais ravi de collaborer avec vous.
       </p>
 
-      <a href="create-exam.html" class="cta-button">Créer votre première épreuve test</a>
+      <p>
+        En rejoignant le projet pilote, vous pourrez :
+      </p>
+      <ul>
+        <li>Tester la plateforme sur un de vos examens en présentiel ;</li>
+        <li>Donner votre avis sur l’ergonomie, les fonctionnalités et les besoins manquants ;</li>
+        <li>Contribuer à la conception d’un outil pensé <em>par</em> et <em>pour</em> les enseignants.</li>
+      </ul>
+
+      <a href="create-exam.html" class="cta-button">Participer au projet pilote</a>
 
       <div class="beta-badge">
         <span>●</span>
-        <span>Version bêta – collaboration en cours</span>
+        <span>Version bêta – collaboration avec les enseignants</span>
       </div>
 
       <p class="note-text">
-        Conseil : commencez avec un petit groupe pour vous familiariser avec le format, 
-        puis élargissez progressivement. N'hésitez pas à me contacter pour toute question ou suggestion.
+        Vous pouvez commencer avec un seul groupe ou une seule épreuve. 
+        L’objectif est d’avancer étape par étape, en fonction de vos retours de terrain.
       </p>
     </div>
   </main>
