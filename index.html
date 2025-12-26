@@ -398,14 +398,15 @@
     }
 
     /* Footer note */
-    .footer-note {
-      text-align: center;
-      padding: 24px;
-      font-size: 0.9rem;
-      color: #6b7280;
-      border-top: 1px solid #e5e7eb;
-      margin-top: 40px;
-    }
+.footer-note {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 40px;
+  padding: 20px 0 40px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: left;      /* align like the rest of the page */
+  line-height: 1.6;
+}
 /* Scroll hint BELOW the video, no overlap, no click */
 .scroll-hint {
   margin-top: 24px;
@@ -760,16 +761,18 @@
         </p>
       </div>
     </div>
-        <div class="footer-note">
-      <strong>Transparence technique & données personnelles :</strong><br>
-      Cette plateforme est un outil « client-side » (page statique) : elle ne nécessite aucune création de compte
-      et n’utilise pas de base de données applicative pour stocker durablement les copies. Les réponses des étudiants
-      sont traitées dans le navigateur, puis envoyées uniquement vers la boîte mail professionnelle de l’enseignant.
-      Aucune copie n’est conservée dans une base centrale dédiée.
-      <br><br>
-      <em>Un dossier technique complet (architecture, flux de données, conformité RGPD) peut être fourni sur demande
-      à la direction ou au DPO.</em>
-    </div>
+     <div class="section-container">
+  <div class="footer-note">
+    <strong>Transparence technique & données personnelles :</strong><br>
+    Cette plateforme est un outil « client-side » (page statique) : elle ne nécessite aucune création de compte
+    et n’utilise pas de base de données applicative pour stocker durablement les copies. Les réponses des étudiants
+    sont traitées dans le navigateur, puis envoyées uniquement vers la boîte mail professionnelle de l’enseignant.
+    Aucune copie n’est conservée dans une base centrale dédiée.
+    <br><br>
+    <em>Un dossier technique complet (architecture, flux de données, conformité RGPD) peut être fourni sur demande
+    à la direction ou au DPO.</em>
+  </div>
+</div>
   </main>
 
 </body>
