@@ -406,17 +406,9 @@
       border-top: 1px solid #e5e7eb;
       margin-top: 40px;
     }
-    /* Animated scroll arrow - add to existing CSS */
-.demo-video-section {
-  position: relative;
-  min-height: 95vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
+/* Animated scroll arrow - MINIMAL VERSION */
 .scroll-indicator {
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
@@ -432,15 +424,15 @@
 .scroll-indicator svg {
   width: 32px;
   height: 32px;
-  fill: #2563eb;
-  opacity: 0.8;
+  fill: white;
+  opacity: 0.9;
 }
 
 .scroll-indicator span {
   font-size: 0.85rem;
-  color: #4b5563;
+  color: white;
   font-weight: 500;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 @keyframes bounce {
